@@ -22,5 +22,35 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="title_activity_registration">RegistrationActivity</string>
-    <string name="action_sign_in">Sign in or register</string>
+    <string name="events_near"> Events near </string>
+    <string name="place">
+        Novi Sad, Serbia
+    </string>
+    <string name="search_string">
+        Search...
+    </string>
+    <string name="top_5_events">
+            Top 5 events
+    </string>
+    <string name="dragi_bravo">
+            Dragi Bravo maskenbal
+    </string>
+    <string name="novosadski_sajam">
+                Novosadski sajam
+    </string>
+    <string name="time_of_event">
+                21:00
+    </string>
+    <string name="date_of_event">
+                    26\nOCT
+    </string>
+    <string name="top_5_offers">
+            Top 5 offers
+    </string>
+    <string name="photographText">
+                Fotograf
+    </string>
+    <string name="decorationText">
+                Dekoracija
+    </string>
 </resources>

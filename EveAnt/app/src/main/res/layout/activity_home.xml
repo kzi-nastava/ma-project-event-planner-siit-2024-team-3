@@ -30,8 +30,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="33dp"
-            android:layout_marginTop="31dp"
+            android:layout_marginTop="35dp"
             android:text="@string/events_near"
+            android:fontFamily="@font/poppins_medium"
             android:textAppearance="@style/events_near"
             android:gravity="top"
             app:layout_constraintStart_toStartOf="parent"
@@ -52,6 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="65dp"
             android:layout_marginStart="10dp"
+            android:fontFamily="@font/poppins_bold"
             android:text="@string/place"
             android:textAppearance="@style/place"
             app:layout_constraintStart_toStartOf="parent"
@@ -76,7 +78,7 @@
     <RelativeLayout
         android:id="@+id/search_box_rectangle_layout"
         android:layout_width="0dp"
-        android:layout_height="40dp"
+        android:layout_height="50dp"
         android:layout_alignParentStart="true"
         android:layout_marginStart="13dp"
         android:layout_marginEnd="13dp"
@@ -85,26 +87,26 @@
         android:background="@drawable/search_box_rectangle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
             android:src="@drawable/search_icon"/>
 
-        <TextView
+        <EditText
             android:id="@+id/search_"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginStart="40dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="8dp"
-            android:text="@string/search_string"
+            android:background="@color/white"
+            android:fontFamily="@font/poppins_medium"
+            android:hint="Search..."
+            android:gravity="center_vertical"
+            android:textColorHint="@color/black"
             android:textAppearance="@style/search_string"
-            android:gravity="top"
+            android:layout_gravity="center_vertical"
             />
         <RelativeLayout
             android:id="@+id/filter_button"
@@ -149,6 +151,7 @@
             android:layout_marginStart="20dp"
             android:layout_alignParentTop="true"
             android:layout_marginTop="15dp"
+            android:fontFamily="@font/poppins_regular"
             android:text="@string/top_5_events"
             android:textAppearance="@style/top_5_events"
             android:gravity="top"
@@ -186,6 +189,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="10dp"
                 android:text="@string/dragi_bravo"
+                android:fontFamily="@font/poppins_bold"
                 android:textAppearance="@style/dragi_bravo"
                 android:gravity="top"
                 android:textStyle="bold"
@@ -208,11 +212,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginBottom="11dp"
+                android:layout_marginBottom="10dp"
                 android:layout_marginStart="5dp"
                 android:layout_toEndOf="@+id/location_pin"
                 android:gravity="top"
                 android:text="@string/novosadski_sajam"
+                android:fontFamily="@font/poppins_regular"
                 android:textAppearance="@style/novosadski_sajam"
                 app:layout_constraintBottom_toBottomOf="parent"/>
 
@@ -238,6 +243,7 @@
                 android:layout_toEndOf="@+id/clock_icon_layout"
                 android:gravity="top"
                 android:text="@string/time_of_event"
+                android:fontFamily="@font/poppins_regular"
                 android:textAppearance="@style/time_of_event"
                 app:layout_constraintBottom_toBottomOf="parent" />
 
@@ -302,14 +308,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingStart="35dp"
-                android:paddingEnd="35dp">
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp">
 
                 <!-- First Group -->
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp">
+                    android:layout_marginEnd="14dp">
 
                     <ImageView
                         android:id="@+id/photographer"
