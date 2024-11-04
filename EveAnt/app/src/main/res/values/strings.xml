@@ -37,5 +37,10 @@
     <string name="top_5_offers">
             Top 5 offers
     </string>
-
+    <string name="photographText">
+                Fotograf
+    </string>
+    <string name="decorationText">
+                Dekoracija
+    </string>
 </resources>
