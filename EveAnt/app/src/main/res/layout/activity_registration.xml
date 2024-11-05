@@ -11,262 +11,268 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context=".LoginActivity">
-
-    <FrameLayout
+    <ScrollView
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:background="@drawable/rounded_corners_white"
-        android:elevation="4dp"
         android:padding="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-<ScrollView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:orientation="vertical">
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
                 android:fontFamily="@font/poppins_extrabold"
                 android:text="@string/action_register"
                 android:textAlignment="center"
-                android:textSize="40sp"
-                android:textStyle="bold" />
-            <EditText
-                android:id="@+id/name"
+                android:textSize="30sp"
+                android:textColor="@color/black"/>
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:background="@drawable/rounded_corners_f0f3ff"
-                android:fontFamily="@font/poppins_regular"
-                android:hint="@string/prompt_name"
-                android:textSize="20sp"
-                android:textColorHint="@color/black"
-                android:imeActionLabel="@string/action_sign_in_short"
-                android:imeOptions="actionDone"
-                android:inputType="textPersonName"
-                android:padding="@dimen/activity_vertical_margin"
-                android:selectAllOnFocus="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rounded_corners_f0f3ff">
 
-            <EditText
-                android:id="@+id/surname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/rounded_corners_f0f3ff"
-                android:fontFamily="@font/poppins_regular"
-                android:hint="@string/prompt_surname"
-                android:textSize="20sp"
-                android:textColorHint="@color/black"
-                android:imeActionLabel="@string/action_sign_in_short"
-                android:imeOptions="actionDone"
-                android:inputType="text"
-                android:padding="@dimen/activity_vertical_margin"
-                android:selectAllOnFocus="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                <EditText
+                    android:id="@+id/name"
+                    style="@style/loginInputText"
+                    android:hint="@string/prompt_name"
+                    android:imeActionLabel="@string/action_sign_in_short"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPersonName"
+                    android:selectAllOnFocus="true"/>
+            </LinearLayout>
 
-            <EditText
-                android:id="@+id/username"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/rounded_corners_f0f3ff"
-                android:hint="@string/prompt_username"
-                android:textColorHint="@color/black"
-                android:inputType="text"
-                android:padding="@dimen/activity_vertical_margin"
-                android:textSize="20sp"
-                android:fontFamily="@font/poppins_regular"
-                android:selectAllOnFocus="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-            <EditText
-                android:id="@+id/email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/rounded_corners_f0f3ff"
-                android:hint="@string/prompt_email"
-                android:textColorHint="@color/black"
-                android:inputType="textEmailAddress"
-                android:padding="@dimen/activity_vertical_margin"
-                android:textSize="20sp"
-                android:fontFamily="@font/poppins_regular"
-                android:selectAllOnFocus="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:background="@drawable/rounded_corners_f0f3ff">
 
-            <EditText
-                android:id="@+id/password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/rounded_corners_f0f3ff"
-                android:fontFamily="@font/poppins_regular"
-                android:hint="@string/prompt_password"
-                android:textSize="20sp"
-                android:textColorHint="@color/black"
-                android:imeActionLabel="@string/action_sign_in_short"
-                android:imeOptions="actionDone"
-                android:inputType="textPassword"
-                android:padding="@dimen/activity_vertical_margin"
-                android:selectAllOnFocus="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/username" />
+                <EditText
+                    android:id="@+id/surname"
+                    style="@style/loginInputText"
+                    android:hint="@string/prompt_surname"
+                    android:imeActionLabel="@string/action_sign_in_short"
+                    android:imeOptions="actionDone"
+                    android:inputType="text" />
+            </LinearLayout>
 
-            <EditText
-                android:id="@+id/confirmPassword"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/rounded_corners_f0f3ff"
-                android:hint="@string/prompt_confirmPassword"
-                android:textColorHint="@color/black"
-                android:inputType="textPassword"
-                android:padding="@dimen/activity_vertical_margin"
-                android:textSize="20sp"
-                android:fontFamily="@font/poppins_regular"
-                android:selectAllOnFocus="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:background="@drawable/rounded_corners_f0f3ff">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/person_vector"
+                    android:layout_marginStart="16dp"
+                    android:layout_gravity="start|center_vertical"/>
+                <EditText
+                    android:id="@+id/username"
+                    style="@style/loginInputText"
+                    android:hint="@string/prompt_username"
+                    android:inputType="text" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rounded_corners_f0f3ff">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/mail"
+                    android:layout_marginStart="16dp"
+                    android:layout_gravity="start|center_vertical"/>
+                <EditText
+                    android:id="@+id/email"
+                    style="@style/loginInputText"
+                    android:hint="@string/prompt_email"
+                    android:inputType="textEmailAddress"/>
+            </LinearLayout>
 
-            <EditText
-                android:id="@+id/address"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/rounded_corners_f0f3ff"
-                android:hint="@string/prompt_address"
-                android:textColorHint="@color/black"
-                android:inputType="text"
-                android:padding="@dimen/activity_vertical_margin"
-                android:textSize="20sp"
-                android:fontFamily="@font/poppins_regular"
-                android:selectAllOnFocus="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:background="@drawable/rounded_corners_f0f3ff">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/lock"
+                    android:layout_marginStart="16dp"
+                    android:layout_gravity="start|center_vertical"/>
+                <EditText
+                    android:id="@+id/password"
+                    style="@style/loginInputText"
+                    android:hint="@string/prompt_password"
+                    android:imeActionLabel="@string/action_sign_in_short"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword" />
+            </LinearLayout>
 
-            <EditText
-                android:id="@+id/phoneNumber"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rounded_corners_f0f3ff">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/lock"
+                    android:layout_marginStart="16dp"
+                    android:layout_gravity="start|center_vertical"/>
+                <EditText
+                    android:id="@+id/confirmPassword"
+                    style="@style/loginInputText"
+                    android:hint="@string/prompt_confirmPassword"
+                    android:inputType="textPassword"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rounded_corners_f0f3ff">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/location"
+                    android:layout_marginStart="16dp"
+                    android:layout_gravity="start|center_vertical"/>
+                <EditText
+                    android:id="@+id/address"
+                    style="@style/loginInputText"
+                    android:hint="@string/prompt_address"
+                    android:inputType="text"/>
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/rounded_corners_f0f3ff"
-                android:hint="@string/prompt_phoneNumber"
-                android:textColorHint="@color/black"
-                android:inputType="text|phone"
-                android:padding="@dimen/activity_vertical_margin"
-                android:textSize="20sp"
-                android:fontFamily="@font/poppins_regular"
-                android:selectAllOnFocus="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|center_vertical"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/telephone" />
+
+                <EditText
+                    android:id="@+id/phoneNumber"
+                    style="@style/loginInputText"
+                    android:hint="@string/prompt_phoneNumber"
+                    android:inputType="text|phone" />
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="8dp"
                 android:text="@string/are_you"
+                android:textColor="@color/black"
                 android:fontFamily="@font/poppins_regular"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:elevation="2dp"
                 android:background="@drawable/rounded_corners_f0f3ff">
-
-                <Button
+                <ToggleButton
                     android:id="@+id/organizerButton"
-                    android:layout_width="224dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:background="@drawable/rounded_corners_f0f3ff"
+                    android:background="@drawable/slider_organizer_provider"
                     android:textAlignment="center"
-                    android:enabled="false"
+                    android:enabled="true"
                     android:fontFamily="@font/poppins_bold"
                     android:padding="10dp"
-                    android:text="@string/prompt_organizer"
+                    android:shadowColor="@null"
+                    android:stateListAnimator="@null"
+                    android:elevation="0dp"
+                    android:textOn="@string/prompt_organizer"
+                    android:textOff="@string/prompt_organizer"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
+                    android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintVertical_bias="0.2" />
-                <Button
+                <ToggleButton
                     android:id="@+id/providerButton"
-                    android:layout_width="224dp"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/rounded_corners_f0f3ff"
-                    android:enabled="false"
+                    android:background="@drawable/slider_organizer_provider"
+                    android:enabled="true"
+                    android:shadowColor="@null"
+                    android:stateListAnimator="@null"
+                    android:elevation="0dp"
                     android:padding="10dp"
                     android:textAlignment="center"
-                    android:text="@string/prompt_provider"
+                    android:textOn="@string/prompt_provider"
+                    android:textOff="@string/prompt_provider"
                     android:textColor="@color/black"
-                    android:textSize="20sp"
-                    android:fontFamily="@font/poppins_bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintVertical_bias="0.2" />
+                    android:textSize="16sp"
+                    android:fontFamily="@font/poppins_bold"/>
             </LinearLayout>
             <Button
                 android:id="@+id/registerButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
-                android:layout_marginTop="90dp"
+                android:layout_marginTop="16dp"
                 android:background="@drawable/rounded_corners_8599e0"
-                android:enabled="false"
+                android:enabled="true"
                 android:padding="10dp"
                 android:text="@string/action_register"
                 android:textColor="@color/white"
-                android:textSize="20sp"
-                android:fontFamily="@font/poppins_bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintVertical_bias="0.2" />
+                android:textSize="16sp"
+                android:fontFamily="@font/poppins_bold"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="20dp"
                 android:text="@string/already_have_an_account"
                 android:fontFamily="@font/poppins_regular"
-                android:textSize="20sp" />
+                android:textSize="16sp"
+                android:textColor="@color/black"/>
             <Button
                 android:id="@+id/register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
                 android:background="@drawable/rounded_corners_e8e8e8"
-                android:enabled="false"
+                android:enabled="true"
                 android:padding="10dp"
                 android:text="@string/action_login"
                 android:textColor="@color/black"
-                android:textSize="20sp"
+                android:textSize="16sp"
+                android:backgroundTint="@null"
                 android:fontFamily="@font/poppins_bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintVertical_bias="0.2" />
+                android:layout_marginBottom="16dp"/>
             <ProgressBar
                 android:id="@+id/loading"
                 android:layout_width="wrap_content"
@@ -281,6 +287,5 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.3" />
         </LinearLayout>
-</ScrollView>
-    </FrameLayout>
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
