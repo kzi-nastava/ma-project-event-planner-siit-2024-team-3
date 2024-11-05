@@ -17,7 +17,7 @@
         android:id="@+id/goToHome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Start" />
+        android:text="Home" />
 
     <Button
         android:id="@+id/goToLogin"
@@ -28,7 +28,7 @@
         android:id="@+id/goToRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Login"/>
+        android:text="Register"/>
 
 </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
