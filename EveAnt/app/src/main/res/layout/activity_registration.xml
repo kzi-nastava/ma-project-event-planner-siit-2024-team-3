@@ -239,7 +239,7 @@
                     android:fontFamily="@font/poppins_bold"/>
             </LinearLayout>
             <Button
-                android:id="@+id/registerButton"
+                android:id="@+id/register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
@@ -260,7 +260,7 @@
                 android:textSize="16sp"
                 android:textColor="@color/black"/>
             <Button
-                android:id="@+id/register"
+                android:id="@+id/goToLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
