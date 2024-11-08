@@ -1,7 +1,8 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="Base.Theme.EveAnt" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
+    <style name="Base.Theme.EveAnt" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+
     </style>
 
     <style name="Theme.EveAnt" parent="Base.Theme.EveAnt" />
