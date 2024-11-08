@@ -32,5 +32,21 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        Button navigateToLoginButton = findViewById(R.id.goToLogin);
+        navigateToLoginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+        Button navigateToRegisterButton = findViewById(R.id.goToRegister);
+        navigateToRegisterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
