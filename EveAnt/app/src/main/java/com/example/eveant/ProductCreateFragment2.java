@@ -1,5 +1,6 @@
 package com.example.eveant;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,7 +23,8 @@ public class ProductCreateFragment2 extends Fragment {
 
         // Dugme za čuvanje podataka
         view.findViewById(R.id.save_button).setOnClickListener(v -> {
-            // Implementiraj logiku za čuvanje podataka
+            Intent intent = new Intent(requireActivity(), ServicesViewActivity.class);
+            startActivity(intent);
         });
 
         view.findViewById(R.id.previous_button).setOnClickListener(v -> {

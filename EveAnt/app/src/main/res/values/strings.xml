@@ -32,6 +32,9 @@
     <string name="conformation"> Reservation confirmation? </string>
     <string name="prompt_cancellation_period">Cancellation period</string>
     <string name="prompt_reservation_deadline">Reservation deadline</string>
+    <string name="myServices">My services</string>
+    <string name="realPrice">20e</string>
+    <string name="search_service_string">Search your services...</string>
     <string name="prompt_specifications">Specifications</string>
     <string name="reservation_type">How do you want the reservation confirmation?</string>
     <string name="welcome">"Welcome !"</string>
