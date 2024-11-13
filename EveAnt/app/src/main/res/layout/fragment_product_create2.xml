@@ -68,20 +68,25 @@
                         android:layout_marginTop="8dp">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
+                            android:layout_weight="2"
                             android:text="Duration"
                             android:textStyle="bold"
                             android:textSize="14sp"
-                            android:paddingRight="47dp"
-                            android:textAlignment="center"/>
+                            android:textAlignment="viewStart"/>
                         <EditText
                             android:id="@+id/durationHours"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:inputType="number"
-                            android:hint="@string/h"/>
+                            android:hint="@string/h"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:textSize="14sp"
+                            android:textAlignment="center"/>
+
 
                         <EditText
                             android:id="@+id/durationMinutes"
@@ -89,7 +94,11 @@
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:inputType="number"
-                            android:hint="@string/min"/>
+                            android:hint="@string/min"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:textSize="14sp"
+                            android:textAlignment="center"/>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -110,20 +119,24 @@
                         android:orientation="horizontal"
                         android:layout_marginTop="8dp">
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
+                            android:layout_weight="2"
                             android:text="Min duration"
                             android:textStyle="bold"
                             android:textSize="14sp"
-                            android:paddingRight="20dp"
-                            android:textAlignment="center"/>
+                            android:textAlignment="viewStart"/>
                         <EditText
                             android:id="@+id/minHours"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:inputType="number"
-                            android:hint="@string/h"/>
+                            android:hint="@string/h"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:textSize="14sp"
+                            android:textAlignment="center"/>
 
                         <EditText
                             android:id="@+id/minMinutes"
@@ -131,7 +144,11 @@
                             android:layout_weight="1"
                             android:inputType="number"
                             android:layout_height="match_parent"
-                            android:hint="@string/min"/>
+                            android:hint="@string/min"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:textSize="14sp"
+                            android:textAlignment="center"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -140,20 +157,24 @@
                         android:orientation="horizontal"
                         android:layout_marginTop="8dp">
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="match_parent"
+                            android:layout_weight="2"
                             android:text="Max duration"
                             android:textStyle="bold"
                             android:textSize="14sp"
-                            android:paddingRight="20dp"
-                            android:textAlignment="center"/>
+                            android:textAlignment="viewStart"/>
                         <EditText
                             android:id="@+id/maxHours"
                             android:layout_width="0dp"
                             android:layout_weight="1"
                             android:inputType="number"
                             android:hint="@string/h"
-                            android:layout_height="match_parent"/>
+                            android:layout_height="match_parent"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:textSize="14sp"
+                            android:textAlignment="center"/>
 
                         <EditText
                             android:id="@+id/maxMinutes"
@@ -161,7 +182,11 @@
                             android:layout_weight="1"
                             android:inputType="number"
                             android:layout_height="match_parent"
-                            android:hint="@string/min"/>
+                            android:hint="@string/min"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:textSize="14sp"
+                            android:textAlignment="center"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
