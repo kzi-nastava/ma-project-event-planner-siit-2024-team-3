@@ -43,6 +43,9 @@
     <string name="login_failed">"Login failed"</string>
     <string name="title_activity_registration">RegistrationActivity</string>
     <string name="events_near"> Events near </string>
+    <string name="h">h</string>
+    <string name="min">min</string>
+    <string name="create_service">Create service</string>
     <string name="create_product">Create product</string>
     <string name="place">
         Novi Sad, Serbia
