@@ -49,7 +49,8 @@
 
     <string name="action_register">Register</string>
     <string name="action_login">Login</string>
-
+    <string name="h">h</string>
+    <string name="min">min</string>
     <string name="action_next">Next</string>
 
     <string name="action_back">Back</string>
@@ -121,5 +122,10 @@
         <item>Category 3</item>
         <item>Category 4</item>
     </string-array>
-
+    <string-array name="event_types">
+        <item>Event Type 1</item>
+        <item>Event Type 2</item>
+        <item>Event Type 3</item>
+        <item>Event Type 4</item>
+    </string-array>
 </resources>
