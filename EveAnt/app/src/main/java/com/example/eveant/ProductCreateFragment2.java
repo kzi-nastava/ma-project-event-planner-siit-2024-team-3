@@ -1,5 +1,6 @@
 package com.example.eveant;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,10 +12,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.ToggleButton;
 
-
 public class ProductCreateFragment2 extends Fragment {
+
+    private LinearLayout layoutDuration;
+    private LinearLayout layoutRange;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -22,7 +27,8 @@ public class ProductCreateFragment2 extends Fragment {
 
         // Dugme za čuvanje podataka
         view.findViewById(R.id.save_button).setOnClickListener(v -> {
-            // Implementiraj logiku za čuvanje podataka
+            Intent intent = new Intent(requireActivity(), ServicesViewActivity.class);
+            startActivity(intent);
         });
 
         view.findViewById(R.id.previous_button).setOnClickListener(v -> {
@@ -32,28 +38,43 @@ public class ProductCreateFragment2 extends Fragment {
         ToggleButton manualButton = view.findViewById(R.id.manualButton);
         ToggleButton automaticButton = view.findViewById(R.id.automaticButton);
 
-        manualButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    automaticButton.setChecked(false);
-                    manualButton.setTextColor(ContextCompat.getColor(getContext(),R.color.white));
-                    automaticButton.setTextColor(ContextCompat.getColor(getContext(),R.color.black));
-                }
+        manualButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                automaticButton.setChecked(false);
+                manualButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.white));
+                automaticButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black));
             }
         });
 
-        automaticButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    manualButton.setChecked(false);
-                    manualButton.setTextColor(ContextCompat.getColor(getContext(),R.color.black));
-                    automaticButton.setTextColor(ContextCompat.getColor(getContext(),R.color.white));
-                }
+        automaticButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                manualButton.setChecked(false);
+                manualButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.black));
+                automaticButton.setTextColor(ContextCompat.getColor(requireContext(), R.color.white));
             }
+        });
+
+        // Inicijalizacija layout-ova
+        layoutDuration = view.findViewById(R.id.layoutDuration);
+        layoutRange = view.findViewById(R.id.layoutRange);
+
+        // Postavljanje klik listener-a
+        layoutDuration.setOnClickListener(v -> {
+            resetSelections();
+            layoutDuration.setBackgroundResource(R.drawable.background_selected);
+        });
+
+        layoutRange.setOnClickListener(v -> {
+            resetSelections();
+            layoutRange.setBackgroundResource(R.drawable.background_selected);
         });
 
         return view;
+    }
+
+    // Ispravno definisana metoda za resetovanje selekcije
+    private void resetSelections() {
+        layoutDuration.setBackgroundResource(R.drawable.background_unselected);
+        layoutRange.setBackgroundResource(R.drawable.background_unselected);
     }
 }

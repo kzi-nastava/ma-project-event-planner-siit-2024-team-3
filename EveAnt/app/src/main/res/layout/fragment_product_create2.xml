@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/poppins_extrabold"
-                android:text="@string/create_product"
+                android:text="@string/create_service"
                 android:textAlignment="center"
                 android:textSize="30sp"
                 android:textColor="@color/black"/>
@@ -38,10 +38,162 @@
                 <Button
                     android:id="@+id/previous_button"
                     android:layout_width="wrap_content"
+                    android:background="@drawable/rounded_corners_8599e0"
+                    android:textColor="@color/white"
                     android:layout_height="wrap_content"
                     android:text="Previous" />
             </LinearLayout>
+            <!--trajanjee-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/rounded_background_gray"
+                >
 
+                <!-- Klikabilan deo za Duration -->
+                <LinearLayout
+                    android:id="@+id/layoutDuration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_unselected"
+                    android:orientation="vertical"
+                    android:padding="8dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="8dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2"
+                            android:text="Duration"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:textAlignment="viewStart"/>
+                        <EditText
+                            android:id="@+id/durationHours"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:inputType="number"
+                            android:hint="@string/h"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:textSize="14sp"
+                            android:textAlignment="center"/>
+
+
+                        <EditText
+                            android:id="@+id/durationMinutes"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:inputType="number"
+                            android:hint="@string/min"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:textSize="14sp"
+                            android:textAlignment="center"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Klikabilan deo za Range -->
+                <LinearLayout
+                    android:id="@+id/layoutRange"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_unselected"
+                    android:orientation="vertical"
+                    android:padding="8dp"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="8dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2"
+                            android:text="Min duration"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:textAlignment="viewStart"/>
+                        <EditText
+                            android:id="@+id/minHours"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:inputType="number"
+                            android:hint="@string/h"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:textSize="14sp"
+                            android:textAlignment="center"/>
+
+                        <EditText
+                            android:id="@+id/minMinutes"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:inputType="number"
+                            android:layout_height="match_parent"
+                            android:hint="@string/min"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:textSize="14sp"
+                            android:textAlignment="center"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="8dp">
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2"
+                            android:text="Max duration"
+                            android:textStyle="bold"
+                            android:textSize="14sp"
+                            android:textAlignment="viewStart"/>
+                        <EditText
+                            android:id="@+id/maxHours"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:inputType="number"
+                            android:hint="@string/h"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:textSize="14sp"
+                            android:textAlignment="center"/>
+
+                        <EditText
+                            android:id="@+id/maxMinutes"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:inputType="number"
+                            android:layout_height="match_parent"
+                            android:hint="@string/min"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:textSize="14sp"
+                            android:textAlignment="center"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!--kraj trajanja-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -140,6 +292,8 @@
                     android:id="@+id/photos_button"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:background="@drawable/rounded_corners_8599e0"
+                    android:textColor="@color/white"
                     android:text="@string/photos"/>
             </LinearLayout>
 
@@ -153,6 +307,8 @@
                     android:id="@+id/save_button"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@drawable/rounded_corners_8599e0"
+                    android:textColor="@color/white"
                     android:text="Save"/>
             </LinearLayout>
 
@@ -175,5 +331,3 @@
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
