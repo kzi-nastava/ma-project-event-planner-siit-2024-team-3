@@ -1,5 +1,7 @@
 package com.example.eveant;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -15,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 import android.widget.AdapterView;
 
@@ -78,7 +81,8 @@ public class ProductCreateFragment1 extends Fragment {
         view.findViewById(R.id.next_button).setOnClickListener(v -> {
             ((ProductCreateActivity) requireActivity()).replaceFragment(new ProductCreateFragment2());
         });
-        /*Spinner categorySpinner = view.findViewById(R.id.category_spinner);
+
+        Spinner categorySpinner = view.findViewById(R.id.category_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.categories, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -93,7 +97,7 @@ public class ProductCreateFragment1 extends Fragment {
 
                 // Make "Select Category" disappear after selection
                 if (position != 0) {  // Position 0 is assumed to be "Select Category"
-                    categorySpinner.setPrompt("Category Selected");
+                    categorySpinner.setPrompt("Select category");
                 }
             }
 
@@ -101,8 +105,54 @@ public class ProductCreateFragment1 extends Fragment {
             public void onNothingSelected(AdapterView<?> parentView) {
                 // Optionally handle this case if nothing is selected
             }
-        });*/
+        });
+
+        Button buttonShowCheckboxes=view.findViewById(R.id.buttonShowCheckboxes);
+        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getContext(),
+                R.array.event_types, android.R.layout.simple_spinner_item);
+        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        buttonShowCheckboxes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCheckboxDialog();
+            }
+        });
 
         return view;
+    }
+    private void showCheckboxDialog() {
+        // Kreiranje CheckBox-ova
+        final String[] events = {"Event 1", "Event 2", "Event 3", "Event 4"};
+        boolean[] checkedItems = {false, false, false, false}; // Početno stanje checkbox-ova
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Select Events");
+
+        // Postavljanje checkbox-a u dijalog
+        builder.setMultiChoiceItems(events, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                // Možeš obraditi klikove na checkbox-ove ovde ako je potrebno
+            }
+        });
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Prikazivanje selektovanih događaja
+                StringBuilder selectedEvents = new StringBuilder();
+                for (int i = 0; i < checkedItems.length; i++) {
+                    if (checkedItems[i]) {
+                        selectedEvents.append(events[i]).append("\n");
+                    }
+                }
+                Toast.makeText(getContext(), "Selected Events:\n" + selectedEvents.toString(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", null);
+
+        builder.create().show();
     }
 }

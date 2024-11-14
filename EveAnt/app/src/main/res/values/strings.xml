@@ -82,10 +82,16 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string-array name="categories">
+        <item>Select category</item>
         <item>Category 1</item>
         <item>Category 2</item>
         <item>Category 3</item>
         <item>Category 4</item>
     </string-array>
-
+    <string-array name="event_types">
+        <item>Event Type 1</item>
+        <item>Event Type 2</item>
+        <item>Event Type 3</item>
+        <item>Event Type 4</item>
+    </string-array>
 </resources>

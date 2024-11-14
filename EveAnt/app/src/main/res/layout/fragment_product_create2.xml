@@ -38,6 +38,8 @@
                 <Button
                     android:id="@+id/previous_button"
                     android:layout_width="wrap_content"
+                    android:background="@drawable/rounded_corners_8599e0"
+                    android:textColor="@color/white"
                     android:layout_height="wrap_content"
                     android:text="Previous" />
             </LinearLayout>
@@ -290,6 +292,8 @@
                     android:id="@+id/photos_button"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:background="@drawable/rounded_corners_8599e0"
+                    android:textColor="@color/white"
                     android:text="@string/photos"/>
             </LinearLayout>
 
@@ -303,6 +307,8 @@
                     android:id="@+id/save_button"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@drawable/rounded_corners_8599e0"
+                    android:textColor="@color/white"
                     android:text="Save"/>
             </LinearLayout>
 
