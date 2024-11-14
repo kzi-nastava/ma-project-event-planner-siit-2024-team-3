@@ -17,12 +17,37 @@
     <string name="action_register">Register</string>
     <string name="action_login">Login</string>
     <string name="action_sign_in_short">Sign in</string>
+    <string name="prompt_visible">Visible</string>
+    <string name="prompt_hidden">Hidden</string>
+    <string name="prompt_available">Available</string>
+    <string name="prompt_unavailable">Unavailable</string>
+    <string name="save">Save</string>
+    <string name="prompt_manual">Manual</string>
+    <string name="prompt_automatic">Automatic</string>
+    <string name="prompt_price">Set price</string>
+    <string name="prompt_description">Description </string>
+    <string name="next">Next</string>
+    <string name="prompt_discount">Discount</string>
+    <string name="photos">Upload photos +</string>
+    <string name="conformation"> Reservation confirmation? </string>
+    <string name="prompt_cancellation_period">Cancellation period</string>
+    <string name="prompt_reservation_deadline">Reservation deadline</string>
+    <string name="myServices">My services</string>
+    <string name="realPrice">20e</string>
+    <string name="search_service_string">Search your services...</string>
+    <string name="prompt_specifications">Specifications</string>
+    <string name="reservation_type">How do you want the reservation confirmation?</string>
     <string name="welcome">"Welcome !"</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="title_activity_registration">RegistrationActivity</string>
     <string name="events_near"> Events near </string>
+    <string name="h">h</string>
+    <string name="min">min</string>
+    <string name="create_service">Create service</string>
+    <string name="create_product">Create product</string>
+
     <string name="place">
         Novi Sad, Serbia
     </string>
@@ -58,10 +83,16 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string-array name="categories">
+        <item>Select category</item>
         <item>Category 1</item>
         <item>Category 2</item>
         <item>Category 3</item>
         <item>Category 4</item>
     </string-array>
-
+    <string-array name="event_types">
+        <item>Event Type 1</item>
+        <item>Event Type 2</item>
+        <item>Event Type 3</item>
+        <item>Event Type 4</item>
+    </string-array>
 </resources>
