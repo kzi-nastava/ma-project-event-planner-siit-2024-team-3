@@ -8,6 +8,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.FragmentTransaction;
+
+import android.util.Log;
 
 import android.view.View;
 import android.widget.ToggleButton;
@@ -17,44 +20,53 @@ import android.content.Intent;
 
 public class RegistrationActivity extends AppCompatActivity {
 
+    private static final String TAG = "RegistrationActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_registration);
+        if (savedInstanceState == null) {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.container, new UsernamePasswordFragment());
+            transaction.commit();
+        }
+    }
 
-        ToggleButton organizerButton = findViewById(R.id.organizerButton);
-        ToggleButton providerButton = findViewById(R.id.providerButton);
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.d(TAG, "onStart: Activity becoming visible to user");
+    }
 
-        organizerButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    providerButton.setChecked(false);
-                    organizerButton.setTextColor(getColor(R.color.white));
-                    providerButton.setTextColor(getColor(R.color.black));
-                }
-            }
-        });
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume: Activity now in foreground and interactive");
+    }
 
-        providerButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    organizerButton.setChecked(false);
-                    organizerButton.setTextColor(getColor(R.color.black));
-                    providerButton.setTextColor(getColor(R.color.white));
-                }
-            }
-        });
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause: Activity partially obscured, releasing temporary resources");
+    }
 
-        Button navigateLoginButton = findViewById(R.id.goToLogin);
-        navigateLoginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-                Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
-                startActivity(intent);
-            }
-        });
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop: Activity no longer visible to user, releasing resources");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d(TAG, "onRestart: Activity is restarting, performing refresh tasks if needed");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: Activity is being destroyed, performing final cleanup");
     }
 }
