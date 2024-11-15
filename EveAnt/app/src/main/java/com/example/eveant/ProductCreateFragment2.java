@@ -32,7 +32,7 @@ public class ProductCreateFragment2 extends Fragment {
         });
 
         view.findViewById(R.id.previous_button).setOnClickListener(v -> {
-            ((ProductCreateActivity) requireActivity()).replaceFragment(new ProductCreateFragment1());
+            ((ProductCreateActivity) requireActivity()).replaceFragment(new ProductCreateFragment3());
         });
 
         ToggleButton manualButton = view.findViewById(R.id.manualButton);
