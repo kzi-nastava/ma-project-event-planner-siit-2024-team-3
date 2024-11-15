@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:background="@android:color/white">
+
+    <!-- Kategorija -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Kategorija"
+        android:textSize="16sp"
+        android:paddingVertical="8dp" />
+
+    <Spinner
+        android:id="@+id/category_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!-- Tip eventa -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tip Eventa"
+        android:textSize="16sp"
+        android:paddingVertical="8dp" />
+
+    <Spinner
+        android:id="@+id/event_type_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!-- Cena Range Slider -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cena"
+        android:textSize="16sp"
+        android:paddingVertical="8dp" />
+
+    <SeekBar
+        android:id="@+id/price_seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:max="500" />
+
+    <!-- Dostupnost Checkbox -->
+    <CheckBox
+        android:id="@+id/availability_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Samo dostupni servisi" />
+
+    <!-- Dugme za primenu filtera -->
+    <Button
+        android:id="@+id/apply_filters_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Primeni filtere" />
+
+</LinearLayout>
