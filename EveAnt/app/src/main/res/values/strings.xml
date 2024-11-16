@@ -121,6 +121,8 @@
     <string name="price">Price</string>
     <string name="only_available">Show only available services</string>
     <string name="chose_category">Choose categories</string>
+    <string name="max_price">500 €</string>
+    <string name="min_price">0 €</string>
 
     <string-array name="categories">
         <item>Category 1</item>

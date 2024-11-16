@@ -88,9 +88,10 @@
                 android:id="@+id/min_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="0 €"
+                android:text="@string/min_price"
                 android:textSize="14sp"
                 android:textColor="#8599e0"
+                android:layout_weight="1"
                 android:fontFamily="@font/poppins_regular"/>
 
             <!-- Maksimalna cena -->
@@ -98,12 +99,13 @@
                 android:id="@+id/max_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="500 €"
+                android:text="@string/max_price"
                 android:textSize="14sp"
                 android:textColor="#8599e0"
+                android:layout_gravity="end"
                 android:fontFamily="@font/poppins_regular"/>
-
         </LinearLayout>
+
 
 
         <!-- Dostupnost Checkbox sa bojom -->
