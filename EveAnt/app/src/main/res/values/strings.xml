@@ -115,6 +115,12 @@
     <string name="search">Search...</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="apply_filters">Apply filters</string>
+    <string name="search_category">Search category</string>
+    <string name="event_type">Choose event types</string>
+    <string name="price">Price</string>
+    <string name="only_available">Show only available services</string>
+    <string name="chose_category">Choose categories</string>
 
     <string-array name="categories">
         <item>Category 1</item>

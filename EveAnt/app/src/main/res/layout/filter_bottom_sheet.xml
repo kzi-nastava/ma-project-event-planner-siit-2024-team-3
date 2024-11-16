@@ -4,60 +4,129 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="16dp"
-    android:background="@android:color/white">
+    android:background="@drawable/rounded_corners_white"
+    android:clipToPadding="false">
 
-    <!-- Kategorija -->
-    <TextView
+    <!-- Kartica sa zaobljenim uglovima -->
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Kategorija"
-        android:textSize="16sp"
-        android:paddingVertical="8dp" />
+        android:background="@drawable/rounded_corners_white"
+        android:padding="16dp"
+        android:layout_marginVertical="8dp">
 
-    <Spinner
-        android:id="@+id/category_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
-    <!-- Tip eventa -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Tip Eventa"
-        android:textSize="16sp"
-        android:paddingVertical="8dp" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <Spinner
-        android:id="@+id/event_type_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            <!-- Kategorije dinamički CheckBox -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/chose_category"
+                android:textSize="16sp"
+                android:paddingVertical="8dp"
+                android:textColor="#8599e0" />
 
-    <!-- Cena Range Slider -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Cena"
-        android:textSize="16sp"
-        android:paddingVertical="8dp" />
+            <LinearLayout
+                android:id="@+id/category_container"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-    <SeekBar
-        android:id="@+id/price_seekbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:max="500" />
+            <!-- Tip Eventa dinamički CheckBox -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/event_type"
+                android:textSize="16sp"
+                android:paddingVertical="8dp"
+                android:textColor="#8599e0"
+                android:layout_marginTop="10dp"/>
 
-    <!-- Dostupnost Checkbox -->
-    <CheckBox
-        android:id="@+id/availability_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Samo dostupni servisi" />
+            <LinearLayout
+                android:id="@+id/event_type_container"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
-    <!-- Dugme za primenu filtera -->
-    <Button
-        android:id="@+id/apply_filters_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Primeni filtere" />
+        <!-- Cena Range Slider -->
+        <TextView
+            android:id="@+id/current_price_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/price"
+            android:textSize="16sp"
+            android:paddingVertical="8dp"
+            android:textColor="#8599e0"
+            android:fontFamily="@font/poppins_regular"
+            android:layout_marginTop="10dp"/>
+
+
+        <SeekBar
+            android:id="@+id/price_seekbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="500"
+            android:min="0"
+            android:progress="0"
+            android:progressTint="@color/purple" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="4dp">
+
+            <!-- Minimalna cena -->
+            <TextView
+                android:id="@+id/min_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0 €"
+                android:textSize="14sp"
+                android:textColor="#8599e0"
+                android:fontFamily="@font/poppins_regular"/>
+
+            <!-- Maksimalna cena -->
+            <TextView
+                android:id="@+id/max_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="500 €"
+                android:textSize="14sp"
+                android:textColor="#8599e0"
+                android:fontFamily="@font/poppins_regular"/>
+
+        </LinearLayout>
+
+
+        <!-- Dostupnost Checkbox sa bojom -->
+        <CheckBox
+            android:id="@+id/availability_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/only_available"
+            android:buttonTint="#8599e0"
+            android:textColor="#555555"
+            android:paddingVertical="8dp"
+            android:layout_marginTop="10dp"/>
+
+        <!-- Dugme za primenu filtera -->
+        <Button
+            android:id="@+id/apply_filters_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/apply_filters"
+            android:background="@drawable/rounded_corners_8599e0"
+            android:textColor="@color/white"
+            android:fontFamily="@font/poppins_bold"
+            android:layout_marginTop="16dp" />
+    </LinearLayout>
 
 </LinearLayout>

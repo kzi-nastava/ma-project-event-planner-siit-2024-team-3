@@ -1,22 +1,33 @@
 package com.example.eveant;
 
+
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.eveant.R;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServicesViewActivity extends AppCompatActivity {
 
@@ -56,7 +67,25 @@ public class ServicesViewActivity extends AppCompatActivity {
                 showDeleteDialog();
             }
         });
+/*
+        // Dropdown meni - Kategorija
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ServicesViewActivity.this);
+        View bottomSheetView = LayoutInflater.from(getApplicationContext())
+                .inflate(R.layout.filter_bottom_sheet, findViewById(android.R.id.content), false);
+
+        // Povezivanje elemenata
+        Spinner categorySpinner = bottomSheetView.findViewById(R.id.category_spinner);
+        String[] categories = {"Party", "Wedding", "Conference", "Birthday"};
+        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, categories);
+        categorySpinner.setAdapter(categoryAdapter);
+
+        // Dropdown meni - Tip Eventa
+        Spinner eventTypeSpinner = bottomSheetDialog.findViewById(R.id.event_type_spiner);
+        String[] eventTypes = {"Standard", "VIP", "Premium"};
+        ArrayAdapter<String> eventTypeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, eventTypes);
+        eventTypeSpinner.setAdapter(eventTypeAdapter);*/
     }
+
 
     private void showFilterBottomSheet() {
         // Kreiramo BottomSheetDialog
@@ -64,11 +93,59 @@ public class ServicesViewActivity extends AppCompatActivity {
         View bottomSheetView = LayoutInflater.from(getApplicationContext())
                 .inflate(R.layout.filter_bottom_sheet, findViewById(android.R.id.content), false);
 
-        // Povezivanje elemenata
-        Spinner categorySpinner = bottomSheetView.findViewById(R.id.category_spinner);
         SeekBar priceSeekBar = bottomSheetView.findViewById(R.id.price_seekbar);
+        TextView currentPriceText = bottomSheetView.findViewById(R.id.current_price_text);
         CheckBox availabilityCheckbox = bottomSheetView.findViewById(R.id.availability_checkbox);
         Button applyFiltersButton = bottomSheetView.findViewById(R.id.apply_filters_button);
+
+        // Nizovi sa podacima (može se zameniti podacima iz baze)
+        String[] categories = {"Party", "Wedding", "Conference", "Birthday"};
+        String[] eventTypes = {"Standard", "VIP", "Premium"};
+
+        // Kontejneri za dinamičke CheckBox-ove
+        LinearLayout categoryContainer = bottomSheetView.findViewById(R.id.category_container);
+        LinearLayout eventTypeContainer = bottomSheetView.findViewById(R.id.event_type_container);
+
+        // Dinamičko dodavanje CheckBox-ova za kategorije
+        List<CheckBox> categoryCheckBoxes = new ArrayList<>();
+        for (String category : categories) {
+            CheckBox checkBox = new CheckBox(this);
+            checkBox.setText(category);
+            checkBox.setTextColor(getResources().getColor(R.color.black));
+            checkBox.setButtonTintList(getResources().getColorStateList(R.color.purple));
+            categoryContainer.addView(checkBox);
+            categoryCheckBoxes.add(checkBox);
+        }
+
+        // Dinamičko dodavanje CheckBox-ova za tipove eventa
+        List<CheckBox> eventTypeCheckBoxes = new ArrayList<>();
+        for (String eventType : eventTypes) {
+            CheckBox checkBox = new CheckBox(this);
+            checkBox.setText(eventType);
+            checkBox.setTextColor(getResources().getColor(R.color.black));
+            checkBox.setButtonTintList(getResources().getColorStateList(R.color.purple));
+            eventTypeContainer.addView(checkBox);
+            eventTypeCheckBoxes.add(checkBox);
+        }
+
+        // Listener za SeekBar promenu vrednosti
+        priceSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                // Prikaz trenutne cene
+                currentPriceText.setText("Price: " + progress + "€");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // Opcionalno: dodaj logiku ako je potrebna prilikom početka dodira
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // Opcionalno: dodaj logiku ako je potrebna prilikom završetka dodira
+            }
+        });
 
         // Postavljanje dugmeta za primenu filtera
         applyFiltersButton.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +154,7 @@ public class ServicesViewActivity extends AppCompatActivity {
                 int selectedPrice = priceSeekBar.getProgress();
                 boolean isAvailableOnly = availabilityCheckbox.isChecked();
 
-                // Prikazivanje rezultata filtriranja (primer)
+                // Prikazivanje rezultata filtriranja
                 Toast.makeText(ServicesViewActivity.this,
                         "Filter: Cena do " + selectedPrice + "€, Dostupnost: " + isAvailableOnly,
                         Toast.LENGTH_SHORT).show();
@@ -91,9 +168,13 @@ public class ServicesViewActivity extends AppCompatActivity {
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.show();
     }
+
     private void showDeleteDialog() {
         // Kreiraj AlertDialog sa prilagođenim stilom i layout-om
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CustomDialog);
+        AlertDialog.Builder builder = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            builder = new AlertDialog.Builder(this, R.style.CustomDialog);
+        }
         View dialogView = LayoutInflater.from(this).inflate(R.layout.delete_dialog_box, null);
         builder.setView(dialogView);
 
