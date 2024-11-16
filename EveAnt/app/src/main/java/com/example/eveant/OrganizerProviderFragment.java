@@ -36,7 +36,7 @@ public class OrganizerProviderFragment extends Fragment {
                     goToHome.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(getActivity(), HomeActivity.class);
+                            Intent intent = new Intent(getActivity(), ServicesViewActivity.class);
                             startActivity(intent);
                         }
                     });
