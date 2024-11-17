@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -32,13 +38,6 @@
                 android:textAppearance="@style/place"
                 android:textStyle="bold" />
 
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="12dp"
-                android:layout_marginTop="35dp"
-                android:src="@drawable/profile_picture" />
 
             <!-- Search bar -->
             <RelativeLayout
@@ -82,12 +81,15 @@
                     android:layout_centerVertical="true"
                     android:background="@drawable/round_grey_button">
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:src="@drawable/filter_icon"
-                        android:scaleType="fitCenter"
-                        android:layout_centerInParent="true"/>
+
+                        <ImageView
+                            android:id="@+id/filter_icon"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/filter_icon"
+                            android:scaleType="fitCenter"
+                            android:layout_centerInParent="true"/>
+
                 </RelativeLayout>
             </RelativeLayout>
 
@@ -110,13 +112,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp">
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/white">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:background="@drawable/rounded_corners_white">
 
                     <!-- Naziv i Kategorija -->
                     <LinearLayout
@@ -152,7 +155,7 @@
                     <FrameLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/rounded_corners_image">
+                        android:background="@color/white">
 
                         <!-- Slika sa zaobljenim uglovima -->
 
@@ -228,10 +231,299 @@
                     </FrameLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-        </LinearLayout>
 
+        </LinearLayout>
+        <!--kartica-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="10dp"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="20dp"
+            android:background="@drawable/rounded_background">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/rounded_corners_white">
+
+                    <!-- Naziv i Kategorija -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="8dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/serviceName1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_bold"
+                            android:text="Service Name"
+                            android:textColor="#000000"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:paddingRight="20dp"/>
+
+                        <TextView
+                            android:id="@+id/serviceCategory1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Category"
+                            android:paddingRight="20dp"
+                            android:textColor="@color/light_purple"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/poppins_medium"/>
+                    </LinearLayout>
+
+                    <!-- FrameLayout za sliku i donju transparentnu traku -->
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white">
+
+                        <!-- Slika sa zaobljenim uglovima -->
+
+                        <!-- Transparentna traka na dnu slike -->
+                        <ImageView
+                            android:id="@+id/serviceImage1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/rounded_corners_image"
+                            android:clipToOutline="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/dragi_bravo" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_gravity="bottom"
+                            android:background="@drawable/rounded_corners_image"
+                            android:paddingLeft="30dp"
+                            android:paddingRight="30dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/servicePrice1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/realPrice"
+                                android:textColor="#FFFFFF"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/serviceAvailability1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="4"
+                                android:text="@string/prompt_available"
+                                android:textColor="#FFFFFF"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <!-- Dugme za izmenu -->
+                            <ImageButton
+                                android:id="@+id/editServiceButton1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:src="@drawable/ic_edit" />
+
+                            <!-- Dugme za brisanje -->
+                            <ImageButton
+                                android:id="@+id/deleteServiceButton1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:src="@drawable/ic_delete" />
+
+                            <!-- Dugme za pogledaj više -->
+                            <ImageButton
+                                android:id="@+id/viewMoreButton1"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:src="@drawable/ic_arrow" />
+                        </LinearLayout>
+
+
+                    </FrameLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+        <!--kartica-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginHorizontal="10dp"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="20dp"
+            android:background="@drawable/rounded_background">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/rounded_corners_white">
+
+                    <!-- Naziv i Kategorija -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="8dp"
+                        android:gravity="center_vertical">
+
+                        <TextView
+                            android:id="@+id/serviceName2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/poppins_bold"
+                            android:text="Service Name"
+                            android:textColor="#000000"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:paddingRight="20dp"/>
+
+                        <TextView
+                            android:id="@+id/serviceCategory2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Category"
+                            android:paddingRight="20dp"
+                            android:textColor="@color/light_purple"
+                            android:textSize="14sp"
+                            android:fontFamily="@font/poppins_medium"/>
+                    </LinearLayout>
+
+                    <!-- FrameLayout za sliku i donju transparentnu traku -->
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white">
+
+                        <!-- Slika sa zaobljenim uglovima -->
+
+                        <!-- Transparentna traka na dnu slike -->
+                        <ImageView
+                            android:id="@+id/serviceImage2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/rounded_corners_image"
+                            android:clipToOutline="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/dragi_bravo" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_gravity="bottom"
+                            android:background="@drawable/rounded_corners_image"
+                            android:paddingLeft="30dp"
+                            android:paddingRight="30dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/servicePrice2"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:text="@string/realPrice"
+                                android:textColor="#FFFFFF"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/serviceAvailability2"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="4"
+                                android:text="@string/prompt_available"
+                                android:textColor="#FFFFFF"
+                                android:textSize="14sp"
+                                android:textStyle="bold" />
+
+                            <!-- Dugme za izmenu -->
+                            <ImageButton
+                                android:id="@+id/editServiceButton2"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:src="@drawable/ic_edit" />
+
+                            <!-- Dugme za brisanje -->
+                            <ImageButton
+                                android:id="@+id/deleteServiceButton2"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:src="@drawable/ic_delete" />
+
+                            <!-- Dugme za pogledaj više -->
+                            <ImageButton
+                                android:id="@+id/viewMoreButton2"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:src="@drawable/ic_arrow" />
+                        </LinearLayout>
+
+
+                    </FrameLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
 
     </LinearLayout>
 </ScrollView>
-
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_service_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/ic_add_foreground"
+        android:backgroundTint="@color/light_purple"
+        android:tint="@color/white"
+        android:contentDescription="@string/add_service"
+        app:elevation="6dp"
+        app:fabSize="normal"/>
+</FrameLayout>
 
