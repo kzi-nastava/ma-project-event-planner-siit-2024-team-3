@@ -88,8 +88,8 @@
     <string name="search_string">
         Search...
     </string>
-    <string name="top_5_events">
-            Top 5 events
+    <string name="popular_services">
+            Popular services
     </string>
     <string name="dragi_bravo">
             Dragi Bravo maskenbal
@@ -103,14 +103,18 @@
     <string name="date_of_event">
                     26\nOCT
     </string>
-    <string name="top_5_offers">
-            Top 5 offers
+    <string name="popular_products">
+            Popular products
     </string>
     <string name="photographText">
-                Fotograf
+                Photograph
     </string>
     <string name="decorationText">
-                Dekoracija
+                Decoration
+    </string>
+    <string name="search">Search...</string>flowerText
+    <string name="flowerText">
+                Flowers
     </string>
     <string name="search">Search...</string>
     <!-- TODO: Remove or change this placeholder text -->
