@@ -113,7 +113,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private void resetProgress(TextView[] ellipses, View[] lines) {
         for (TextView ellipse : ellipses) {
             ellipse.setBackgroundResource(0);
-            ellipse.setTextColor(Color.BLACK);
+            ellipse.setTextColor(Color.GRAY);
         }
         for (View line : lines) {
             line.setBackgroundResource(R.drawable.line_black);
