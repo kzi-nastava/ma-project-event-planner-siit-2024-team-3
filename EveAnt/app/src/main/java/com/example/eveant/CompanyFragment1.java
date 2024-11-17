@@ -14,34 +14,46 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class CompanyFragment1 extends Fragment {
-    private Button goToAreYou, continueToCompany2;
+    private Button goToNext, goToBack;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_company_1, container, false);
-        goToAreYou = view.findViewById(R.id.goToAreYou);
-        continueToCompany2 = view.findViewById(R.id.continueToCompany2);
+        goToBack = getActivity().findViewById(R.id.goToBack);
+        goToNext = getActivity().findViewById(R.id.goToNext);
 
-        goToAreYou.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                transaction.replace(R.id.container, new OrganizerProviderFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        });
-        continueToCompany2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                transaction.replace(R.id.container, new CompanyFragment2());
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        });
+        if (goToBack != null) {
+
+            goToBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                    transaction.replace(R.id.container, new OrganizerProviderFragment());
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                    if (requireActivity() instanceof RegistrationActivity) {
+                        ((RegistrationActivity) requireActivity()).updateProgress(4); // Replace '1' with the fragment index
+                    }
+                }
+            });
+        }
+        if (goToNext != null) {
+
+            goToNext.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                    transaction.replace(R.id.container, new CompanyFragment2());
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                    if (requireActivity() instanceof RegistrationActivity) {
+                        ((RegistrationActivity) requireActivity()).updateProgress(6); // Replace '1' with the fragment index
+                    }
+                }
+            });
+        }
 
         return view;
     }

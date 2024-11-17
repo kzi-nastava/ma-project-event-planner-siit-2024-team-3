@@ -16,7 +16,7 @@ import android.widget.EditText;
 public class PersonalInfoFragment extends Fragment {
 
     private EditText name, surname, email, phoneNumber;
-    private Button goToAddress, goToCreateAccount;
+    private Button goToBack, goToNext;
 
     @Nullable
     @Override
@@ -28,27 +28,36 @@ public class PersonalInfoFragment extends Fragment {
         surname = view.findViewById(R.id.surname);
         email = view.findViewById(R.id.email);
         phoneNumber = view.findViewById(R.id.phoneNumber);
-        goToAddress = view.findViewById(R.id.goToAddress);
-        goToCreateAccount = view.findViewById(R.id.goToCreateAccount);
+        goToBack = getActivity().findViewById(R.id.goToBack);
+        goToNext = getActivity().findViewById(R.id.goToNext);
+        if (goToNext != null) {
+            goToNext.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                    transaction.replace(R.id.container, new AddressFragment());
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                    if (requireActivity() instanceof RegistrationActivity) {
 
-        goToAddress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                transaction.replace(R.id.container, new AddressFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        });
-        goToCreateAccount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                transaction.replace(R.id.container, new UsernamePasswordFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        });
+                        ((RegistrationActivity) requireActivity()).updateProgress(3);                    }
+                }
+            });
+        }
+        goToBack.setVisibility(View.VISIBLE);
+        if (goToBack != null) {
+            goToBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                    transaction.replace(R.id.container, new UsernamePasswordFragment());
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                    if (requireActivity() instanceof RegistrationActivity) {
+                        ((RegistrationActivity) requireActivity()).updateProgress(1);                    }
+                }
+            });
+        }
 
         return view;
     }

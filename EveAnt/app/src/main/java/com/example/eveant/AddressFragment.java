@@ -15,41 +15,50 @@ import android.widget.EditText;
 
 public class AddressFragment extends Fragment {
     private EditText country, city, street, postalNumber;
-    private Button goToAreYou, goToYourself;
+    private Button goToBack, goToNext;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_address, container, false);
-
         country = view.findViewById(R.id.country);
         city = view.findViewById(R.id.city);
         street = view.findViewById(R.id.street);
         postalNumber = view.findViewById(R.id.postalNumber);
-        goToAreYou = view.findViewById(R.id.goToAreYou);
-        goToYourself = view.findViewById(R.id.goToYourself);
+        goToBack = getActivity().findViewById(R.id.goToBack);
+        goToNext = getActivity().findViewById(R.id.goToNext);
 
+        if (goToNext != null) {
 
-        goToAreYou.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                transaction.replace(R.id.container, new OrganizerProviderFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        });
-        goToYourself.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                transaction.replace(R.id.container, new PersonalInfoFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        });
+            goToNext.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                    transaction.replace(R.id.container, new OrganizerProviderFragment());
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                    if (requireActivity() instanceof RegistrationActivity) {
+                        ((RegistrationActivity) requireActivity()).updateProgress(4); // Replace '1' with the fragment index
+                    }
+                }
+            });
+        }
+        if (goToBack != null) {
 
+            goToBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                    transaction.replace(R.id.container, new PersonalInfoFragment());
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                    if (requireActivity() instanceof RegistrationActivity) {
+                        ((RegistrationActivity) requireActivity()).updateProgress(2);
+                    }
+                }
+            });
+        }
         return view;
     }
 }
