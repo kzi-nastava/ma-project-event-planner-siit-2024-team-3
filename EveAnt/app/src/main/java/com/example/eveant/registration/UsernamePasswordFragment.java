@@ -9,8 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
 
 import com.example.eveant.LoginActivity;
+import com.example.eveant.MainActivity;
 import com.example.eveant.R;
 
 public class UsernamePasswordFragment extends Fragment {
@@ -52,7 +54,8 @@ public class UsernamePasswordFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);            }
+                startActivity(intent);
+            }
         });
     }
 }

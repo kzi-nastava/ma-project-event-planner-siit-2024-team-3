@@ -512,18 +512,5 @@
 
         </LinearLayout>
     </ScrollView>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add_service_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginBottom="20dp"
-        android:layout_marginEnd="20dp"
-        android:src="@drawable/ic_add_foreground"
-        android:backgroundTint="@color/light_purple"
-        android:tint="@color/white"
-        android:contentDescription="@string/add_service"
-        app:elevation="6dp"
-        app:fabSize="normal"/>
 </FrameLayout>
 

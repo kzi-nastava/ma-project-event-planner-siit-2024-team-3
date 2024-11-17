@@ -1,6 +1,8 @@
 package com.example.eveant.serviceCreate;
 
+import android.content.Intent;
 import android.os.Bundle;
+import androidx.navigation.NavController;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +16,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ToggleButton;
 
+import com.example.eveant.HomeActivity;
+import com.example.eveant.MainActivity;
 import com.example.eveant.R;
 import com.example.eveant.ServicesViewFragment;
 
@@ -27,16 +31,14 @@ public class ServiceCreateFragment3 extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_service_create3, container, false);
 
-        // Dugme za čuvanje podataka
         view.findViewById(R.id.save_button).setOnClickListener(v -> {
-            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-            transaction.replace(R.id.container, new ServicesViewFragment());
-            transaction.addToBackStack(null);
-            transaction.commit();
+            NavController navController = ((MainActivity) getActivity()).getNavController();
+            navController.navigate(R.id.actionCreateFragment_toViewServices);
         });
 
         view.findViewById(R.id.previous_button).setOnClickListener(v -> {
-            ((ServiceCreateFragment) requireParentFragment()).replaceFragment(new ServiceCreateFragment2());
+            NavController navController = ((MainActivity) getActivity()).getNavController();
+            navController.navigate(R.id.serviceCreateFragment2);
         });
 
         ToggleButton manualButton = view.findViewById(R.id.manualButton);

@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.AdapterView;
 
+import com.example.eveant.MainActivity;
 import com.example.eveant.R;
 
 public class ServiceCreateFragment1 extends Fragment {
@@ -82,7 +84,8 @@ public class ServiceCreateFragment1 extends Fragment {
         });
 
         view.findViewById(R.id.next_button).setOnClickListener(v -> {
-            ((ServiceCreateFragment) requireParentFragment()).replaceFragment(new ServiceCreateFragment2());
+            NavController navController = ((MainActivity) getActivity()).getNavController();
+            navController.navigate(R.id.serviceCreateFragment2);
         });
 
 

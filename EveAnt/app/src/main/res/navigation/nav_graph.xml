@@ -21,11 +21,37 @@
     <fragment
         android:id="@+id/servicesViewFragment"
         android:name="com.example.eveant.ServicesViewFragment"
-        android:label="ServicesViewFragment" />
+        android:label="ServicesViewFragment"/>
+    <fragment
+        android:id="@+id/serviceCreateFragment1"
+        android:name="com.example.eveant.serviceCreate.ServiceCreateFragment1"
+        android:label="ServiceCreateFragment1" />
+    <fragment
+        android:id="@+id/serviceCreateFragment2"
+        android:name="com.example.eveant.serviceCreate.ServiceCreateFragment2"
+        android:label="ServiceCreateFragment2" />
+    <fragment
+        android:id="@+id/serviceCreateFragment3"
+        android:name="com.example.eveant.serviceCreate.ServiceCreateFragment3"
+        android:label="ServiceCreateFragment3" />
     <action
-        android:id="@+id/action_organizer_to_homeFragment"
-        app:destination="@+id/homeFragment"/>
-    <action
-        android:id="@+id/action_provider_to_homeFragment"
-        app:destination="@+id/homeFragment"/>
+        android:id="@+id/actionCreateFragment_toViewServices"
+        app:destination="@+id/servicesViewFragment" />
+    <fragment
+        android:id="@+id/serviceEditFragment"
+        android:name="com.example.eveant.serviceEdit.ServiceEditFragment"
+        android:label="ServiceEditFragment" />
+    <fragment
+        android:id="@+id/serviceEditFragment1"
+        android:name="com.example.eveant.serviceEdit.ServiceEditFragment1"
+        android:label="ServiceEditFragment1" />
+    <fragment
+        android:id="@+id/serviceEditFragment2"
+        android:name="com.example.eveant.serviceEdit.ServiceEditFragment2"
+        android:label="ServiceEditFragment2" />
+    <fragment
+        android:id="@+id/serviceEditFragment3"
+        android:name="com.example.eveant.serviceEdit.ServiceEditFragment3"
+        android:label="ServiceEditFragment3" />
+
 </navigation>

@@ -17,9 +17,11 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
 
 import com.example.eveant.serviceCreate.ServiceCreateFragment;
 import com.example.eveant.serviceEdit.ServiceEditFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -36,6 +38,7 @@ public class ServicesViewFragment extends Fragment {
         // Inflate the fragment layout
         View view = inflater.inflate(R.layout.fragment_services_view, container, false);
 
+
         // Povezivanje dugmeta za filtere
         filterButton = view.findViewById(R.id.filter_button);
 
@@ -51,23 +54,8 @@ public class ServicesViewFragment extends Fragment {
         editServiceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (savedInstanceState == null) {
-                    requireActivity().getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.fragment_container, new ServiceEditFragment())
-                            .commit();
-                }
-            }
-        });
-
-
-        FloatingActionButton add_service_button = view.findViewById(R.id.add_service_button);
-        add_service_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                transaction.replace(R.id.container, new ServiceCreateFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
+                NavController navController = ((MainActivity) getActivity()).getNavController();
+                navController.navigate(R.id.serviceEditFragment);
             }
         });
 
@@ -80,8 +68,10 @@ public class ServicesViewFragment extends Fragment {
             }
         });
 
+
         return view;
     }
+
 
     private void showFilterBottomSheet() {
         // Kreiramo BottomSheetDialog
