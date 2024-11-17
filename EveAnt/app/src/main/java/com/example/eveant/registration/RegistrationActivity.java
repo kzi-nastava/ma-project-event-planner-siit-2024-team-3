@@ -1,23 +1,18 @@
-package com.example.eveant;
+package com.example.eveant.registration;
 
 import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 
 import android.view.View;
 import android.widget.TextView;
-import android.widget.ToggleButton;
-import android.widget.CompoundButton;
-import android.widget.Button;
-import android.content.Intent;
+
+import com.example.eveant.R;
 
 public class RegistrationActivity extends AppCompatActivity {
 

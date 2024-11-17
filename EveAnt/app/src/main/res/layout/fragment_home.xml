@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F0F3FF">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".HomeActivity">
+
+        <!-- Search box background -->
+
+        <RelativeLayout
+            android:id="@+id/home_search_rectangle_layout"
+            android:layout_width="0dp"
+            android:layout_height="177dp"
+            android:background="@drawable/home_search_rectangle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/place"
+                android:layout_marginTop="-30dp"
+                android:layout_marginStart="10dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/current_location_icon" />
+
+                <TextView
+                    android:id="@+id/events_near"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="@string/events_near"
+                    android:textAppearance="@style/events_near"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </LinearLayout>
+            <TextView
+                android:id="@+id/place"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="65dp"
+                android:layout_marginStart="10dp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="@string/place"
+                android:textAppearance="@style/place"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="12dp"
+                android:layout_marginTop="35dp"
+                android:src="@drawable/profile_picture"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </RelativeLayout>
+
+
+        <!-- Search box -->
+
+        <RelativeLayout
+            android:id="@+id/search_box_rectangle_layout"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="13dp"
+            android:layout_marginEnd="13dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="120dp"
+            android:background="@drawable/search_box_rectangle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginBottom="0dp"
+                android:src="@drawable/search_icon" />
+
+            <EditText
+                android:id="@+id/search_"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="40dp"
+                android:background="@color/white"
+                android:fontFamily="@font/poppins_medium"
+                android:hint="@string/search"
+                android:gravity="center_vertical"
+                android:textColorHint="@color/black"
+                android:textAppearance="@style/search_string"
+                android:paddingTop="6dp"
+                android:layout_gravity="center_vertical"
+                />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true">
+                <RelativeLayout
+                    android:id="@+id/filter_button"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="10dp"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/round_grey_button">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/filter_icon"
+                        android:scaleType="fitCenter"
+                        android:layout_centerInParent="true"/>
+                </RelativeLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <!-- Top 5 events -->
+
+        <RelativeLayout
+            android:id="@+id/top_events_layout"
+            android:layout_width="0dp"
+            android:layout_height="325dp"
+            android:background="@drawable/rounded_corners_white"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/home_search_rectangle_layout">
+
+            <TextView
+                android:id="@+id/top_5_event"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="20dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="15dp"
+                android:fontFamily="@font/poppins_regular"
+                android:text="@string/top_5_events"
+                android:textAppearance="@style/top_5_events"
+                android:gravity="top"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true"
+                android:adjustViewBounds="true"
+                android:src="@drawable/dragi_bravo"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="7dp"
+                android:layout_marginEnd="7dp"
+                android:layout_marginBottom="7dp"
+                android:adjustViewBounds="true"
+                android:background="@drawable/blurry_round_rectangle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <TextView
+                    android:id="@+id/dragi_bravo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="20dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/dragi_bravo"
+                    android:fontFamily="@font/poppins_bold"
+                    android:textAppearance="@style/dragi_bravo"
+                    android:gravity="top"
+                    android:textStyle="bold"
+                    />
+
+                <ImageView
+                    android:id="@+id/location_pin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentBottom="true"
+                    android:adjustViewBounds="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginStart="20dp"
+                    android:src="@drawable/location_pin_icon"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <TextView
+                    android:id="@+id/novosadski_sajam"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_toEndOf="@+id/location_pin"
+                    android:gravity="top"
+                    android:text="@string/novosadski_sajam"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textAppearance="@style/novosadski_sajam"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/clock_icon_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_toEndOf="@+id/novosadski_sajam"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/clock_icon"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <TextView
+                    android:id="@+id/time_of_event"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginBottom="11dp"
+                    android:layout_toEndOf="@+id/clock_icon_layout"
+                    android:gravity="top"
+                    android:text="@string/time_of_event"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textAppearance="@style/time_of_event"
+                    app:layout_constraintBottom_toBottomOf="parent" />
+
+                <RelativeLayout
+                    android:layout_width="80dp"
+                    android:layout_height="0dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/date_round_background">
+
+                    <TextView
+                        android:id="@+id/date_of_event"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:text="@string/date_of_event"
+                        android:textAppearance="@style/date_of_event"
+                        android:gravity="center"/>
+
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <!-- Top 5 offers -->
+
+        <RelativeLayout
+            android:id="@+id/top_offers_layout"
+            android:layout_width="0dp"
+            android:layout_height="325dp"
+            android:background="@drawable/rounded_corners_white"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginStart="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/top_events_layout">
+
+            <TextView
+                android:id="@+id/top_5_offers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="20dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="15dp"
+                android:text="@string/top_5_offers"
+                android:textAppearance="@style/top_5_offers"
+                android:gravity="top"
+                android:textStyle="bold" />
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:layout_marginTop="60dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="20dp">
+
+                    <!-- First Group -->
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="14dp">
+
+                        <ImageView
+                            android:id="@+id/photographer"
+                            android:layout_width="180dp"
+                            android:layout_height="257dp"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/photographer" />
+
+                        <!-- Blurry Background and Text at the Bottom -->
+                        <RelativeLayout
+                            android:layout_width="180dp"
+                            android:layout_height="80dp"
+                            android:layout_alignBottom="@id/photographer"
+                            android:background="@drawable/blurry_round_rectangle">
+
+                            <TextView
+                                android:id="@+id/photographText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/photographText"
+                                android:textAppearance="@style/photographText"
+                                android:layout_centerInParent="true"
+                                android:gravity="center" />
+                        </RelativeLayout>
+                    </RelativeLayout>
+
+                    <!-- Second Group -->
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="16dp">
+
+                        <ImageView
+                            android:id="@+id/decoration"
+                            android:layout_width="180dp"
+                            android:layout_height="257dp"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/decoration" />
+
+                        <!-- Blurry Background and Text at the Bottom -->
+                        <RelativeLayout
+                            android:layout_width="180dp"
+                            android:layout_height="80dp"
+                            android:layout_alignBottom="@id/decoration"
+                            android:background="@drawable/blurry_round_rectangle">
+
+                            <TextView
+                                android:id="@+id/decorationText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/decorationText"
+                                android:textAppearance="@style/decorationText"
+                                android:layout_centerInParent="true"
+                                android:gravity="center" />
+                        </RelativeLayout>
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
+        </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

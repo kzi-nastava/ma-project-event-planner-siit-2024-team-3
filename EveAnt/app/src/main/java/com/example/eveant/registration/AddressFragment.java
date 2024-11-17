@@ -1,4 +1,4 @@
-package com.example.eveant;
+package com.example.eveant.registration;
 
 import android.os.Bundle;
 
@@ -13,20 +13,27 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-public class CompanyFragment1 extends Fragment {
-    private Button goToNext, goToBack;
+import com.example.eveant.R;
+
+public class AddressFragment extends Fragment {
+    private EditText country, city, street, postalNumber;
+    private Button goToBack, goToNext;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_company_1, container, false);
+        View view = inflater.inflate(R.layout.fragment_address, container, false);
+        country = view.findViewById(R.id.country);
+        city = view.findViewById(R.id.city);
+        street = view.findViewById(R.id.street);
+        postalNumber = view.findViewById(R.id.postalNumber);
         goToBack = getActivity().findViewById(R.id.goToBack);
         goToNext = getActivity().findViewById(R.id.goToNext);
 
-        if (goToBack != null) {
+        if (goToNext != null) {
 
-            goToBack.setOnClickListener(new View.OnClickListener() {
+            goToNext.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
@@ -39,22 +46,21 @@ public class CompanyFragment1 extends Fragment {
                 }
             });
         }
-        if (goToNext != null) {
+        if (goToBack != null) {
 
-            goToNext.setOnClickListener(new View.OnClickListener() {
+            goToBack.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                    transaction.replace(R.id.container, new CompanyFragment2());
+                    transaction.replace(R.id.container, new PersonalInfoFragment());
                     transaction.addToBackStack(null);
                     transaction.commit();
                     if (requireActivity() instanceof RegistrationActivity) {
-                        ((RegistrationActivity) requireActivity()).updateProgress(6); // Replace '1' with the fragment index
+                        ((RegistrationActivity) requireActivity()).updateProgress(2);
                     }
                 }
             });
         }
-
         return view;
     }
 }

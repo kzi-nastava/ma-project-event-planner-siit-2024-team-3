@@ -1,4 +1,4 @@
-package com.example.eveant;
+package com.example.eveant.registration;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +13,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ToggleButton;
+
+import com.example.eveant.R;
+import com.example.eveant.ServicesViewActivity;
 
 public class OrganizerProviderFragment extends Fragment {
 

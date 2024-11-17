@@ -1,4 +1,4 @@
-package com.example.eveant;
+package com.example.eveant.registration;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.example.eveant.LoginActivity;
+import com.example.eveant.R;
 
 public class UsernamePasswordFragment extends Fragment {
 
@@ -34,11 +37,7 @@ public class UsernamePasswordFragment extends Fragment {
                 public void onClick(View v) {
                     FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
                     transaction.replace(R.id.container, new PersonalInfoFragment());
-                    transaction.setCustomAnimations(
-                            android.R.anim.slide_in_left, // enter
-                            android.R.anim.slide_out_right // exit
-                    );
-                    transaction.addToBackStack(null); // Allows user to go back to this fragment
+                    transaction.addToBackStack("Registration"); // Allows user to go back to this fragment
                     transaction.commit();
                     if (requireActivity() instanceof RegistrationActivity) {
                         ((RegistrationActivity) requireActivity()).updateProgress(2);
