@@ -1,8 +1,6 @@
 package com.example.eveant;
 
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,22 +9,17 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
-public class ProductCreateActivity extends AppCompatActivity {
+public class ServiceEditActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_product_create);
+        setContentView(R.layout.activity_service_edit);
 
-        /*Spinner categorySpinner = findViewById(R.id.categorySpinner);
-        String[] categories = new String[]{"Type of event", "Kategorija 1", "Kategorija 2", "Kategorija 3"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        categorySpinner.setAdapter(adapter);*/
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new ProductCreateFragment1())
+                    .replace(R.id.fragment_container, new ServiceEditFragment1())
                     .commit();
         }
 
@@ -37,6 +30,5 @@ public class ProductCreateActivity extends AppCompatActivity {
                 .addToBackStack(null)
                 .commit();
     }
-
 
 }

@@ -11,11 +11,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.ToggleButton;
 
-public class ProductCreateFragment2 extends Fragment {
+public class ServiceCreateFragment3 extends Fragment {
 
     private LinearLayout layoutDuration;
     private LinearLayout layoutRange;
@@ -23,7 +22,7 @@ public class ProductCreateFragment2 extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_product_create2, container, false);
+        View view = inflater.inflate(R.layout.fragment_service_create3, container, false);
 
         // Dugme za čuvanje podataka
         view.findViewById(R.id.save_button).setOnClickListener(v -> {
@@ -32,7 +31,7 @@ public class ProductCreateFragment2 extends Fragment {
         });
 
         view.findViewById(R.id.previous_button).setOnClickListener(v -> {
-            ((ProductCreateActivity) requireActivity()).replaceFragment(new ProductCreateFragment3());
+            ((ServiceCreateActivity) requireActivity()).replaceFragment(new ServiceCreateFragment2());
         });
 
         ToggleButton manualButton = view.findViewById(R.id.manualButton);

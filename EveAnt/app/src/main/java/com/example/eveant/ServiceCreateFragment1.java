@@ -2,7 +2,6 @@ package com.example.eveant;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,19 +14,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 import android.widget.AdapterView;
 
-public class ProductCreateFragment1 extends Fragment {
+public class ServiceCreateFragment1 extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_product_create1, container, false);
+        View view = inflater.inflate(R.layout.fragment_service_create1, container, false);
 
         ToggleButton availableButton = view.findViewById(R.id.availableButton);
         ToggleButton unavailableButton = view.findViewById(R.id.unavailableButton);
@@ -80,10 +80,29 @@ public class ProductCreateFragment1 extends Fragment {
         });
 
         view.findViewById(R.id.next_button).setOnClickListener(v -> {
-            ((ProductCreateActivity) requireActivity()).replaceFragment(new ProductCreateFragment3());
+            ((ServiceCreateActivity) requireActivity()).replaceFragment(new ServiceCreateFragment2());
         });
 
+
+        CheckBox checkBoxNewCategory = view.findViewById(R.id.checkbox_new_category);
+        EditText newCategoryInput = view.findViewById(R.id.new_category_input);
         Spinner categorySpinner = view.findViewById(R.id.category_spinner);
+
+        checkBoxNewCategory.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // Prikaži polje za unos nove kategorije
+                newCategoryInput.setVisibility(View.VISIBLE);
+                categorySpinner.setVisibility(View.GONE);
+                categorySpinner.setEnabled(false); // Onemogući Spinner
+            } else {
+                // Sakrij polje za unos nove kategorije
+                newCategoryInput.setVisibility(View.GONE);
+                categorySpinner.setVisibility(View.VISIBLE);
+                categorySpinner.setEnabled(true); // Omogući Spinner
+            }
+        });
+
+        /*Spinner categorySpinner = view.findViewById(R.id.category_spinner);*/
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.categories, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

@@ -1,30 +1,26 @@
 package com.example.eveant;
 
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.eveant.R;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +50,17 @@ public class ServicesViewActivity extends AppCompatActivity {
         editServiceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ServicesViewActivity.this, ProductCreateActivity.class);
+                Intent intent = new Intent(ServicesViewActivity.this, ServiceEditActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        FloatingActionButton add_service_button = findViewById(R.id.add_service_button);
+        add_service_button.setOnClickListener(new View.OnClickListener()  {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ServicesViewActivity.this, ServiceCreateActivity.class);
                 startActivity(intent);
             }
         });
@@ -67,23 +73,6 @@ public class ServicesViewActivity extends AppCompatActivity {
                 showDeleteDialog();
             }
         });
-/*
-        // Dropdown meni - Kategorija
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(ServicesViewActivity.this);
-        View bottomSheetView = LayoutInflater.from(getApplicationContext())
-                .inflate(R.layout.filter_bottom_sheet, findViewById(android.R.id.content), false);
-
-        // Povezivanje elemenata
-        Spinner categorySpinner = bottomSheetView.findViewById(R.id.category_spinner);
-        String[] categories = {"Party", "Wedding", "Conference", "Birthday"};
-        ArrayAdapter<String> categoryAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, categories);
-        categorySpinner.setAdapter(categoryAdapter);
-
-        // Dropdown meni - Tip Eventa
-        Spinner eventTypeSpinner = bottomSheetDialog.findViewById(R.id.event_type_spiner);
-        String[] eventTypes = {"Standard", "VIP", "Premium"};
-        ArrayAdapter<String> eventTypeAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, eventTypes);
-        eventTypeSpinner.setAdapter(eventTypeAdapter);*/
     }
 
 

@@ -13,10 +13,13 @@
         android:theme="@style/Theme.EveAnt"
         tools:targetApi="31">
         <activity
+            android:name=".ServiceEditActivity"
+            android:exported="false" />
+        <activity
             android:name=".ServicesViewActivity"
             android:exported="false" />
         <activity
-            android:name=".ProductCreateActivity"
+            android:name=".ServiceCreateActivity"
             android:exported="false" />
         <activity
             android:name=".SplashScreenActivity"

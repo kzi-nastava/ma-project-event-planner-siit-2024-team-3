@@ -5,7 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ProductCreateFragment1">
+    tools:context=".ServiceCreateFragment1">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/poppins_bold"
-                android:text="Create service"
+                android:text="@string/create_service"
                 android:textAlignment="center"
                 android:textSize="25sp"
                 android:textColor="@color/black"/>
@@ -70,14 +70,16 @@
 
         <!-- Dugmad za navigaciju -->
         <LinearLayout
+            style="?android:attr/buttonBarStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="207dp">
 
             <Button
                 android:id="@+id/previous_button"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -85,10 +87,11 @@
                 android:background="@drawable/rounded_corners_e8e8e8"
                 android:textColor="@color/black"
                 android:fontFamily="@font/poppins_bold"
-                android:layout_marginEnd="5dp"/>
+                android:layout_marginEnd="5dp" />
 
             <Button
                 android:id="@+id/next_button"
+                style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
