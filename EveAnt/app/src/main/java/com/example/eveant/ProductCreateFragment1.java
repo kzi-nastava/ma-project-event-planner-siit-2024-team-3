@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 import android.widget.AdapterView;
@@ -79,7 +80,7 @@ public class ProductCreateFragment1 extends Fragment {
         });
 
         view.findViewById(R.id.next_button).setOnClickListener(v -> {
-            ((ProductCreateActivity) requireActivity()).replaceFragment(new ProductCreateFragment2());
+            ((ProductCreateActivity) requireActivity()).replaceFragment(new ProductCreateFragment3());
         });
 
         Spinner categorySpinner = view.findViewById(R.id.category_spinner);
@@ -107,47 +108,44 @@ public class ProductCreateFragment1 extends Fragment {
             }
         });
 
-        Button buttonShowCheckboxes=view.findViewById(R.id.buttonShowCheckboxes);
-        ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(getContext(),
-                R.array.event_types, android.R.layout.simple_spinner_item);
-        adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        TextView selectedEventsTextView = view.findViewById(R.id.selectedEventsTextView);
+
+        Button buttonShowCheckboxes = view.findViewById(R.id.buttonShowCheckboxes);
 
         buttonShowCheckboxes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showCheckboxDialog();
+                showCheckboxDialog(selectedEventsTextView);
             }
         });
 
         return view;
     }
-    private void showCheckboxDialog() {
-        // Kreiranje CheckBox-ova
+
+    private void showCheckboxDialog(TextView selectedEventsTextView) {
         final String[] events = {"Event 1", "Event 2", "Event 3", "Event 4"};
-        boolean[] checkedItems = {false, false, false, false}; // Početno stanje checkbox-ova
+        boolean[] checkedItems = {false, false, false, false};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Select Events");
 
-        // Postavljanje checkbox-a u dijalog
-        builder.setMultiChoiceItems(events, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                // Možeš obraditi klikove na checkbox-ove ovde ako je potrebno
-            }
-        });
+        builder.setMultiChoiceItems(events, checkedItems, null);
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Prikazivanje selektovanih događaja
                 StringBuilder selectedEvents = new StringBuilder();
                 for (int i = 0; i < checkedItems.length; i++) {
                     if (checkedItems[i]) {
                         selectedEvents.append(events[i]).append("\n");
                     }
                 }
-                Toast.makeText(getContext(), "Selected Events:\n" + selectedEvents.toString(), Toast.LENGTH_LONG).show();
+                if (selectedEvents.length() > 0) {
+                    selectedEventsTextView.setText(selectedEvents.toString().trim());
+                    selectedEventsTextView.setVisibility(View.VISIBLE);
+                } else {
+                    selectedEventsTextView.setVisibility(View.GONE);
+                }
             }
         });
 
