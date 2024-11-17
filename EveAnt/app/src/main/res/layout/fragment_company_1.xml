@@ -4,13 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="16dp"
-    android:background="@drawable/rounded_corners_white"
     android:padding="16dp"
     tools:context=".RegistrationActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_gravity="top"
         android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
@@ -23,7 +22,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="30dp"
             android:text="@string/tell_us_more_company"
             android:textColor="@color/black"
             android:fontFamily="@font/poppins_regular"
@@ -100,33 +99,6 @@
                 android:scrollHorizontally="false"/>
         </LinearLayout>
 
-        <Button
-            android:id="@+id/continueToCompany2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/rounded_corners_8599e0"
-            android:enabled="true"
-            android:padding="10dp"
-            android:text="@string/action_next"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:fontFamily="@font/poppins_bold"/>
-        <Button
-            android:id="@+id/goToAreYou"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/rounded_corners_e8e8e8"
-            android:enabled="true"
-            android:padding="10dp"
-            android:text="@string/action_back"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:backgroundTint="@null"
-            android:fontFamily="@font/poppins_bold"
-            android:layout_marginBottom="16dp"/>
     </LinearLayout>
+
 </FrameLayout>

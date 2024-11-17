@@ -15,32 +15,38 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class CompanyFragment2 extends Fragment {
-    private Button goToHome, goToCompany1;
+    private Button goToNext, goToBack;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_company_2, container, false);
-        goToHome = view.findViewById(R.id.goToHome);
-        goToCompany1 = view.findViewById(R.id.goToCompany1);
-
-        goToCompany1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                transaction.replace(R.id.container, new CompanyFragment1());
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        });
-        goToHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), HomeActivity.class);
-                startActivity(intent);
-            }
-        });
+        goToBack = getActivity().findViewById(R.id.goToBack);
+        goToNext = getActivity().findViewById(R.id.goToNext);
+        if (goToBack!= null){
+            goToBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                    transaction.replace(R.id.container, new CompanyFragment1());
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                    if (requireActivity() instanceof RegistrationActivity) {
+                        ((RegistrationActivity) requireActivity()).updateProgress(5); // Replace '1' with the fragment index
+                    }
+                }
+            });
+        }
+        if (goToNext != null) {
+            goToNext.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), HomeActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
 
         return view;
     }

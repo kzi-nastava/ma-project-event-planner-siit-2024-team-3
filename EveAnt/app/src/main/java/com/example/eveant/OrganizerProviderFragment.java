@@ -17,7 +17,7 @@ import android.widget.ToggleButton;
 public class OrganizerProviderFragment extends Fragment {
 
     ToggleButton organizerButton, providerButton;
-    Button goToAddress, goToHome, goToCompany;
+    Button goToBack, goToHome, goToNext;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -25,15 +25,15 @@ public class OrganizerProviderFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_organizer_provider, container, false);
         organizerButton = view.findViewById(R.id.organizerButton);
         providerButton = view.findViewById(R.id.providerButton);
-        goToHome = view.findViewById(R.id.goToHome);  // Ensure this ID matches the button in your XML
-        goToAddress = view.findViewById(R.id.goToAddress);
+        goToBack = getActivity().findViewById(R.id.goToBack);
+        goToNext = getActivity().findViewById(R.id.goToNext);
 
-        organizerButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            organizerButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     providerButton.setChecked(false);
-                    goToHome.setOnClickListener(new View.OnClickListener() {
+                    goToNext.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent(getActivity(), ServicesViewActivity.class);
@@ -49,27 +49,36 @@ public class OrganizerProviderFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     organizerButton.setChecked(false);
-                    goToHome.setOnClickListener(new View.OnClickListener() {
+                    goToNext.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
                             transaction.replace(R.id.container, new CompanyFragment1());
                             transaction.addToBackStack(null);
                             transaction.commit();
+                            if (requireActivity() instanceof RegistrationActivity) {
+                                ((RegistrationActivity) requireActivity()).updateProgress(5); // Replace '1' with the fragment index
+                            }
                         }
                     });
                 }
             }
         });
-        goToAddress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                transaction.replace(R.id.container, new AddressFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        });
+
+        if (goToBack != null) {
+            goToBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                    transaction.replace(R.id.container, new AddressFragment());
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                    if (requireActivity() instanceof RegistrationActivity) {
+                        ((RegistrationActivity) requireActivity()).updateProgress(3); // Replace '1' with the fragment index
+                    }
+                }
+            });
+        }
 
         return view;
     }
