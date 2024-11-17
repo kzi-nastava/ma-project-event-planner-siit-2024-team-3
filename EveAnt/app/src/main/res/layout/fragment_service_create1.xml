@@ -48,7 +48,7 @@
             android:orientation="vertical"
             android:layout_marginTop="8dp"
             android:padding="8dp"
-            android:background="@drawable/rounded_corners_8599e0">
+            android:background="@drawable/rounded_corners_f0f3ff">
 
             <Spinner
                 android:id="@+id/category_spinner"

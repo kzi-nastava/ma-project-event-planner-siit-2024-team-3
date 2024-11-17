@@ -20,7 +20,7 @@
             <RelativeLayout
                 android:id="@+id/home_search_rectangle_layout"
                 android:layout_width="match_parent"
-                android:layout_height="177dp"
+                android:layout_height="130dp"
                 android:background="@drawable/service_search_rectangle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -31,10 +31,11 @@
                     android:id="@+id/place"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="65dp"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="20dp"
                     android:fontFamily="@font/poppins_bold"
                     android:text="My services"
+                    android:textSize="30sp"
                     android:textAppearance="@style/place"
                     android:textStyle="bold" />
 
@@ -163,11 +164,11 @@
                             <ImageView
                                 android:id="@+id/serviceImage"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="200dp"
                                 android:background="@drawable/rounded_corners_image"
                                 android:clipToOutline="true"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/dragi_bravo" />
+                                android:src="@drawable/pastry" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -301,11 +302,11 @@
                             <ImageView
                                 android:id="@+id/serviceImage1"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="200dp"
                                 android:background="@drawable/rounded_corners_image"
                                 android:clipToOutline="true"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/dragi_bravo" />
+                                android:src="@drawable/pastry" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
@@ -439,11 +440,11 @@
                             <ImageView
                                 android:id="@+id/serviceImage2"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="200dp"
                                 android:background="@drawable/rounded_corners_image"
                                 android:clipToOutline="true"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/dragi_bravo" />
+                                android:src="@drawable/pastry" />
 
                             <LinearLayout
                                 android:layout_width="match_parent"
