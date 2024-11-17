@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="14dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ImageView
+        android:id="@+id/offer_image"
+        android:layout_width="180dp"
+        android:layout_height="257dp"
+        android:adjustViewBounds="true"
+        android:src="@drawable/decoration" />
+
+    <RelativeLayout
+        android:layout_width="180dp"
+        android:layout_height="80dp"
+        android:layout_alignBottom="@id/offer_image"
+        android:background="@drawable/blurry_round_rectangle">
+
+        <TextView
+            android:id="@+id/offerTypeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="@string/decorationText"
+            android:textAppearance="@style/decorationText" />
+
+        <TextView
+            android:id="@+id/offerText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/offerTypeText"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:text="@string/flowerText"
+            android:textAppearance="@style/flowerText" />
+
+        <Button
+            android:id="@+id/book_button"
+            android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
+        android:background="@drawable/book_button_gradient"
+        android:gravity="center"
+        android:text="BOOK"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:textSize="12sp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:layout_centerVertical="true" />
+
+
+
+    </RelativeLayout>
+</RelativeLayout>

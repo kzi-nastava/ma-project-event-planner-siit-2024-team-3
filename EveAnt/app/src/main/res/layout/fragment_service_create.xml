@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/purple">
+
+    <LinearLayout
+        android:id="@+id/fragment_container_layout"
+        android:layout_width="match_parent"
+        android:layout_height="700dp"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:background="@drawable/rounded_corners_white"
+        android:clipToPadding="false"
+        android:elevation="8dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="8dp">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:layout_marginTop="50dp"
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</FrameLayout>
+
+
+
+    <!--
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        tools:context=".ProductCreateActivity">
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@drawable/rounded_corners_white"
+            android:padding="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/poppins_extrabold"
+                    android:text="@string/create_product"
+                    android:textAlignment="center"
+                    android:textSize="30sp"
+                    android:textColor="@color/black"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/rounded_corners_f0f3ff">
+
+                    <EditText
+                        android:id="@+id/name"
+                        style="@style/loginInputText"
+                        android:hint="@string/prompt_name"
+                        android:imeOptions="actionDone"
+                        android:inputType="textPersonName"
+                        android:selectAllOnFocus="true"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="20dp">
+
+                    <Spinner
+                        android:id="@+id/categorySpinner"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/rounded_corners_f0f3ff"
+                        android:padding="8dp"
+                        android:spinnerMode="dropdown" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp"
+                    android:elevation="2dp"
+                    android:background="@drawable/rounded_corners_f0f3ff">
+                    <ToggleButton
+                        android:id="@+id/hiddenButton"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/slider_organizer_provider"
+                        android:textAlignment="center"
+                        android:enabled="true"
+                        android:fontFamily="@font/poppins_bold"
+                        android:padding="10dp"
+                        android:shadowColor="@null"
+                        android:stateListAnimator="@null"
+                        android:elevation="0dp"
+                        android:textOn="@string/prompt_visible"
+                        android:textOff="@string/prompt_hidden"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textAllCaps="false"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintVertical_bias="0.2" />
+                    <ToggleButton
+                        android:id="@+id/visibleButton"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/slider_organizer_provider"
+                        android:enabled="true"
+                        android:shadowColor="@null"
+                        android:stateListAnimator="@null"
+                        android:elevation="0dp"
+                        android:padding="10dp"
+                        android:textAlignment="center"
+                        android:textOn="@string/prompt_hidden"
+                        android:textOff="@string/prompt_visible"
+                        android:textColor="@color/black"
+                        android:textAllCaps="false"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/poppins_bold"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp"
+                    android:elevation="2dp"
+                    android:background="@drawable/rounded_corners_f0f3ff">
+
+                    <ToggleButton
+                        android:id="@+id/availableButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:background="@drawable/slider_organizer_provider"
+                        android:elevation="0dp"
+                        android:enabled="true"
+                        android:fontFamily="@font/poppins_bold"
+                        android:padding="10dp"
+                        android:shadowColor="@null"
+                        android:stateListAnimator="@null"
+                        android:textAlignment="center"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:textOff="@string/prompt_unavailable"
+                        android:textOn="@string/prompt_available"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintVertical_bias="0.2" />
+
+                    <ToggleButton
+                        android:id="@+id/unavailableButton"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/slider_organizer_provider"
+                        android:enabled="true"
+                        android:shadowColor="@null"
+                        android:stateListAnimator="@null"
+                        android:elevation="0dp"
+                        android:padding="10dp"
+                        android:textAlignment="center"
+                        android:textOn="@string/prompt_unavailable"
+                        android:textOff="@string/prompt_available"
+                        android:textColor="@color/black"
+                        android:textAllCaps="false"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/poppins_bold"/>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/rounded_corners_f0f3ff">
+
+                    <EditText
+                        android:id="@+id/price"
+                        style="@style/loginInputText"
+                        android:hint="@string/prompt_price"
+                        android:imeOptions="actionDone"
+                        android:inputType="number"
+                        android:selectAllOnFocus="true"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/rounded_corners_f0f3ff">
+
+                    <EditText
+                        android:id="@+id/description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:gravity="top"
+                        android:hint="@string/prompt_description"
+                        android:inputType="textMultiLine"
+                        android:minLines="4"
+                        android:padding="10dp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/reservation_type"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textSize="16sp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
+                    android:elevation="2dp"
+                    android:background="@drawable/rounded_corners_f0f3ff">
+                    <ToggleButton
+                        android:id="@+id/manualButton"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/slider_organizer_provider"
+                        android:textAlignment="center"
+                        android:enabled="true"
+                        android:fontFamily="@font/poppins_bold"
+                        android:padding="10dp"
+                        android:shadowColor="@null"
+                        android:stateListAnimator="@null"
+                        android:elevation="0dp"
+                        android:textOn="@string/prompt_manual"
+                        android:textOff="@string/prompt_automatic"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textAllCaps="false"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintVertical_bias="0.2" />
+                    <ToggleButton
+                        android:id="@+id/automaticButton"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/slider_organizer_provider"
+                        android:enabled="true"
+                        android:shadowColor="@null"
+                        android:stateListAnimator="@null"
+                        android:elevation="0dp"
+                        android:padding="10dp"
+                        android:textAlignment="center"
+                        android:textOn="@string/prompt_automatic"
+                        android:textOff="@string/prompt_manual"
+                        android:textColor="@color/black"
+                        android:textAllCaps="false"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/poppins_bold"/>
+                </LinearLayout>
+
+
+                <Button
+                    android:id="@+id/register"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/rounderd_corners_product"
+                    android:enabled="true"
+                    android:fontFamily="@font/poppins_bold"
+                    android:padding="10dp"
+                    android:text="@string/save"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <ProgressBar
+                    android:id="@+id/loading"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="64dp"
+                    android:layout_marginBottom="64dp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/password"
+                    app:layout_constraintStart_toStartOf="@+id/password"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.3" />
+            </LinearLayout>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>-->

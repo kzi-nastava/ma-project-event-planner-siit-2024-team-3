@@ -10,7 +10,7 @@
     android:paddingTop="100dp"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingBottom="100dp"
-    tools:context=".RegistrationActivity">
+    tools:context=".registration.RegistrationActivity">
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
