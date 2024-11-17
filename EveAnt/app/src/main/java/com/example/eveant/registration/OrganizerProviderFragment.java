@@ -6,6 +6,8 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +16,12 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ToggleButton;
 
+import com.example.eveant.HomeActivity;
+import com.example.eveant.HomeFragment;
+import com.example.eveant.MainActivity;
 import com.example.eveant.R;
-import com.example.eveant.ServicesViewActivity;
+import com.example.eveant.serviceEdit.ServiceEditFragment;
+import com.example.eveant.serviceEdit.ServiceEditFragment3;
 
 public class OrganizerProviderFragment extends Fragment {
 
@@ -39,7 +45,7 @@ public class OrganizerProviderFragment extends Fragment {
                     goToNext.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(getActivity(), ServicesViewActivity.class);
+                            Intent intent = new Intent(getActivity(), MainActivity.class);
                             startActivity(intent);
                         }
                     });

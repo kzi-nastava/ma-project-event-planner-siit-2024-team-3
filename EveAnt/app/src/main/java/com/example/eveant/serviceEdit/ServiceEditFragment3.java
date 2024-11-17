@@ -1,18 +1,21 @@
-package com.example.eveant;
+package com.example.eveant.serviceEdit;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ToggleButton;
+
+import com.example.eveant.R;
+import com.example.eveant.ServicesViewFragment;
 
 
 public class ServiceEditFragment3 extends Fragment {
@@ -27,12 +30,14 @@ public class ServiceEditFragment3 extends Fragment {
 
         // Dugme za čuvanje podataka
         view.findViewById(R.id.save_button).setOnClickListener(v -> {
-            Intent intent = new Intent(requireActivity(), ServicesViewActivity.class);
-            startActivity(intent);
+            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+            transaction.replace(R.id.container, new ServicesViewFragment());
+            transaction.addToBackStack(null);
+            transaction.commit();
         });
 
         view.findViewById(R.id.previous_button).setOnClickListener(v -> {
-            ((ServiceEditActivity) requireActivity()).replaceFragment(new ServiceEditFragment2());
+            ((ServiceEditFragment) requireParentFragment()).replaceFragment(new ServiceEditFragment2());
         });
 
         ToggleButton manualButton = view.findViewById(R.id.manualButton);

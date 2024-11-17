@@ -1,13 +1,13 @@
-package com.example.eveant;
+package com.example.eveant.serviceCreate;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 
 import androidx.fragment.app.Fragment;
+
+import com.example.eveant.R;
 
 public class ServiceCreateFragment extends Fragment {
 
@@ -19,7 +19,7 @@ public class ServiceCreateFragment extends Fragment {
         // Initial fragment setup (if you are using multiple fragments)
         if (savedInstanceState == null) {
             requireActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new ProductCreateFragment1())
+                    .replace(R.id.fragment_container, new ServiceCreateFragment1())
                     .commit();
         }
 

@@ -5,7 +5,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ServiceCreateFragment3">
+    tools:context=".serviceCreate.ServiceCreateFragment3">
 
     <LinearLayout
         android:layout_width="match_parent"

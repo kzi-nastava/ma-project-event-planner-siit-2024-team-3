@@ -1,4 +1,4 @@
-package com.example.eveant;
+package com.example.eveant.serviceEdit;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -12,13 +12,12 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import com.example.eveant.R;
 
 public class ServiceEditFragment1 extends Fragment {
     @Nullable
@@ -77,7 +76,7 @@ public class ServiceEditFragment1 extends Fragment {
         });
 
         view.findViewById(R.id.next_button).setOnClickListener(v -> {
-            ((ServiceEditActivity) requireActivity()).replaceFragment(new ServiceEditFragment2());
+            ((ServiceEditFragment) requireParentFragment()).replaceFragment(new ServiceEditFragment2());
         });
 
 

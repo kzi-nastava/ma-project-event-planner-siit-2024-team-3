@@ -11,7 +11,7 @@
         android:label="HomeFragment" />
     <fragment
         android:id="@+id/serviceCreateFragment"
-        android:name="com.example.eveant.ServiceCreateFragment"
+        android:name="com.example.eveant.serviceCreate.ServiceCreateFragment"
         android:label="ServiceCreateFragment" />
     <activity
         android:id="@+id/loginActivity"
@@ -22,4 +22,10 @@
         android:id="@+id/servicesViewFragment"
         android:name="com.example.eveant.ServicesViewFragment"
         android:label="ServicesViewFragment" />
+    <action
+        android:id="@+id/action_organizer_to_homeFragment"
+        app:destination="@+id/homeFragment"/>
+    <action
+        android:id="@+id/action_provider_to_homeFragment"
+        app:destination="@+id/homeFragment"/>
 </navigation>

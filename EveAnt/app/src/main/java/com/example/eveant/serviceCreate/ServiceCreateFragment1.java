@@ -1,4 +1,4 @@
-package com.example.eveant;
+package com.example.eveant.serviceCreate;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -21,6 +21,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.AdapterView;
+
+import com.example.eveant.R;
 
 public class ServiceCreateFragment1 extends Fragment {
 
@@ -80,7 +82,7 @@ public class ServiceCreateFragment1 extends Fragment {
         });
 
         view.findViewById(R.id.next_button).setOnClickListener(v -> {
-            ((ServiceCreateActivity) requireActivity()).replaceFragment(new ServiceCreateFragment2());
+            ((ServiceCreateFragment) requireParentFragment()).replaceFragment(new ServiceCreateFragment2());
         });
 
 
