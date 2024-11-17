@@ -1,0 +1,104 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp"
+    android:padding="16dp"
+    tools:context=".registration.RegistrationActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/poppins_extrabold"
+            android:text="@string/hello_provider"
+            android:textAlignment="center"
+            android:textSize="30sp"
+            android:textColor="@color/black"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="30dp"
+            android:text="@string/tell_us_more_company"
+            android:textColor="@color/black"
+            android:fontFamily="@font/poppins_regular"
+            android:textSize="16sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_corners_f0f3ff">
+
+            <EditText
+                android:id="@+id/name"
+                style="@style/loginInputText"
+                android:hint="@string/prompt_name"
+                android:imeActionLabel="@string/action_sign_in_short"
+                android:imeOptions="actionDone"
+                android:inputType="textPersonName"
+                android:selectAllOnFocus="true"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_corners_f0f3ff">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/mail"
+                android:layout_marginStart="16dp"
+                android:layout_gravity="start|center_vertical"/>
+            <EditText
+                android:id="@+id/email"
+                style="@style/loginInputText"
+                android:hint="@string/prompt_email"
+                android:inputType="textEmailAddress"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_corners_f0f3ff"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/telephone" />
+
+            <EditText
+                android:id="@+id/phoneNumber"
+                style="@style/loginInputText"
+                android:hint="@string/prompt_phoneNumber"
+                android:inputType="text|phone" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_corners_f0f3ff"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/companyDescription"
+                style="@style/loginInputText"
+                android:layout_height="match_parent"
+                android:hint="@string/description"
+                android:inputType="textMultiLine"
+                android:gravity="top|start"
+                android:maxLines="5"
+                android:scrollHorizontally="false"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.eveant.HomeFragment"
+        android:label="HomeFragment" />
+    <fragment
+        android:id="@+id/serviceCreateFragment"
+        android:name="com.example.eveant.serviceCreate.ServiceCreateFragment"
+        android:label="ServiceCreateFragment" />
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.example.eveant.LoginActivity"
+        android:label="activity_login"
+        tools:layout="@layout/activity_login" />
+    <fragment
+        android:id="@+id/servicesViewFragment"
+        android:name="com.example.eveant.ServicesViewFragment"
+        android:label="ServicesViewFragment"/>
+    <fragment
+        android:id="@+id/serviceCreateFragment1"
+        android:name="com.example.eveant.serviceCreate.ServiceCreateFragment1"
+        android:label="ServiceCreateFragment1" />
+    <fragment
+        android:id="@+id/serviceCreateFragment2"
+        android:name="com.example.eveant.serviceCreate.ServiceCreateFragment2"
+        android:label="ServiceCreateFragment2" />
+    <fragment
+        android:id="@+id/serviceCreateFragment3"
+        android:name="com.example.eveant.serviceCreate.ServiceCreateFragment3"
+        android:label="ServiceCreateFragment3" />
+    <action
+        android:id="@+id/actionCreateFragment_toViewServices"
+        app:destination="@+id/servicesViewFragment" />
+    <fragment
+        android:id="@+id/serviceEditFragment"
+        android:name="com.example.eveant.serviceEdit.ServiceEditFragment"
+        android:label="ServiceEditFragment" />
+    <fragment
+        android:id="@+id/serviceEditFragment1"
+        android:name="com.example.eveant.serviceEdit.ServiceEditFragment1"
+        android:label="ServiceEditFragment1" />
+    <fragment
+        android:id="@+id/serviceEditFragment2"
+        android:name="com.example.eveant.serviceEdit.ServiceEditFragment2"
+        android:label="ServiceEditFragment2" />
+    <fragment
+        android:id="@+id/serviceEditFragment3"
+        android:name="com.example.eveant.serviceEdit.ServiceEditFragment3"
+        android:label="ServiceEditFragment3" />
+
+</navigation>
