@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/purple">
+
+    <LinearLayout
+        android:id="@+id/fragment_container_layout"
+        android:layout_width="match_parent"
+        android:layout_height="700dp"
+        android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:background="@drawable/rounded_corners_white"
+        android:clipToPadding="false"
+        android:elevation="8dp"
+        android:orientation="vertical"
+        android:paddingHorizontal="8dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_bold"
+                android:text="@string/create_service"
+                android:layout_marginTop="40dp"
+                android:textAlignment="center"
+                android:textSize="25sp"
+                android:textColor="@color/black"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rounded_corners_f0f3ff">
+
+                <EditText
+                    android:id="@+id/name"
+                    style="@style/loginInputText"
+                    android:hint="@string/prompt_name"
+                    android:imeActionLabel="@string/action_sign_in_short"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPersonName"
+                    android:selectAllOnFocus="true"/>
+            </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="8dp"
+            android:padding="8dp"
+            android:background="@drawable/rounded_corners_8599e0">
+
+            <Spinner
+                android:id="@+id/category_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
+                android:prompt="@string/select_category" />
+
+            <EditText
+                android:id="@+id/new_category_input"
+                android:layout_width="match_parent"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_new_category"
+                android:visibility="gone"
+                android:inputType="text"
+                android:backgroundTint="#8599e0"/>
+
+
+
+        </LinearLayout>
+        <CheckBox
+            android:id="@+id/checkbox_new_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="@string/hint_new_category"
+            android:buttonTint="#8599e0"
+            android:layout_marginTop="8dp" />
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Dugme za otvaranje CheckBox dijaloga -->
+                <Button
+                    android:id="@+id/buttonShowCheckboxes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:background="@drawable/rounded_corners_8599e0"
+                    android:textColor="@color/white"
+                    android:text="@string/select_type_of_events" />
+
+            </LinearLayout>
+        <TextView
+            android:id="@+id/selectedEventsTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:visibility="gone" /> <!-- Početno nevidljiv -->
+
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:elevation="2dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rounded_corners_f0f3ff">
+                <ToggleButton
+                    android:id="@+id/visibleButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/slider_organizer_provider"
+                    android:textAlignment="center"
+                    android:enabled="true"
+                    android:fontFamily="@font/poppins_medium"
+                    android:padding="10dp"
+                    android:shadowColor="@null"
+                    android:stateListAnimator="@null"
+                    android:elevation="0dp"
+                    android:textOn="@string/prompt_visible"
+                    android:textOff="@string/prompt_visible"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"/>
+                <ToggleButton
+                    android:id="@+id/hiddenButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/slider_organizer_provider"
+                    android:enabled="true"
+                    android:shadowColor="@null"
+                    android:stateListAnimator="@null"
+                    android:elevation="0dp"
+                    android:padding="10dp"
+                    android:textAlignment="center"
+                    android:textOn="@string/prompt_hidden"
+                    android:textOff="@string/prompt_hidden"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_medium"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:elevation="2dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rounded_corners_f0f3ff">
+                <ToggleButton
+                    android:id="@+id/availableButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/slider_organizer_provider"
+                    android:textAlignment="center"
+                    android:enabled="true"
+                    android:fontFamily="@font/poppins_medium"
+                    android:padding="10dp"
+                    android:shadowColor="@null"
+                    android:stateListAnimator="@null"
+                    android:elevation="0dp"
+                    android:textOn="@string/prompt_available"
+                    android:textOff="@string/prompt_available"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"/>
+                <ToggleButton
+                    android:id="@+id/unavailableButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/slider_organizer_provider"
+                    android:enabled="true"
+                    android:shadowColor="@null"
+                    android:stateListAnimator="@null"
+                    android:elevation="0dp"
+                    android:padding="10dp"
+                    android:textAlignment="center"
+                    android:textOn="@string/prompt_unavailable"
+                    android:textOff="@string/prompt_unavailable"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_medium"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rounded_corners_f0f3ff">
+
+                <EditText
+                    android:id="@+id/price"
+                    style="@style/loginInputText"
+                    android:hint="@string/prompt_price"
+                    android:imeActionLabel="@string/action_sign_in_short"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:selectAllOnFocus="true"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rounded_corners_f0f3ff">
+                <EditText
+                    android:id="@+id/discount"
+                    style="@style/loginInputText"
+                    android:hint="@string/prompt_discount"
+                    android:imeActionLabel="@string/action_sign_in_short"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:selectAllOnFocus="true"/>
+
+            </LinearLayout>
+        <!-- Dugmad za navigaciju -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="30dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/next_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/action_next"
+                android:background="@drawable/rounded_corners_8599e0"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppins_bold"/>
+
+        </LinearLayout>
+        <!-- Page broj -->
+        <TextView
+            android:id="@+id/pageNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="1"
+            android:layout_marginTop="10dp"
+            android:textSize="12sp"/>
+        </LinearLayout>
+
+
+</FrameLayout>

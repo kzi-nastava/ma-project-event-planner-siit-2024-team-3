@@ -313,6 +313,5 @@
         </HorizontalScrollView>
 
     </RelativeLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
