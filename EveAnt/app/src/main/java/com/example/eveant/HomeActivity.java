@@ -31,9 +31,9 @@ public class HomeActivity extends AppCompatActivity {
         // Add your image resource IDs to the list
         List<SlideItem> slideItems = new ArrayList<>();
         slideItems.add(new SlideItem(R.drawable.darko_rundek, "Darko Rundek", "Novosadski sajam", "21:00", "30 NOV"));
-        slideItems.add(new SlideItem(R.drawable.zimzolend, "Zimzolend", "Novi Sad, Centar", "20:00", "11 DEC"));
+        slideItems.add(new SlideItem(R.drawable.zimzolend, "Zimzolend", "Novi Sad, Centar", "20:00", "23 DEC"));
         slideItems.add(new SlideItem(R.drawable.darko_rundek, "Darko Rundek", "Novosadski sajam", "21:00", "30 NOV"));
-        slideItems.add(new SlideItem(R.drawable.zimzolend, "Zimzolend", "Novi Sad, Centar", "20:00", "11 DEC"));
+        slideItems.add(new SlideItem(R.drawable.zimzolend, "Zimzolend", "Novi Sad, Centar", "20:00", "23 DEC"));
 
         ImagePagerAdapter adapter = new ImagePagerAdapter(this, slideItems);
         viewPager.setAdapter(adapter);

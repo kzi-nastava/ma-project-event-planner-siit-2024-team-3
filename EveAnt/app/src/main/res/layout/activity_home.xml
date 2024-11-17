@@ -117,6 +117,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginTop="15dp"
                 android:text="@string/popular_services"
+                android:fontFamily="poppins_regular"
                 android:textAppearance="@style/popular_services"
                 android:gravity="top"
                 android:textStyle="bold" />
@@ -159,6 +160,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/photographText"
+                                android:fontFamily="poppins_regular"
                                 android:textAppearance="@style/photographText"
                                 android:layout_centerInParent="true"
                                 android:gravity="center" />
@@ -190,6 +192,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="@string/decorationText"
+                                android:fontFamily="poppins_regular"
                                 android:textAppearance="@style/decorationText"
                                 android:layout_centerInParent="true"
                                 android:gravity="center" />
@@ -225,6 +228,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="15dp"
             android:text="@string/popular_products"
+            android:fontFamily="poppins_regular"
             android:textAppearance="@style/popular_products"
             android:gravity="top"
             android:textStyle="bold" />
@@ -267,6 +271,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/photographText"
+                            android:fontFamily="poppins_regular"
                             android:textAppearance="@style/photographText"
                             android:layout_centerInParent="true"
                             android:gravity="center" />
