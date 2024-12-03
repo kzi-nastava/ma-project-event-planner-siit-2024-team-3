@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/dialog_background"
+    android:orientation="vertical"
+    android:padding="40dp">
+
+    <!-- Text za naslov -->
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="Category"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <!-- Input polje za ime -->
+    <EditText
+        android:id="@+id/input_name"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/input_backgrounf"
+        android:hint="Enter name"
+        android:padding="12dp"
+        android:textColor="@android:color/black"
+        android:textColorHint="@color/black"
+        android:textSize="16sp" />
+
+    <!-- Input polje za opis -->
+    <EditText
+        android:id="@+id/input_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@drawable/input_backgrounf"
+        android:hint="Enter description"
+        android:padding="12dp"
+        android:textColor="@android:color/black"
+        android:textColorHint="@color/black"
+        android:textSize="16sp" />
+
+    <!-- Dugme za čuvanje -->
+    <Button
+        android:id="@+id/button_save"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_corners_8599e0"
+        android:text="Save"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:padding="10dp" />
+</LinearLayout>
