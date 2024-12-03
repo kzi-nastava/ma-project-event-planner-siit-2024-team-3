@@ -43,6 +43,14 @@ public class CategoryManagement extends Fragment {
 
         });
 
+        View fabAddCategory = view.findViewById(R.id.fabAddCategory);
+        fabAddCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCategoryDialog();
+            }
+        });
+
         // Delete dugme - prikazuje dijalog
         ImageButton deleteButtonCategory = view.findViewById(R.id.deleteButtonCategory);
         deleteButtonCategory.setOnClickListener(new View.OnClickListener() {
