@@ -26,25 +26,22 @@ public class CategoryManagement extends Fragment {
 
 
 
-       /*// Edit dugme - otvara novu aktivnost
+       // Edit dugme - otvara novu aktivnost
         ImageButton editButtoncategory = view.findViewById(R.id.editButtoncategory);
         editButtoncategory.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                NavController navController = ((MainActivity) getActivity()).getNavController();
-                navController.navigate(R.id.serviceEditFragment);
+            public void onClick(View v) {showCategoryDialog();
             }
-        });*/
+        });
 
-        /*// Add dugme - otvara novu aktivnost
+        // Add dugme - otvara novu aktivnost
         ImageButton addCategoryButton = view.findViewById(R.id.addCategoryButton);
         addCategoryButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                NavController navController = ((MainActivity) getActivity()).getNavController();
-                navController.navigate(R.id.serviceEditFragment);
+                public void onClick(View v) {showCategoryDialog();
             }
-        });*/
+
+        });
 
         // Delete dugme - prikazuje dijalog
         ImageButton deleteButtonCategory = view.findViewById(R.id.deleteButtonCategory);
@@ -89,6 +86,35 @@ public class CategoryManagement extends Fragment {
                 dialog.dismiss();
             }
         });
+
+        dialog.show();
+    }
+
+    private void showCategoryDialog() {
+        // Kreiraj AlertDialog sa prilagođenim stilom i layout-om
+        AlertDialog.Builder builder = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            builder = new AlertDialog.Builder(getContext(), R.style.CustomDialog);
+        }
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.category_dialog_box, null);
+        builder.setView(dialogView);
+
+        AlertDialog dialog = builder.create();
+
+        // Postavi zaobljenu pozadinu iz drawable resursa
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+
+        Button buttonSave = dialogView.findViewById(R.id.button_save);
+        buttonSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Logika za cuvanje kategorije
+                // ako je bila da se doda nova dodati je , ako je bilo da se edituje editovati je
+                dialog.dismiss();
+            }
+        });
+
+
 
         dialog.show();
     }
