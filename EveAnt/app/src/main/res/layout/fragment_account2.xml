@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#f0f3ff"
+    tools:context=".account.AccountFragment2"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="16dp">
+
+            <ImageView
+                android:id="@+id/profile_photo"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:src="@drawable/rounded_corners_image"
+                android:layout_gravity="center" />
+
+            <Button
+                android:id="@+id/change_photo_button"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:padding="10dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppins_medium"
+                android:background="@drawable/rounded_corners_8599e0"
+                android:text="Change profile photo" />
+
+            <Button
+                android:id="@+id/delete_photo_button"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/poppins_medium"
+                android:padding="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/white"
+                android:background="@drawable/rounded_corners_f26a8d"
+                android:text="Delete profile photo" />
+        </LinearLayout>
+
+        <!-- Personal Information Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/rounded_corners_white"
+            android:padding="16dp"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/personal_info_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="Personal Information"
+                android:fontFamily="@font/poppins_bold"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/rounded_corners_f0f3ff">
+
+                    <EditText
+                        android:id="@+id/name"
+                        style="@style/loginInputText"
+                        android:hint="@string/prompt_name"
+                        android:imeActionLabel="@string/action_sign_in_short"
+                        android:imeOptions="actionDone"
+                        android:inputType="textPersonName"
+                        android:selectAllOnFocus="true"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/rounded_corners_f0f3ff">
+
+                    <EditText
+                        android:id="@+id/surname"
+                        style="@style/loginInputText"
+                        android:hint="@string/prompt_surname"
+                        android:imeActionLabel="@string/action_sign_in_short"
+                        android:imeOptions="actionDone"
+                        android:inputType="text" />
+                </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rounded_corners_f0f3ff">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/mail"
+                    android:layout_marginStart="16dp"
+                    android:layout_gravity="start|center_vertical"/>
+                <EditText
+                    android:id="@+id/email"
+                    style="@style/loginInputText"
+                    android:hint="@string/prompt_email"
+                    android:inputType="textEmailAddress"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rounded_corners_f0f3ff">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/person_vector"
+                    android:layout_marginStart="16dp"
+                    android:layout_gravity="start|center_vertical"/>
+                <EditText
+                    android:id="@+id/username"
+                    style="@style/loginInputText"
+                    android:hint="@string/prompt_username"
+                    android:inputType="text"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rounded_corners_f0f3ff">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_calendar"
+                    android:layout_marginStart="16dp"
+                    android:layout_gravity="start|center_vertical"/>
+                <EditText
+                    android:id="@+id/birthday"
+                    style="@style/loginInputText"
+                    android:hint="@string/prompt_birthday"
+                    android:inputType="date"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rounded_corners_f0f3ff"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|center_vertical"
+                    android:layout_marginStart="16dp"
+                    android:background="@drawable/telephone" />
+
+                <EditText
+                    android:id="@+id/phoneNumber"
+                    style="@style/loginInputText"
+                    android:hint="@string/prompt_phoneNumber"
+                    android:inputType="text|phone" />
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/edit_personal_info_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Edit"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/white"
+                android:background="@drawable/rounded_corners_8599e0"/>
+        </LinearLayout>
+
+
+        <!-- Address Information Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/rounded_corners_white"
+            android:padding="16dp"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/address_info_header"
+                android:layout_width="wrap_content"
+                android:fontFamily="@font/poppins_bold"
+                android:layout_height="wrap_content"
+                android:text="Address Information"
+                android:textSize="20sp"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="50dp"
+                android:background="@drawable/rounded_corners_f0f3ff">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/location"
+                    android:layout_marginStart="16dp"
+                    android:layout_gravity="start|center_vertical"/>
+                <EditText
+                    android:id="@+id/country"
+                    style="@style/loginInputText"
+                    android:hint="@string/prompt_country"
+                    android:inputType="text"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rounded_corners_f0f3ff">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/location"
+                    android:layout_marginStart="16dp"
+                    android:layout_gravity="start|center_vertical"/>
+                <EditText
+                    android:id="@+id/city"
+                    style="@style/loginInputText"
+                    android:hint="@string/prompt_city"
+                    android:inputType="text"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rounded_corners_f0f3ff">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/location"
+                    android:layout_marginStart="16dp"
+                    android:layout_gravity="start|center_vertical"/>
+                <EditText
+                    android:id="@+id/street"
+                    style="@style/loginInputText"
+                    android:hint="@string/prompt_street"
+                    android:inputType="text"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rounded_corners_f0f3ff">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/location"
+                    android:layout_marginStart="16dp"
+                    android:layout_gravity="start|center_vertical"/>
+                <EditText
+                    android:id="@+id/postalNumber"
+                    style="@style/loginInputText"
+                    android:hint="@string/prompt_postal_number"
+                    android:inputType="text"/>
+            </LinearLayout>
+
+            <Button
+            android:id="@+id/edit_address_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Edit"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/white"
+            android:background="@drawable/rounded_corners_8599e0"/>
+
+        </LinearLayout>
+
+        <!-- Change Password Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/rounded_corners_white"
+            android:padding="16dp"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/change_password_header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Change Password"
+                android:textColor="@color/black"
+                android:fontFamily="@font/poppins_medium"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rounded_corners_f0f3ff">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/lock"
+                    android:layout_marginStart="16dp"
+                    android:layout_gravity="start|center_vertical"/>
+                <EditText
+                    android:id="@+id/password"
+                    style="@style/loginInputText"
+                    android:hint="@string/prompt_password"
+                    android:imeActionLabel="@string/action_sign_in_short"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rounded_corners_f0f3ff">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/lock"
+                    android:layout_marginStart="16dp"
+                    android:layout_gravity="start|center_vertical"/>
+                <EditText
+                    android:id="@+id/new_password"
+                    style="@style/loginInputText"
+                    android:hint="@string/prompt_new_password"
+                    android:imeActionLabel="@string/action_sign_in_short"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rounded_corners_f0f3ff">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/lock"
+                    android:layout_marginStart="16dp"
+                    android:layout_gravity="start|center_vertical"/>
+                <EditText
+                    android:id="@+id/confirmPassword"
+                    style="@style/loginInputText"
+                    android:hint="@string/prompt_confirmPassword"
+                    android:inputType="textPassword"/>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/save_changes_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/rounded_corners_8599e0"
+                android:text="Save changes"
+                android:layout_marginBottom="10dp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/poppins_medium" />
+        </LinearLayout>
+        </LinearLayout>
+    </ScrollView>

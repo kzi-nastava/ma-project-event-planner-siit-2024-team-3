@@ -10,6 +10,15 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,13 +28,107 @@ public class HomeFragment extends Fragment {
     private ViewPager2 viewPager;
     private Handler handler;
     private Runnable runnable;
+    private RelativeLayout filterButton;
     private int currentPage = 0;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the fragment layout
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        filterButton = view.findViewById(R.id.filter_button);
+
+        filterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFilterBottomSheet();
+            }
+        });
+        return view;
+    }
+
+
+    private void showFilterBottomSheet() {
+        // Kreiramo BottomSheetDialog
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity());
+        View bottomSheetView = LayoutInflater.from(getContext())
+                .inflate(R.layout.filter_bottom_sheet, getActivity().findViewById(android.R.id.content), false);
+
+        SeekBar priceSeekBar = bottomSheetView.findViewById(R.id.price_seekbar);
+        TextView currentPriceText = bottomSheetView.findViewById(R.id.current_price_text);
+        CheckBox availabilityCheckbox = bottomSheetView.findViewById(R.id.availability_checkbox);
+        Button applyFiltersButton = bottomSheetView.findViewById(R.id.apply_filters_button);
+
+        // Nizovi sa podacima (može se zameniti podacima iz baze)
+        String[] categories = {"Party", "Wedding", "Conference", "Birthday"};
+        String[] eventTypes = {"Standard", "VIP", "Premium"};
+
+        // Kontejneri za dinamičke CheckBox-ove
+        LinearLayout categoryContainer = bottomSheetView.findViewById(R.id.category_container);
+        LinearLayout eventTypeContainer = bottomSheetView.findViewById(R.id.event_type_container);
+
+        // Dinamičko dodavanje CheckBox-ova za kategorije
+        List<CheckBox> categoryCheckBoxes = new ArrayList<>();
+        for (String category : categories) {
+            CheckBox checkBox = new CheckBox(getContext());
+            checkBox.setText(category);
+            checkBox.setTextColor(getResources().getColor(R.color.black));
+            checkBox.setButtonTintList(getResources().getColorStateList(R.color.purple));
+            categoryContainer.addView(checkBox);
+            categoryCheckBoxes.add(checkBox);
+        }
+
+        // Dinamičko dodavanje CheckBox-ova za tipove eventa
+        List<CheckBox> eventTypeCheckBoxes = new ArrayList<>();
+        for (String eventType : eventTypes) {
+            CheckBox checkBox = new CheckBox(getContext());
+            checkBox.setText(eventType);
+            checkBox.setTextColor(getResources().getColor(R.color.black));
+            checkBox.setButtonTintList(getResources().getColorStateList(R.color.purple));
+            eventTypeContainer.addView(checkBox);
+            eventTypeCheckBoxes.add(checkBox);
+        }
+
+        // Listener za SeekBar promenu vrednosti
+        priceSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                // Prikaz trenutne cene
+                currentPriceText.setText("Price: " + progress + "€");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // Opcionalno: dodaj logiku ako je potrebna prilikom početka dodira
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // Opcionalno: dodaj logiku ako je potrebna prilikom završetka dodira
+            }
+        });
+
+        // Postavljanje dugmeta za primenu filtera
+        applyFiltersButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int selectedPrice = priceSeekBar.getProgress();
+                boolean isAvailableOnly = availabilityCheckbox.isChecked();
+
+                // Prikazivanje rezultata filtriranja
+                Toast.makeText(getContext(),
+                        "Filter: Price up to: " + selectedPrice + "€, Availability: " + isAvailableOnly,
+                        Toast.LENGTH_SHORT).show();
+
+                // Zatvaranje BottomSheet-a
+                bottomSheetDialog.dismiss();
+            }
+        });
+
+        // Prikaz BottomSheet-a
+        bottomSheetDialog.setContentView(bottomSheetView);
+        bottomSheetDialog.show();
     }
 
     @Override

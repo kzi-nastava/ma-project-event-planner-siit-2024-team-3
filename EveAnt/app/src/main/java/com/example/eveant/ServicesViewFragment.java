@@ -19,7 +19,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 
-import com.example.eveant.serviceCreate.ServiceCreateFragment;
 import com.example.eveant.serviceEdit.ServiceEditFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -38,6 +37,7 @@ public class ServicesViewFragment extends Fragment {
         // Inflate the fragment layout
         View view = inflater.inflate(R.layout.fragment_services_view, container, false);
 
+        NavController navController = ((MainActivity) getActivity()).getNavController();
 
         // Povezivanje dugmeta za filtere
         filterButton = view.findViewById(R.id.filter_button);
@@ -142,7 +142,7 @@ public class ServicesViewFragment extends Fragment {
 
                 // Prikazivanje rezultata filtriranja
                 Toast.makeText(getContext(),
-                        "Filter: Cena do " + selectedPrice + "€, Dostupnost: " + isAvailableOnly,
+                        "Filter: Price up to: " + selectedPrice + "€, Availability: " + isAvailableOnly,
                         Toast.LENGTH_SHORT).show();
 
                 // Zatvaranje BottomSheet-a

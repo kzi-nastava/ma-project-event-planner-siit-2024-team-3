@@ -35,7 +35,7 @@ public class ServiceCreateFragment1 extends Fragment {
 
         ToggleButton availableButton = view.findViewById(R.id.availableButton);
         ToggleButton unavailableButton = view.findViewById(R.id.unavailableButton);
-
+        NavController navController = ((MainActivity) getActivity()).getNavController();
         availableButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -84,7 +84,6 @@ public class ServiceCreateFragment1 extends Fragment {
         });
 
         view.findViewById(R.id.next_button).setOnClickListener(v -> {
-            NavController navController = ((MainActivity) getActivity()).getNavController();
             navController.navigate(R.id.serviceCreateFragment2);
         });
 

@@ -298,7 +298,7 @@
                 android:layout_height="70dp"
                 android:orientation="horizontal"
                 android:gravity="center"
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="45dp"
                 android:layout_marginBottom="10dp">
                 <Button
                     android:id="@+id/previous_button"
@@ -325,7 +325,6 @@
                 android:gravity="center"
                 android:layout_gravity="center"
                 android:text="3"
-                android:layout_marginTop="10dp"
                 android:textSize="12sp"/>
         </LinearLayout>
 

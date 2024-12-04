@@ -29,7 +29,8 @@ public class ServiceCreateFragment3 extends Fragment {
 
         view.findViewById(R.id.save_button).setOnClickListener(v -> {
             NavController navController = ((MainActivity) getActivity()).getNavController();
-            navController.navigate(R.id.actionCreateFragment_toViewServices);
+            navController.popBackStack(R.id.serviceCreateFragment1, true);
+            navController.navigate(R.id.servicesViewFragment);
         });
 
         view.findViewById(R.id.previous_button).setOnClickListener(v -> {

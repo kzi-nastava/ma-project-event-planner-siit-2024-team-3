@@ -7,6 +7,8 @@
     <string name="prompt_name">Name</string>
     <string name="prompt_surname">Surname</string>
     <string name="prompt_confirmPassword">Confirm password</string>
+    <string name="prompt_new_password">New password</string>
+    <string name="prompt_birthday">Birthday</string>
 
     <string name="prompt_country">Country</string>
 

@@ -5,7 +5,7 @@
         android:icon="@drawable/bottom_nav_ic_home"
         android:title="Home" />
     <item
-        android:id="@+id/serviceCreateFragment"
+        android:id="@+id/serviceCreateFragment1"
         android:icon="@drawable/bottom_nav_ic_add_service"
         android:title="Add service" />
     <item
@@ -13,7 +13,7 @@
         android:icon="@drawable/bottom_nav_ic_calendar"
         android:title="My services" />
     <item
-        android:id="@+id/loginActivity"
+        android:id="@+id/accountFragment1"
         android:icon="@drawable/bottom_nav_ic_profile"
         android:title="Profile" />
 </menu>
