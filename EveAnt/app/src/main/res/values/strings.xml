@@ -43,7 +43,7 @@
 
     <string name="create_your_account">Create your account:</string>
 
-    <string name="description">Description</string>
+    <string name="description">Description kjsbfdsa d kdsnajfd vids jfds ds fdi foidsoifdofdshfdsof dfhd fdf do foidhfd hfod hof hdof</string>
 
     <string name="add_photos">Add photos</string>
 
@@ -137,6 +137,9 @@
     <string name="select_category">Select category</string>
     <string name="hint_new_category">Suggest new category</string>
     <string name="check_new_category">Check new category</string>
+    <string name="adminName">Admin</string>
+    <string name="category_name">Category Name</string>
+    <string name="suggested">Suggested</string>
 
     <string-array name="categories">
         <item>Select category</item>
