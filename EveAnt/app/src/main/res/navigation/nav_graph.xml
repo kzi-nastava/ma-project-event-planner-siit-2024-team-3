@@ -53,5 +53,9 @@
         android:id="@+id/serviceEditFragment3"
         android:name="com.example.eveant.serviceEdit.ServiceEditFragment3"
         android:label="ServiceEditFragment3" />
+    <fragment
+        android:id="@+id/serviceDetailsFragment"
+        android:name="com.example.eveant.ServiceDetails"
+        android:label="Service Details"/>
 
 </navigation>
