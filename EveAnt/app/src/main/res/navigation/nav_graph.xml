@@ -59,4 +59,9 @@
         android:name="com.example.eveant.account.AccountFragment2"
         android:label="AccountFragment2">
     </fragment>
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="com.example.eveant.admin.CategoryManagement"
+        android:label="CategoryFragment">
+    </fragment>
 </navigation>

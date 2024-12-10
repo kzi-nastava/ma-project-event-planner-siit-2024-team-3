@@ -24,6 +24,5 @@
         android:background="@color/white"
         app:itemIconTint="@color/bottom_nav_ic_icon"
         app:itemTextColor="#8599e0"
-        android:fitsSystemWindows="true"
-        app:menu="@menu/bottom_nav_menu" />
+        android:fitsSystemWindows="true" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
