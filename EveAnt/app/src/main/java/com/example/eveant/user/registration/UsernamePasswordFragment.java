@@ -1,23 +1,25 @@
-package com.example.eveant.registration;
+package com.example.eveant.user.registration;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
 
-import com.example.eveant.LoginActivity;
-import com.example.eveant.MainActivity;
+import com.example.eveant.user.LoginActivity;
 import com.example.eveant.R;
 
 public class UsernamePasswordFragment extends Fragment {
 
     private Button goToLogin, goToNext, goToBack;
+    private EditText username, password, confirmPassword;
 
     @Nullable
     @Override
@@ -33,12 +35,37 @@ public class UsernamePasswordFragment extends Fragment {
         goToBack = getActivity().findViewById(R.id.goToBack);
         goToNext = getActivity().findViewById(R.id.goToNext);
         goToLogin = view.findViewById(R.id.goToLogin);
+        username = getActivity().findViewById(R.id.username);
+        password = getActivity().findViewById(R.id.password);
+        confirmPassword = getActivity().findViewById(R.id.confirmPassword);
+
         if(goToNext != null){
             goToNext.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    String usernameInput = username.getText().toString().trim();
+                    String passwordInput = password.getText().toString();
+                    String confirmPasswordInput = confirmPassword.getText().toString();
+
+                    // Validation
+                    if (usernameInput.isEmpty() || passwordInput.isEmpty() || confirmPasswordInput.isEmpty()) {
+                        showError("All fields are required.");
+                        return;
+                    }
+                    if (!passwordInput.equals(confirmPasswordInput)) {
+                        showError("Passwords do not match.");
+                        return;
+                    }
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("username", usernameInput);
+                    bundle.putString("password", passwordInput);
+
+                    PersonalInfoFragment personalInfoFragment = new PersonalInfoFragment();
+                    personalInfoFragment.setArguments(bundle);
+
                     FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
-                    transaction.replace(R.id.container, new PersonalInfoFragment());
+                    transaction.replace(R.id.container, personalInfoFragment);
                     transaction.addToBackStack("Registration"); // Allows user to go back to this fragment
                     transaction.commit();
                     if (requireActivity() instanceof RegistrationActivity) {
@@ -58,4 +85,8 @@ public class UsernamePasswordFragment extends Fragment {
             }
         });
     }
+    private void showError(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
 }

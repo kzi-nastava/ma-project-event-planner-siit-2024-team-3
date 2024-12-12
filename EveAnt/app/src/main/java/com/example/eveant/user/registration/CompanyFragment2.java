@@ -1,4 +1,4 @@
-package com.example.eveant.registration;
+package com.example.eveant.user.registration;
 
 import android.content.Intent;
 import android.os.Bundle;

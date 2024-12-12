@@ -1,4 +1,4 @@
-package com.example.eveant.registration;
+package com.example.eveant.user.registration;
 
 import android.os.Bundle;
 
@@ -22,6 +22,7 @@ public class CompanyFragment1 extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_company_1, container, false);
+
         goToBack = getActivity().findViewById(R.id.goToBack);
         goToNext = getActivity().findViewById(R.id.goToNext);
 

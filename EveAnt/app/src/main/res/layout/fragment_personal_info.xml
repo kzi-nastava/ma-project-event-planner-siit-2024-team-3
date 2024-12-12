@@ -5,7 +5,7 @@
      android:layout_height="match_parent"
      android:layout_margin="16dp"
      android:padding="16dp"
-     tools:context=".registration.PersonalInfoFragment">
+     tools:context=".user.registration.PersonalInfoFragment">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/rounded_corners_f0f3ff">
 
             <EditText
@@ -88,6 +88,87 @@
                 style="@style/loginInputText"
                 android:hint="@string/prompt_phoneNumber"
                 android:inputType="text|phone" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_corners_f0f3ff"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/ic_calendar" />
+
+            <EditText
+                android:id="@+id/birthday"
+                style="@style/loginInputText"
+                android:hint="@string/birthday"
+                android:inputType="text|date"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:elevation="2dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/rounded_corners_f0f3ff">
+            <ToggleButton
+                android:id="@+id/male"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/slider_organizer_provider"
+                android:textAlignment="center"
+                android:enabled="true"
+                android:fontFamily="@font/poppins_bold"
+                android:padding="10dp"
+                android:shadowColor="@null"
+                android:stateListAnimator="@null"
+                android:elevation="0dp"
+                android:textOn="@string/male"
+                android:textOff="@string/male"
+                android:textColor="@drawable/text_organizer_provider"
+                android:textSize="16sp"/>
+            <ToggleButton
+                android:id="@+id/female"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@drawable/slider_organizer_provider"
+                android:enabled="true"
+                android:shadowColor="@null"
+                android:stateListAnimator="@null"
+                android:elevation="0dp"
+                android:padding="10dp"
+                android:textAlignment="center"
+                android:textOn="@string/female"
+                android:textOff="@string/female"
+                android:textColor="@drawable/text_organizer_provider"
+                android:textSize="16sp"
+                android:fontFamily="@font/poppins_bold"/>
+            <ToggleButton
+                android:id="@+id/other"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:background="@drawable/slider_organizer_provider"
+                android:enabled="true"
+                android:shadowColor="@null"
+                android:stateListAnimator="@null"
+                android:elevation="0dp"
+                android:padding="10dp"
+                android:textAlignment="center"
+                android:textOn="@string/other"
+                android:textOff="@string/other"
+                android:textColor="@drawable/text_organizer_provider"
+                android:textSize="16sp"
+                android:fontFamily="@font/poppins_bold"/>
         </LinearLayout>
     </LinearLayout>
  </FrameLayout>
