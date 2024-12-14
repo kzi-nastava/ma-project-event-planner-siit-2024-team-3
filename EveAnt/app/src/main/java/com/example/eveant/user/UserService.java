@@ -31,4 +31,7 @@ public interface UserService {
 
     @POST("/api/auth/login")
     Call<Map<String, String>> login(@Body LoginRequest loginRequest);
+
+    @GET("/api/users/me")
+    Call<UserProfileRequest> getUserProfile(@Query("username") String username);
 }

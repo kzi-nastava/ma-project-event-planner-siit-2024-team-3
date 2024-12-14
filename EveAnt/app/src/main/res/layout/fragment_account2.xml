@@ -4,6 +4,9 @@
         <variable
             name="user"
             type="com.example.eveant.user.model.User" />
+        <variable
+            name="profile"
+            type="com.example.eveant.user.model.Profile"/>
     </data>
     <ScrollView
         android:layout_width="match_parent"
@@ -84,7 +87,7 @@
                     <EditText
                         android:id="@+id/name"
                         style="@style/loginInputText"
-                        android:text="@{user.name}"
+                        android:text="@{user.firstName}"
                         android:imeActionLabel="@string/action_sign_in_short"
                         android:imeOptions="actionDone"
                         android:inputType="textPersonName"
@@ -101,7 +104,7 @@
                     <EditText
                         android:id="@+id/surname"
                         style="@style/loginInputText"
-                        android:text="@{user.surname}"
+                        android:text="@{user.lastName}"
                         android:imeActionLabel="@string/action_sign_in_short"
                         android:imeOptions="actionDone"
                         android:inputType="text" />
@@ -121,7 +124,7 @@
                 <EditText
                     android:id="@+id/email"
                     style="@style/loginInputText"
-                    android:text="@{user.email}"
+                    android:text="@{profile.email}"
                     android:inputType="textEmailAddress"/>
             </LinearLayout>
             <LinearLayout
@@ -139,7 +142,7 @@
                 <EditText
                     android:id="@+id/username"
                     style="@style/loginInputText"
-                    android:text="@{user.username}"
+                    android:text="@{profile.username}"
                     android:inputType="text"/>
             </LinearLayout>
             <LinearLayout
@@ -157,7 +160,7 @@
                 <EditText
                     android:id="@+id/birthday"
                     style="@style/loginInputText"
-                    android:text="@{user.birthday}"
+                    android:text="@{user.dateOfBirth}"
                     android:inputType="date"/>
             </LinearLayout>
             <LinearLayout
@@ -229,7 +232,7 @@
                 <EditText
                     android:id="@+id/country"
                     style="@style/loginInputText"
-                    android:text="@{user.country}"
+                    android:text="@{user.address.country}"
                     android:inputType="text"/>
             </LinearLayout>
             <LinearLayout
@@ -247,7 +250,7 @@
                 <EditText
                     android:id="@+id/city"
                     style="@style/loginInputText"
-                    android:text="@{user.city}"
+                    android:text="@{user.address.city}"
                     android:inputType="text"/>
             </LinearLayout>
             <LinearLayout
@@ -265,7 +268,7 @@
                 <EditText
                     android:id="@+id/street"
                     style="@style/loginInputText"
-                    android:text="@{user.street}"
+                    android:text="@{user.address.street}"
                     android:inputType="text"/>
             </LinearLayout>
             <LinearLayout
@@ -283,7 +286,7 @@
                 <EditText
                     android:id="@+id/postalNumber"
                     style="@style/loginInputText"
-                    android:text="@{user.postalNumber}"
+                    android:text="@{user.address.postalNumber}"
                     android:inputType="text"/>
             </LinearLayout>
 
@@ -353,7 +356,7 @@
                 <EditText
                     android:id="@+id/new_password"
                     style="@style/loginInputText"
-                    android:hint="@string/prompt_new_password"
+                    android:hint="@string/prompt_newPassword"
                     android:imeActionLabel="@string/action_sign_in_short"
                     android:imeOptions="actionDone"
                     android:inputType="textPassword" />
