@@ -24,7 +24,9 @@ import com.example.eveant.R;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PersonalInfoFragment extends Fragment {
 
@@ -60,9 +62,22 @@ public class PersonalInfoFragment extends Fragment {
         daySpinner.setAdapter(dayAdapter);
 
 // Populate Month Spinner
-        List<String> months = Arrays.asList("January", "February", "March", "April", "May", "June",
-                "July", "August", "September", "October", "November", "December");
-        ArrayAdapter<String> monthAdapter = new ArrayAdapter<>(requireContext(), R.layout.spinner_color, months);
+        Map<String, String> monthMap = new HashMap<>();
+        monthMap.put("January", "01");
+        monthMap.put("February", "02");
+        monthMap.put("March", "03");
+        monthMap.put("April", "04");
+        monthMap.put("May", "05");
+        monthMap.put("June", "06");
+        monthMap.put("July", "07");
+        monthMap.put("August", "08");
+        monthMap.put("September", "09");
+        monthMap.put("October", "10");
+        monthMap.put("November", "11");
+        monthMap.put("December", "12");
+        List<String> monthNames = new ArrayList<>(monthMap.keySet());
+
+        ArrayAdapter<String> monthAdapter = new ArrayAdapter<>(requireContext(), R.layout.spinner_color, monthNames);
         monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         monthSpinner.setAdapter(monthAdapter);
 
@@ -105,8 +120,16 @@ public class PersonalInfoFragment extends Fragment {
                     String phone = phoneNumber.getText().toString();
                     String selectedDay = daySpinner.getSelectedItem().toString();
                     String selectedMonth = monthSpinner.getSelectedItem().toString();
+                    String monthNumber = monthMap.get(selectedMonth);
                     String selectedYear = yearSpinner.getSelectedItem().toString();
-                    String birthdayText = selectedYear  + "/" + selectedMonth + "/" + selectedDay;
+                    if (selectedDay.length() == 1) {
+                        selectedDay = "0" + selectedDay;
+                    }
+                    if (selectedMonth.length() == 1) {
+                        selectedMonth = "0" + selectedMonth;
+                    }
+
+                    String birthdayText = selectedYear  + "-" + monthNumber + "-" + selectedDay;
 
                     if (TextUtils.isEmpty(firstName) || TextUtils.isEmpty(lastName)
                              || TextUtils.isEmpty(phone) || TextUtils.isEmpty(birthdayText)) {
