@@ -1,6 +1,8 @@
 package com.example.eveant.user.registration;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +21,7 @@ import com.example.eveant.R;
 public class UsernamePasswordFragment extends Fragment {
 
     private Button goToLogin, goToNext, goToBack;
-    private EditText username, password, confirmPassword;
+    private EditText username, password, confirmPassword, email;
 
     @Nullable
     @Override
@@ -38,6 +40,8 @@ public class UsernamePasswordFragment extends Fragment {
         username = getActivity().findViewById(R.id.username);
         password = getActivity().findViewById(R.id.password);
         confirmPassword = getActivity().findViewById(R.id.confirmPassword);
+        email = view.findViewById(R.id.email);
+
 
         if(goToNext != null){
             goToNext.setOnClickListener(new View.OnClickListener() {
@@ -46,10 +50,15 @@ public class UsernamePasswordFragment extends Fragment {
                     String usernameInput = username.getText().toString().trim();
                     String passwordInput = password.getText().toString();
                     String confirmPasswordInput = confirmPassword.getText().toString();
+                    String emailText = email.getText().toString();
 
                     // Validation
-                    if (usernameInput.isEmpty() || passwordInput.isEmpty() || confirmPasswordInput.isEmpty()) {
+                    if (usernameInput.isEmpty() || passwordInput.isEmpty() || confirmPasswordInput.isEmpty() || emailText.isEmpty()) {
                         showError("All fields are required.");
+                        return;
+                    }
+                    if (!Patterns.EMAIL_ADDRESS.matcher(emailText).matches()) {
+                        showError("Invalid email format.");
                         return;
                     }
                     if (!passwordInput.equals(confirmPasswordInput)) {
@@ -60,6 +69,7 @@ public class UsernamePasswordFragment extends Fragment {
                     Bundle bundle = new Bundle();
                     bundle.putString("username", usernameInput);
                     bundle.putString("password", passwordInput);
+                    bundle.putString("email", emailText);
 
                     PersonalInfoFragment personalInfoFragment = new PersonalInfoFragment();
                     personalInfoFragment.setArguments(bundle);
