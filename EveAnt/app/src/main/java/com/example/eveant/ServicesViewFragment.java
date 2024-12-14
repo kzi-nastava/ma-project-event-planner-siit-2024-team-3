@@ -73,7 +73,7 @@ public class ServicesViewFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 NavController navController = ((MainActivity) getActivity()).getNavController();
-                navController.navigate(R.id.);
+                navController.navigate(R.id.serviceDetailsFragment);
             }
         });
 

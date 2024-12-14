@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.auth0.android.jwt.JWT;
 import com.example.eveant.R;
 import com.example.eveant.MainActivity;
 import com.example.eveant.user.model.LoginRequest;
@@ -59,14 +60,23 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(Call<Map<String, String>> call, Response<Map<String, String>> response) {
                         if (response.isSuccessful() && response.body() != null) {
                             String token = response.body().get("token");
-                            SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("token", token); // Save the JWT token
-                            editor.apply();
 
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
+                            try {
+                                JWT jwt = new JWT(token);
+                                String role = jwt.getClaim("role").asString();
+
+                                SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("token", token);
+                                editor.putString("role", role);
+                                editor.apply();
+
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            } catch (Exception e) {
+                                Toast.makeText(LoginActivity.this, "Failed to decode token", Toast.LENGTH_SHORT).show();
+                            }
                         } else {
                             Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
                         }

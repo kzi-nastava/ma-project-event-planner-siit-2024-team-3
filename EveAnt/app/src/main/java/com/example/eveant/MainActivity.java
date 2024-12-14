@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
-        String role = sharedPreferences.getString("role", ""); // Default to empty if not logged in
+        String role = sharedPreferences.getString("role", "USER");
 
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment);
@@ -26,13 +26,13 @@ public class MainActivity extends AppCompatActivity {
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
-        if (role.equals("organizer")) {
+        if (role.equals("ORGANIZER")) {
             bottomNavigationView.getMenu().clear();
             bottomNavigationView.inflateMenu(R.menu.organizer_menu);
-        } else if (role.equals("provider")) {
+        } else if (role.equals("PROVIDER")) {
             bottomNavigationView.getMenu().clear();
             bottomNavigationView.inflateMenu(R.menu.provider_menu);
-        } else if (role.equals("admin")) {
+        } else if (role.equals("ADMIN")) {
             bottomNavigationView.getMenu().clear();
             bottomNavigationView.inflateMenu(R.menu.admin_menu);
         } else {
