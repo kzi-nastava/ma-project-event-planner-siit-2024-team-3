@@ -18,7 +18,7 @@ import android.widget.Toast;
 import com.example.eveant.R;
 
 public class AddressFragment extends Fragment {
-    private EditText country, city, street, postalNumber;
+    private EditText country, city, street, postalNumber, house;
     private Button goToBack, goToNext;
 
     @Nullable
@@ -30,6 +30,7 @@ public class AddressFragment extends Fragment {
         city = view.findViewById(R.id.city);
         street = view.findViewById(R.id.street);
         postalNumber = view.findViewById(R.id.postalNumber);
+        house = view.findViewById(R.id.house);
         goToBack = getActivity().findViewById(R.id.goToBack);
         goToNext = getActivity().findViewById(R.id.goToNext);
 
@@ -41,6 +42,7 @@ public class AddressFragment extends Fragment {
                     String countryText = country.getText().toString().trim();
                     String cityText = city.getText().toString().trim();
                     String streetText = street.getText().toString().trim();
+                    String houseText = house.getText().toString().trim();
                     String postalNumberText = postalNumber.getText().toString().trim();
                     if (TextUtils.isEmpty(countryText) || TextUtils.isEmpty(cityText) ||
                             TextUtils.isEmpty(streetText) || TextUtils.isEmpty(postalNumberText)) {
@@ -57,6 +59,7 @@ public class AddressFragment extends Fragment {
                     bundle.putString("country", countryText);
                     bundle.putString("city", cityText);
                     bundle.putString("street", streetText);
+                    bundle.putString("houseNumber", houseText);
                     bundle.putString("postalNumber", postalNumberText);
 
                     OrganizerProviderFragment organizerProviderFragment = new OrganizerProviderFragment();

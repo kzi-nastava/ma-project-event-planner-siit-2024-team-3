@@ -2,6 +2,7 @@ package com.example.eveant.user.registration;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,6 +86,7 @@ public class OrganizerProviderFragment extends Fragment {
                 address.setCity(bundle.getString("city"));
                 address.setStreet(bundle.getString("street"));
                 address.setPostalNumber(bundle.getString("postalNumber"));
+                address.setHouseNumber(bundle.getString("houseNumber"));
 
                 User user = new User();
 
@@ -131,7 +133,8 @@ public class OrganizerProviderFragment extends Fragment {
                     });
 
                 } else {
-                    bundle.putString("Role", "PROVIDER");
+                    userProfileRequest.getCreateUserDTO().setRole("PROVIDER");
+                    bundle.putParcelable("userProfileRequest",userProfileRequest);
                     CompanyFragment1 companyFragment1 = new CompanyFragment1();
                     companyFragment1.setArguments(bundle);
 
