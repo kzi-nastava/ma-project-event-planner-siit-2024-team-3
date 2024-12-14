@@ -68,6 +68,15 @@ public class ServicesViewFragment extends Fragment {
             }
         });
 
+        ImageButton viewMoreButton = view.findViewById(R.id.viewMoreButton);
+        viewMoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavController navController = ((MainActivity) getActivity()).getNavController();
+                navController.navigate(R.id.serviceDetailsFragment);
+            }
+        });
+
 
         return view;
     }
@@ -191,4 +200,6 @@ public class ServicesViewFragment extends Fragment {
 
         dialog.show();
     }
+
+
 }
