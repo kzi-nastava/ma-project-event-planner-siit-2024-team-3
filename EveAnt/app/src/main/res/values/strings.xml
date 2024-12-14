@@ -17,7 +17,8 @@
 
     <string name="prompt_city">City</string>
 
-    <string name="prompt_street">Street and house number</string>
+    <string name="prompt_street">Street</string>
+    <string name="prompt_house">House number</string>
 
     <string name="prompt_postal_number">Postal number</string>
 

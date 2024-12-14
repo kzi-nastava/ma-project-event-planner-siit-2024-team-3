@@ -33,7 +33,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_gravity="start|center_vertical"/>
             <EditText
-                android:id="@+id/country"
+                android:id="@+id/companyCountry"
                 style="@style/loginInputText"
                 android:hint="@string/prompt_country"
                 android:inputType="text"/>
@@ -51,7 +51,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_gravity="start|center_vertical"/>
             <EditText
-                android:id="@+id/city"
+                android:id="@+id/companyCity"
                 style="@style/loginInputText"
                 android:hint="@string/prompt_city"
                 android:inputType="text"/>
@@ -69,7 +69,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_gravity="start|center_vertical"/>
             <EditText
-                android:id="@+id/street"
+                android:id="@+id/companyStreet"
                 style="@style/loginInputText"
                 android:hint="@string/prompt_street"
                 android:inputType="text"/>
@@ -77,21 +77,45 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/rounded_corners_f0f3ff">
-            <ImageView
+            android:orientation="horizontal">
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/location"
-                android:layout_marginStart="16dp"
-                android:layout_gravity="start|center_vertical"/>
-            <EditText
-                android:id="@+id/postalNumber"
-                style="@style/loginInputText"
-                android:hint="@string/prompt_postal_number"
-                android:inputType="text"/>
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rounded_corners_f0f3ff">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/location"
+                    android:layout_marginStart="16dp"
+                    android:layout_gravity="start|center_vertical"/>
+                <EditText
+                    android:id="@+id/companyHouse"
+                    style="@style/loginInputText"
+                    android:hint="@string/prompt_house"
+                    android:inputType="text"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rounded_corners_f0f3ff">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/location"
+                    android:layout_marginStart="16dp"
+                    android:layout_gravity="start|center_vertical"/>
+                <EditText
+                    android:id="@+id/companyPostalNumber"
+                    style="@style/loginInputText"
+                    android:hint="@string/prompt_postal_number"
+                    android:inputType="number"/>
+            </LinearLayout>
         </LinearLayout>
+
 
         <Button
             android:layout_width="match_parent"
