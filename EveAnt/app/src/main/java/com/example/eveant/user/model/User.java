@@ -1,8 +1,11 @@
 package com.example.eveant.user.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.time.LocalDate;
 
-public class User {
+public class User implements Parcelable {
     private String firstName;
     private String lastName;
     private String dateOfBirth;
@@ -24,7 +27,45 @@ public class User {
         this.company = company;
         this.role = role;
     }
+    protected User(Parcel in) {
+        firstName = in.readString();
+        lastName = in.readString();
+        dateOfBirth = in.readString();
+        address = in.readParcelable(Address.class.getClassLoader());
+        phoneNumber = in.readString();
+        gender = in.readString();
+        company = in.readParcelable(Company.class.getClassLoader());
+        role = in.readString();
+    }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(firstName);
+        dest.writeString(lastName);
+        dest.writeString(dateOfBirth);
+        dest.writeParcelable(address, flags);
+        dest.writeString(phoneNumber);
+        dest.writeString(gender);
+        dest.writeParcelable(company, flags);
+        dest.writeString(role);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel in) {
+            return new User(in);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
     // Getters and Setters
     public String getFirstName() {
         return firstName;

@@ -1,6 +1,9 @@
 package com.example.eveant.user.model;
 
-public class Profile {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Profile implements Parcelable {
     private String username;
     private String password;
     private String email;
@@ -13,6 +16,35 @@ public class Profile {
         this.password = password;
         this.email = email;
     }
+    protected Profile(Parcel in) {
+        username = in.readString();
+        password = in.readString();
+        email = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(username);
+        dest.writeString(password);
+        dest.writeString(email);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Profile> CREATOR = new Creator<Profile>() {
+        @Override
+        public Profile createFromParcel(Parcel in) {
+            return new Profile(in);
+        }
+
+        @Override
+        public Profile[] newArray(int size) {
+            return new Profile[size];
+        }
+    };
 
     // Getters and Setters
     public String getUsername() { return username; }

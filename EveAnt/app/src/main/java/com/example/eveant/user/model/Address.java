@@ -1,6 +1,9 @@
 package com.example.eveant.user.model;
 
-public class Address {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Address implements Parcelable {
     private String country;
     private String city;
     private String street;
@@ -17,7 +20,39 @@ public class Address {
         this.houseNumber = houseNumber;
         this.postalNumber = postalNumber;
     }
+    protected Address(Parcel in) {
+        country = in.readString();
+        city = in.readString();
+        street = in.readString();
+        houseNumber = in.readString();
+        postalNumber = in.readString();
+    }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(country);
+        dest.writeString(city);
+        dest.writeString(street);
+        dest.writeString(houseNumber);
+        dest.writeString(postalNumber);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Address> CREATOR = new Creator<Address>() {
+        @Override
+        public Address createFromParcel(Parcel in) {
+            return new Address(in);
+        }
+
+        @Override
+        public Address[] newArray(int size) {
+            return new Address[size];
+        }
+    };
     // Getters and Setters
     public String getCountry() { return country; }
     public void setCountry(String country) { this.country = country; }
