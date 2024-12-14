@@ -135,6 +135,10 @@
     <string name="select_category">Select category</string>
     <string name="hint_new_category">Suggest new category</string>
     <string name="check_new_category">Check new category</string>
+    <string name="description_service">This is a detailed description of the service, providing relevant information for the user.This is a detailed description of the service, providing relevant information for the user.This is a detailed description of the service, providing relevant information for the user.</string>
+    <string name="specification_service">Key specifications of the service go here, listed clearly to inform the user.</string>
+    <string name="view_comments_and_reviews">View Comments and Reviews</string>
+    <string name="comments_and_reviews">Comments and Reviews</string>
     <string name="adminName">Admin</string>
     <string name="category_name">Category Name</string>
     <string name="suggested">Suggested</string>
