@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:layout_margin="16dp"
     android:padding="16dp"
-    tools:context=".registration.RegistrationActivity">
+    tools:context=".user.registration.RegistrationActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
             android:background="@drawable/rounded_corners_f0f3ff">
 
             <EditText
-                android:id="@+id/name"
+                android:id="@+id/companyName"
                 style="@style/loginInputText"
                 android:hint="@string/prompt_name"
                 android:imeActionLabel="@string/action_sign_in_short"
@@ -56,7 +56,7 @@
                 android:layout_marginStart="16dp"
                 android:layout_gravity="start|center_vertical"/>
             <EditText
-                android:id="@+id/email"
+                android:id="@+id/companyEmail"
                 style="@style/loginInputText"
                 android:hint="@string/prompt_email"
                 android:inputType="textEmailAddress"/>
@@ -76,7 +76,7 @@
                 android:background="@drawable/telephone" />
 
             <EditText
-                android:id="@+id/phoneNumber"
+                android:id="@+id/companyPhoneNumber"
                 style="@style/loginInputText"
                 android:hint="@string/prompt_phoneNumber"
                 android:inputType="text|phone" />

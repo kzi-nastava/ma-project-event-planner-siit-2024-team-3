@@ -1,4 +1,4 @@
-package com.example.eveant;
+package com.example.eveant.user;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +8,9 @@ import android.widget.Button;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.eveant.registration.RegistrationActivity;
+import com.example.eveant.MainActivity;
+import com.example.eveant.R;
+import com.example.eveant.user.registration.RegistrationActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
