@@ -31,4 +31,9 @@ public interface UserService {
 
     @POST("/api/auth/login")
     Call<Map<String, String>> login(@Body LoginRequest loginRequest);
+
+    @GET("/api/auth/check-activation")
+    Call<Boolean> checkActivationStatus(@Query("email") String email);
+
+
 }
