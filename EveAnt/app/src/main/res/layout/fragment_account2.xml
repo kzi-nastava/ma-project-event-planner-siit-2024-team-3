@@ -184,9 +184,20 @@
                     android:inputType="text|phone" />
             </LinearLayout>
 
+            <Button
+                android:id="@+id/saveChangesButton"
+                android:text="Save Changes"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/white"
+                android:background="@drawable/rounded_corners_8599e0"/>
 
             <Button
-                android:id="@+id/edit_personal_info_button"
+                android:id="@+id/editPersonalInfoButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_medium"
@@ -194,7 +205,8 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
                 android:textColor="@color/white"
-                android:background="@drawable/rounded_corners_8599e0"/>
+                android:background="@drawable/rounded_corners_8599e0"
+                android:visibility="visible" />
         </LinearLayout>
 
 
@@ -221,7 +233,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="50dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/rounded_corners_f0f3ff">
                 <ImageView
                     android:layout_width="wrap_content"
@@ -291,15 +303,28 @@
             </LinearLayout>
 
             <Button
-            android:id="@+id/edit_address_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_medium"
-            android:text="Edit"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:textColor="@color/white"
-            android:background="@drawable/rounded_corners_8599e0"/>
+                android:id="@+id/saveChangesButtonAddress"
+                android:text="Save Changes"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/white"
+                android:background="@drawable/rounded_corners_8599e0"/>
+
+            <Button
+                android:id="@+id/editPersonalInfoButtonAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Edit"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/white"
+                android:background="@drawable/rounded_corners_8599e0"
+                android:visibility="visible" />
 
         </LinearLayout>
 
@@ -381,15 +406,16 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/save_changes_button"
+                android:id="@+id/saveChangesButtonPassword"
+                android:text="Save Changes"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/rounded_corners_8599e0"
-                android:text="Save changes"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
                 android:textColor="@color/white"
-                android:fontFamily="@font/poppins_medium" />
+                android:background="@drawable/rounded_corners_8599e0"/>
         </LinearLayout>
         </LinearLayout>
     </ScrollView>
