@@ -19,13 +19,21 @@
             android:textAlignment="center"
             android:textSize="30sp"
             android:textColor="@color/black"/>
-
+        <Button
+            android:id="@+id/send_activation_link"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/rounded_corners_8599e0"
+            android:text="Send activation link again"
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/white"/>
         <Button
             android:id="@+id/check_email_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:background="@drawable/rounded_corners_8599e0"
+            android:background="@drawable/rounded_corners_image_blue"
             android:text="Check emals"
             android:fontFamily="@font/poppins_bold"
             android:textColor="@color/white"/>

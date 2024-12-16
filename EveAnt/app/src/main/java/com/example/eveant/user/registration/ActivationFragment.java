@@ -56,6 +56,7 @@ public class ActivationFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_activation, container, false);
         Button checkEmailButton = view.findViewById(R.id.check_email_button);
+        Button sendActivationLink = view.findViewById(R.id.send_activation_link);
         LinearLayout progressRegistration = requireActivity().findViewById(R.id.progress_registration);
         LinearLayout firstHalf = requireActivity().findViewById(R.id.firstHalf);
         LinearLayout secondHalf = requireActivity().findViewById(R.id.secondHalf);
@@ -92,8 +93,8 @@ public class ActivationFragment extends Fragment {
         user.setGender(bundle.getString("gender"));
         user.setPhoneNumber(bundle.getString("phoneNumber"));
         user.setDateOfBirth(bundle.getString("birthday"));
-
-        if (bundle.getString("role").equals("PROVIDER")){
+        user.setRole(bundle.getString("role"));
+        if (user.getRole().equals("PROVIDER")){
             Company company = new Company();
             company.setCompanyName(bundle.getString("companyName"));
             company.setEmail(bundle.getString("companyEmail"));
@@ -142,6 +143,20 @@ public class ActivationFragment extends Fragment {
             }
 
         });
+
+        sendActivationLink.setOnClickListener(v -> {
+            Toast.makeText(requireContext(), "Sending activation link...", Toast.LENGTH_SHORT).show();
+            sendActivation();
+        });
+        checkEmailButton.setOnClickListener(v -> {
+            Toast.makeText(requireContext(), "Checking activation status...", Toast.LENGTH_SHORT).show();
+            startPollingForActivation();
+        });
+
+        return view;
+    }
+
+    private void sendActivation(){
         userService.sendActivationEmail(email.trim()).enqueue(new Callback<Map<String, String>>() {
             @Override
             public void onResponse(@NonNull Call<Map<String, String>> call, @NonNull Response<Map<String, String>> response) {
@@ -157,16 +172,10 @@ public class ActivationFragment extends Fragment {
                 Log.d("ActivationEmail", "Error sending activation email: " + t.getMessage());
             }
         });
-
-        checkEmailButton.setOnClickListener(v -> {
-            Toast.makeText(requireContext(), "Checking activation status...", Toast.LENGTH_SHORT).show();
-            startPollingForActivation();
-        });
-
-        return view;
     }
 
     private void startPollingForActivation() {
+
         handler = new Handler(Looper.getMainLooper());
         Runnable runnable = new Runnable() {
             @Override
@@ -186,7 +195,6 @@ public class ActivationFragment extends Fragment {
                     if (handler != null) {
                         handler.removeCallbacksAndMessages(null);
                     }
-                    navigateToNextScreen();
                 } else {
                     Log.d("Activation", "Account not activated yet");
                 }
@@ -201,6 +209,7 @@ public class ActivationFragment extends Fragment {
 
     private void navigateToNextScreen() {
         Toast.makeText(requireContext(), "Account activated! Redirecting...", Toast.LENGTH_SHORT).show();
+        navigateToNextScreen();
         Intent intent = new Intent(getActivity(), MainActivity.class);
         startActivity(intent);
     }
