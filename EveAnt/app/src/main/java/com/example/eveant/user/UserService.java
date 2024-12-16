@@ -39,6 +39,7 @@ public interface UserService {
     @GET("/api/auth/check-activation")
     Call<Boolean> checkActivationStatus(@Query("email") String email);
     @POST("/api/auth/send-activation-email")
+    @Headers("Content-Type: text/plain")
     Call<Map<String, String>> sendActivationEmail(@Body String email);
 
 }

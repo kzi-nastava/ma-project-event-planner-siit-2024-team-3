@@ -35,6 +35,8 @@ import java.util.Map;
 
 import android.os.Handler;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,7 +46,7 @@ import retrofit2.Retrofit;
 public class ActivationFragment extends Fragment {
 
     private Handler handler;
-    private static final String TAG = "ActivationFragment";
+    private static final String TAG = "Activation fragment";
     private UserService userService;
     private String email;
     private final long checkInterval = 5000; // Check every 5 seconds
@@ -55,10 +57,17 @@ public class ActivationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_activation, container, false);
         Button checkEmailButton = view.findViewById(R.id.check_email_button);
         LinearLayout progressRegistration = requireActivity().findViewById(R.id.progress_registration);
-        if (progressRegistration != null) {
+        LinearLayout firstHalf = requireActivity().findViewById(R.id.firstHalf);
+        LinearLayout secondHalf = requireActivity().findViewById(R.id.secondHalf);
+        if (progressRegistration != null && firstHalf != null && secondHalf != null) {
             progressRegistration.setEnabled(false);
             progressRegistration.setVisibility(View.GONE);
+            firstHalf.setEnabled(false);
+            firstHalf.setVisibility(View.GONE);
+            secondHalf.setEnabled(false);
+            secondHalf.setVisibility(View.GONE);
         }
+
         Bundle bundle = getArguments() != null ? getArguments() : new Bundle();
 
         Profile profile = new Profile();
@@ -106,7 +115,34 @@ public class ActivationFragment extends Fragment {
         userProfileRequest.setCreateProfileDTO(profile);
         userProfileRequest.setCreateUserDTO(user);
         userService = UserClientUtils.getClient().create(UserService.class);
-        userService.sendActivationEmail(email).enqueue(new Callback<Map<String, String>>() {
+        Call<ResponseBody> call = userService.registerUser(userProfileRequest);
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), "User registered successfully!", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG,"User registered successfully!");
+                } else {
+                    try {
+                        if (response.errorBody() != null) {
+                            String errorMessage = response.errorBody().string();
+                            Log.e(TAG, "Registration failed: " + errorMessage);
+                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, "Error reading errorBody: " + e.getMessage());
+                    }
+                    showError("Failed to register user. Try again.");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e(TAG, "Error reading errorBody: " + t.getMessage());
+                showError("Error: " + t.getMessage());
+            }
+
+        });
+        userService.sendActivationEmail(email.trim()).enqueue(new Callback<Map<String, String>>() {
             @Override
             public void onResponse(@NonNull Call<Map<String, String>> call, @NonNull Response<Map<String, String>> response) {
                 if (response.isSuccessful()) {
@@ -118,7 +154,7 @@ public class ActivationFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<Map<String, String>> call, @NonNull Throwable t) {
-                Log.e("ActivationEmail", "Error sending activation email: " + t.getMessage());
+                Log.d("ActivationEmail", "Error sending activation email: " + t.getMessage());
             }
         });
 
