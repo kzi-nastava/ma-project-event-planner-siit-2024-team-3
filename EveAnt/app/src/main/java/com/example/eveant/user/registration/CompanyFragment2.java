@@ -48,9 +48,7 @@ public class CompanyFragment2 extends Fragment {
         companyStreet = view.findViewById(R.id.companyStreet);
         companyHouseNumber = view.findViewById(R.id.companyHouse);
         companyPostalNumber = view.findViewById(R.id.companyPostalNumber);
-        Bundle args = getArguments();
-        UserProfileRequest userProfileRequest = args != null ?
-                args.getParcelable("userProfileRequest") : null;
+        Bundle bundle = getArguments() != null ? getArguments() : new Bundle();
         if (goToBack!= null){
             goToBack.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -70,49 +68,27 @@ public class CompanyFragment2 extends Fragment {
             goToNext.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Address address = new Address();
+                    Bundle bundle = getArguments() != null ? getArguments() : new Bundle();
                     String countryText = companyCountry.getText().toString().trim();
                     String cityText = companyCity.getText().toString().trim();
                     String streetText = companyStreet.getText().toString().trim();
                     String houseText = companyHouseNumber.getText().toString().trim();
                     String postalNumberText = companyPostalNumber.getText().toString().trim();
-                    address.setCountry(countryText);
-                    address.setCity(cityText);
-                    address.setStreet(streetText);
-                    address.setHouseNumber(houseText);
-                    address.setPostalNumber(postalNumberText);
+                    bundle.putString("companyCountry", countryText);
+                    bundle.putString("companyCity", cityText);
+                    bundle.putString("companyStreet", streetText);
+                    bundle.putString("companyHouse", houseText);
+                    bundle.putString("companyPostalNumber", postalNumberText);
+                    ActivationFragment activationFragment = new ActivationFragment();
+                    activationFragment.setArguments(bundle);
+                    FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                    transaction.replace(R.id.container, activationFragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                    if (requireActivity() instanceof RegistrationActivity) {
+                        ((RegistrationActivity) requireActivity()).updateProgress(5); // Replace '1' with the fragment index
+                    }
 
-                    userProfileRequest.getCreateUserDTO().getCompany().setAddress(address);
-                    userProfileRequest.getCreateUserDTO().getCompany().setPhotos(new ArrayList<>());
-                    UserService userService = UserClientUtils.getClient().create(UserService.class);
-
-                    Call<ResponseBody> call = userService.registerUser(userProfileRequest);
-                    call.enqueue(new Callback<ResponseBody>() {
-                        @Override
-                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            if (response.isSuccessful()) {
-                                Toast.makeText(getContext(), "User registered successfully!", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getActivity(), MainActivity.class);
-                                startActivity(intent);
-                            } else {
-                                try {
-                                    if (response.errorBody() != null) {
-                                        String errorMessage = response.errorBody().string();
-                                        Log.e(TAG, "Registration failed: " + errorMessage);
-                                    }
-                                } catch (Exception e) {
-                                    Log.e(TAG, "Error reading errorBody: " + e.getMessage());
-                                }
-                                showError("Failed to register user. Try again.");
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<ResponseBody> call, Throwable t) {
-                            Log.e(TAG, "Error reading errorBody: " + t.getMessage());
-                            showError("Error: " + t.getMessage());
-                        }
-                    });
                 }
             });
         }

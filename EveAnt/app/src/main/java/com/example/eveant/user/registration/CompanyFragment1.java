@@ -33,9 +33,6 @@ public class CompanyFragment1 extends Fragment {
         companyEmail = view.findViewById(R.id.companyEmail);
         companyPhoneNumber = view.findViewById(R.id.companyPhoneNumber);
         companyDescription = view.findViewById(R.id.companyDescription);
-        Bundle args = getArguments();
-        UserProfileRequest userProfileRequest = args != null ?
-                args.getParcelable("userProfileRequest") : null;
         if (goToBack != null) {
 
             goToBack.setOnClickListener(new View.OnClickListener() {
@@ -56,21 +53,21 @@ public class CompanyFragment1 extends Fragment {
             goToNext.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Bundle nextBundle = new Bundle();
                     Company company = new Company();
                     String companyNameText = companyName.getText().toString().trim();
                     String companyEmailText = companyEmail.getText().toString().trim();
                     String companyContactText = companyPhoneNumber.getText().toString().trim();
                     String companyDescriptionText = companyDescription.getText().toString().trim();
-                    company.setCompanyName(companyNameText);
-                    company.setEmail(companyEmailText);
-                    company.setContact(companyContactText);
-                    company.setDescription(companyDescriptionText);
-                    userProfileRequest.getCreateUserDTO().setCompany(company);
-                    nextBundle.putParcelable("userProfileRequest", userProfileRequest);
+                    Bundle bundle = getArguments() != null ? getArguments() : new Bundle();
+
+
+                    bundle.putString("comapnyName", companyNameText);
+                    bundle.putString("comapnyEmail", companyEmailText);
+                    bundle.putString("comapnyContact", companyContactText);
+                    bundle.putString("comapnyDescription", companyDescriptionText);
 
                     CompanyFragment2 companyFragment2 = new CompanyFragment2();
-                    companyFragment2.setArguments(nextBundle);
+                    companyFragment2.setArguments(bundle);
 
                     FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
                     transaction.replace(R.id.container, companyFragment2);

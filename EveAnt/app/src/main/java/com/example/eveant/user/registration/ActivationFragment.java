@@ -6,32 +6,36 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Looper;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.eveant.MainActivity;
 import com.example.eveant.R;
 import com.example.eveant.user.UserClientUtils;
 import com.example.eveant.user.UserService;
+import com.example.eveant.user.model.Address;
+import com.example.eveant.user.model.Company;
 import com.example.eveant.user.model.Profile;
 import com.example.eveant.user.model.User;
+import com.example.eveant.user.model.UserProfileRequest;
 
 import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
+
 import android.os.Handler;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,6 +44,7 @@ import retrofit2.Retrofit;
 public class ActivationFragment extends Fragment {
 
     private Handler handler;
+    private static final String TAG = "ActivationFragment";
     private UserService userService;
     private String email;
     private final long checkInterval = 5000; // Check every 5 seconds
@@ -49,6 +54,73 @@ public class ActivationFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_activation, container, false);
         Button checkEmailButton = view.findViewById(R.id.check_email_button);
+        LinearLayout progressRegistration = requireActivity().findViewById(R.id.progress_registration);
+        if (progressRegistration != null) {
+            progressRegistration.setEnabled(false);
+            progressRegistration.setVisibility(View.GONE);
+        }
+        Bundle bundle = getArguments() != null ? getArguments() : new Bundle();
+
+        Profile profile = new Profile();
+
+        profile.setUsername(bundle.getString("username"));
+        profile.setEmail(bundle.getString("email"));
+        profile.setPassword(bundle.getString("password"));
+        email = bundle.getString("email");
+        Address address = new Address();
+
+        address.setCountry(bundle.getString("country"));
+        address.setCity(bundle.getString("city"));
+        address.setStreet(bundle.getString("street"));
+        address.setPostalNumber(bundle.getString("postalNumber"));
+        address.setHouseNumber(bundle.getString("houseNumber"));
+
+        User user = new User();
+
+        user.setAddress(address);
+        user.setFirstName(bundle.getString("firstName"));
+        user.setLastName(bundle.getString("lastName"));
+        user.setGender(bundle.getString("gender"));
+        user.setPhoneNumber(bundle.getString("phoneNumber"));
+        user.setDateOfBirth(bundle.getString("birthday"));
+
+        if (bundle.getString("role").equals("PROVIDER")){
+            Company company = new Company();
+            company.setCompanyName(bundle.getString("companyName"));
+            company.setEmail(bundle.getString("companyEmail"));
+            company.setContact(bundle.getString("companyContact"));
+            company.setDescription(bundle.getString("companyDescription"));
+
+            Address companyAddress = new Address();
+
+            companyAddress.setCountry(bundle.getString("companyCountry"));
+            companyAddress.setCity(bundle.getString("companyCity"));
+            companyAddress.setStreet(bundle.getString("companyStreet"));
+            companyAddress.setHouseNumber(bundle.getString("companyHouse"));
+            companyAddress.setPostalNumber(bundle.getString("companyPostalNumber"));
+
+            company.setAddress(companyAddress);
+            user.setCompany(company);
+        }
+        UserProfileRequest userProfileRequest = new UserProfileRequest();
+        userProfileRequest.setCreateProfileDTO(profile);
+        userProfileRequest.setCreateUserDTO(user);
+        userService = UserClientUtils.getClient().create(UserService.class);
+        userService.sendActivationEmail(email).enqueue(new Callback<Map<String, String>>() {
+            @Override
+            public void onResponse(@NonNull Call<Map<String, String>> call, @NonNull Response<Map<String, String>> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(requireContext(), "Activation email sent!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(requireContext(), "Failed to send activation email.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Map<String, String>> call, @NonNull Throwable t) {
+                Log.e("ActivationEmail", "Error sending activation email: " + t.getMessage());
+            }
+        });
 
         checkEmailButton.setOnClickListener(v -> {
             Toast.makeText(requireContext(), "Checking activation status...", Toast.LENGTH_SHORT).show();
@@ -71,16 +143,12 @@ public class ActivationFragment extends Fragment {
     }
 
     private void checkActivationStatus() {
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("UserSession", MODE_PRIVATE);
-        String token = sharedPreferences.getString("token", "");
-        fetchUserData(token);
-        userService = UserClientUtils.getClient().create(UserService.class);
         userService.checkActivationStatus(email).enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(@NonNull Call<Boolean> call, @NonNull Response<Boolean> response) {
                 if (response.isSuccessful() && Boolean.TRUE.equals(response.body())) {
                     if (handler != null) {
-                        handler.removeCallbacksAndMessages(null); // Stop polling
+                        handler.removeCallbacksAndMessages(null);
                     }
                     navigateToNextScreen();
                 } else {
@@ -91,41 +159,6 @@ public class ActivationFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Call<Boolean> call, @NonNull Throwable t) {
                 Log.e("Activation", "Error checking activation status: " + t.getMessage());
-            }
-        });
-    }
-    private String fetchUserData(String token) {
-        String username = "";
-        try {
-            String[] parts = token.split("\\.");
-
-            if (parts.length == 3) {
-                String payload = new String(Base64.decode(parts[1], Base64.URL_SAFE), StandardCharsets.UTF_8);
-                JSONObject jsonObject = new JSONObject(payload);
-                username = jsonObject.optString("sub");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        fetchProfile(username);
-    }
-
-    private void fetchProfile(String username) {
-        Call<Profile> profileCall = userService.getProfile(username);
-        profileCall.enqueue(new Callback<Profile>() {
-            @Override
-            public void onResponse(Call<Profile> call, Response<Profile> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    Profile profile = response.body();
-                    email = profile.getEmail();
-                } else {
-                    Log.e("AccountFragment2", "Failed to fetch profile");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Profile> call, Throwable t) {
-                Log.e("AccountFragment2", "Failed to fetch profile", t);
             }
         });
     }
@@ -142,5 +175,8 @@ public class ActivationFragment extends Fragment {
         if (handler != null) {
             handler.removeCallbacksAndMessages(null);
         }
+    }
+    private void showError(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 }
