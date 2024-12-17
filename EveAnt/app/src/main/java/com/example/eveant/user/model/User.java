@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import java.time.LocalDate;
 
 public class User implements Parcelable {
+    private int id;
     private String firstName;
     private String lastName;
     private String dateOfBirth;
@@ -17,7 +18,7 @@ public class User implements Parcelable {
     // Constructors
     public User() {}
 
-    public User(String firstName, String lastName, String dateOfBirth, Address address, String phoneNumber, String gender, Company company, String role) {
+    public User(int id, String firstName, String lastName, String dateOfBirth, Address address, String phoneNumber, String gender, Company company, String role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
@@ -26,6 +27,7 @@ public class User implements Parcelable {
         this.gender = gender;
         this.company = company;
         this.role = role;
+        this.id = id;
     }
     protected User(Parcel in) {
         firstName = in.readString();
@@ -36,6 +38,7 @@ public class User implements Parcelable {
         gender = in.readString();
         company = in.readParcelable(Company.class.getClassLoader());
         role = in.readString();
+        id = in.readInt();
     }
 
     @Override
@@ -48,6 +51,7 @@ public class User implements Parcelable {
         dest.writeString(gender);
         dest.writeParcelable(company, flags);
         dest.writeString(role);
+        dest.writeInt(id);
     }
 
     @Override
@@ -67,6 +71,9 @@ public class User implements Parcelable {
         }
     };
     // Getters and Setters
+    public int getId(){return id; }
+
+    public void setId(int id){this.id = id;}
     public String getFirstName() {
         return firstName;
     }
