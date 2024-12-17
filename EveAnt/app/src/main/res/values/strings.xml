@@ -13,6 +13,7 @@
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="other">Other</string>
+    <string name="activation_link">We have sent you the activation link. Check your emails to continue.</string>
 
     <string name="prompt_country">Country</string>
 

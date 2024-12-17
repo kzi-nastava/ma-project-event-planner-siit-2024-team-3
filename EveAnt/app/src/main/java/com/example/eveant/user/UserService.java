@@ -32,6 +32,9 @@ public interface UserService {
     @GET("/api/users/check-username")
     Call<Boolean> checkUsernameExists(@Query("username") String username);
 
+    @GET("/api/users/profile")
+    Call<Profile> getProfile(@Query("username") String username);
+
     @POST("/api/auth/login")
     Call<Map<String, String>> login(@Body LoginRequest loginRequest);
 
@@ -43,6 +46,15 @@ public interface UserService {
 
     @PUT("users/{id}")
     Call<Void> updateUser(@Path("id") int id, @Body User user);
+  
     @PUT("profiles/{id}")
     Call<Void> updateProfile(@Path("id") int id, @Body Profile profile);
+  
+    @GET("/api/auth/check-activation")
+    Call<Boolean> checkActivationStatus(@Query("email") String email);
+  
+    @POST("/api/auth/send-activation-email")
+    @Headers("Content-Type: text/plain")
+    Call<Map<String, String>> sendActivationEmail(@Body String email);
+
 }

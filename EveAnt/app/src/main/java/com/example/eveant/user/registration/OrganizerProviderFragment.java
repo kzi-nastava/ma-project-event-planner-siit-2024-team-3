@@ -34,7 +34,6 @@ public class OrganizerProviderFragment extends Fragment {
 
     private ToggleButton organizerButton, providerButton;
     private Button goToBack, goToNext;
-    private static final String TAG = "OrganizerProviderFragment";
 
 
     @Nullable
@@ -69,72 +68,27 @@ public class OrganizerProviderFragment extends Fragment {
                     showError("Please select either Organizer or Provider.");
                     return;
                 }
+                Bundle bundle = getArguments() != null ? getArguments() : new Bundle();
 
                 boolean isOrganizer = organizerButton.isChecked();
 
-                Bundle bundle = getArguments() != null ? getArguments() : new Bundle();
 
-                Profile profile = new Profile();
-
-                profile.setUsername(bundle.getString("username"));
-                profile.setEmail(bundle.getString("email"));
-                profile.setPassword(bundle.getString("password"));
-
-                Address address = new Address();
-
-                address.setCountry(bundle.getString("country"));
-                address.setCity(bundle.getString("city"));
-                address.setStreet(bundle.getString("street"));
-                address.setPostalNumber(bundle.getString("postalNumber"));
-                address.setHouseNumber(bundle.getString("houseNumber"));
-
-                User user = new User();
-
-                user.setAddress(address);
-                user.setFirstName(bundle.getString("firstName"));
-                user.setLastName(bundle.getString("lastName"));
-                user.setGender(bundle.getString("gender"));
-                user.setPhoneNumber(bundle.getString("phoneNumber"));
-                user.setDateOfBirth(bundle.getString("birthday"));
-
-                UserProfileRequest userProfileRequest = new UserProfileRequest();
-                userProfileRequest.setCreateProfileDTO(profile);
-                userProfileRequest.setCreateUserDTO(user);
                 if (isOrganizer) {
-                    user.setRole("ORGANIZER");
-                    UserService userService = UserClientUtils.getClient().create(UserService.class);
+                    bundle.putString("role", "ORGANIZER");
+                    ActivationFragment activationFragment = new ActivationFragment();
+                    activationFragment.setArguments(bundle);
+                    FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                    transaction.replace(R.id.container, activationFragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
 
-                    Call<ResponseBody> call = userService.registerUser(userProfileRequest);
-                    call.enqueue(new Callback<ResponseBody>() {
-                        @Override
-                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            if (response.isSuccessful()) {
-                                Toast.makeText(getContext(), "User registered successfully!", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getActivity(), MainActivity.class);
-                                startActivity(intent);
-                            } else {
-                                try {
-                                    if (response.errorBody() != null) {
-                                        String errorMessage = response.errorBody().string();
-                                        Log.e(TAG, "Registration failed: " + errorMessage);
-                                    }
-                                } catch (Exception e) {
-                                    Log.e(TAG, "Error reading errorBody: " + e.getMessage());
-                                }
-                                showError("Failed to register user. Try again.");
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<ResponseBody> call, Throwable t) {
-                            Log.e(TAG, "Error reading errorBody: " + t.getMessage());
-                            showError("Error: " + t.getMessage());
-                        }
-                    });
+                    if (requireActivity() instanceof RegistrationActivity) {
+                        ((RegistrationActivity) requireActivity()).updateProgress(5);
+                    }
 
                 } else {
-                    userProfileRequest.getCreateUserDTO().setRole("PROVIDER");
-                    bundle.putParcelable("userProfileRequest",userProfileRequest);
+                    bundle.putString("role", "PROVIDER");
+
                     CompanyFragment1 companyFragment1 = new CompanyFragment1();
                     companyFragment1.setArguments(bundle);
 
@@ -150,7 +104,6 @@ public class OrganizerProviderFragment extends Fragment {
             });
         }
 
-        // Handle "Back" button click
         if (goToBack != null) {
             goToBack.setOnClickListener(v -> {
                 FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
