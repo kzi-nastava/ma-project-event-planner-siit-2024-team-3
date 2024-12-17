@@ -17,7 +17,9 @@
         android:layout_margin="16dp"
         android:background="@drawable/rounded_corners_white"
         android:padding="16dp">
+
         <LinearLayout
+            android:id="@+id/progress_registration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom">
@@ -55,6 +57,7 @@
                 android:textSize="16sp" />
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/firstHalf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
