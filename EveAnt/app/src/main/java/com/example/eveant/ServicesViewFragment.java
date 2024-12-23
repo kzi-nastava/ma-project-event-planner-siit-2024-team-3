@@ -15,10 +15,13 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.ListFragment;
 import androidx.navigation.NavController;
 
+import com.example.eveant.service.ServiceAdapter;
 import com.example.eveant.serviceCreate.ServiceCreateFragment;
 import com.example.eveant.serviceEdit.ServiceEditFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -28,9 +31,19 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServicesViewFragment extends Fragment {
+public class ServicesViewFragment extends ListFragment {
+    private ServiceAdapter adapter;
+    private MenuProvider menuProvider;
+    public static ServicesViewFragment newInstance(){
+        ServicesViewFragment fragment = new ServicesViewFragment();
+        return fragment;
+    }
+}
 
-    private RelativeLayout filterButton;
+
+
+
+/* private RelativeLayout filterButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,7 +54,7 @@ public class ServicesViewFragment extends Fragment {
 
         // Povezivanje dugmeta za filtere
         filterButton = view.findViewById(R.id.filter_button);
-
+\
         filterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -199,5 +212,4 @@ public class ServicesViewFragment extends Fragment {
         });
 
         dialog.show();
-    }
-}
+    }*/
