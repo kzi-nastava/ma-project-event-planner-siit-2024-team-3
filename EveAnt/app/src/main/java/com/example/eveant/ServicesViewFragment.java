@@ -18,7 +18,12 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.eveant.service.model.ApiService;
+import com.example.eveant.service.model.Service;
+import com.example.eveant.service.model.ServiceAdapter;
 import com.example.eveant.serviceCreate.ServiceCreateFragment;
 import com.example.eveant.serviceEdit.ServiceEditFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -28,55 +33,48 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class ServicesViewFragment extends Fragment {
 
     private RelativeLayout filterButton;
 
+    private ApiService apiService;
+
+    private List<Service> services = new ArrayList<>();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the fragment layout
         View view = inflater.inflate(R.layout.fragment_services_view, container, false);
 
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_services);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Povezivanje dugmeta za filtere
-        filterButton = view.findViewById(R.id.filter_button);
+        // Inicijalizacija praznog adaptera
+        ArrayList<Service> services = new ArrayList<>();
+        ServiceAdapter adapter = new ServiceAdapter(services);
+        recyclerView.setAdapter(adapter);
 
-        filterButton.setOnClickListener(new View.OnClickListener() {
+        // Dohvatanje podataka iz API-ja
+        RetrofitClient.apiService.getAllServices().enqueue(new Callback<ArrayList<Service>>() {
             @Override
-            public void onClick(View v) {
-                showFilterBottomSheet();
+            public void onResponse(Call<ArrayList<Service>> call, Response<ArrayList<Service>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    services.addAll(response.body());
+                    adapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(getContext(), "Failed to fetch data", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Service>> call, Throwable t) {
+                Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
-        // Edit dugme - otvara novu aktivnost
-        ImageButton editServiceButton = view.findViewById(R.id.editServiceButton);
-        editServiceButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavController navController = ((MainActivity) getActivity()).getNavController();
-                navController.navigate(R.id.serviceEditFragment);
-            }
-        });
-
-        // Delete dugme - prikazuje dijalog
-        ImageButton deleteServiceButton = view.findViewById(R.id.deleteServiceButton);
-        deleteServiceButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDeleteDialog();
-            }
-        });
-
-        ImageButton viewMoreButton = view.findViewById(R.id.viewMoreButton);
-        viewMoreButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavController navController = ((MainActivity) getActivity()).getNavController();
-                navController.navigate(R.id.serviceDetailsFragment);
-            }
-        });
-
 
         return view;
     }

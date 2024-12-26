@@ -1,6 +1,7 @@
 package com.example.eveant.user;
 
 import com.example.eveant.BuildConfig;
+import com.example.eveant.service.model.ApiService;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -29,4 +30,6 @@ public class UserClientUtils {
         }
         return retrofit;
     }
+
+    public static ApiService apiService = getClient().create(ApiService.class);
 }
