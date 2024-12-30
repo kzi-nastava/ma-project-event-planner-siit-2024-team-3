@@ -31,6 +31,8 @@ public class ServiceCreateFragment2 extends Fragment {
             navController.navigate(R.id.serviceCreateFragment3);
         });
 
+
+
         return view;
     }
 

@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -16,19 +15,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.eveant.service.model.ApiService;
+import com.example.eveant.service.model.OfferStatus;
+import com.example.eveant.service.service.ApiService;
 import com.example.eveant.service.model.Service;
-import com.example.eveant.service.model.ServiceAdapter;
-import com.example.eveant.serviceCreate.ServiceCreateFragment;
-import com.example.eveant.serviceEdit.ServiceEditFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.example.eveant.service.adapter.ServiceAdapter;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +57,13 @@ public class ServicesViewFragment extends Fragment {
             @Override
             public void onResponse(Call<ArrayList<Service>> call, Response<ArrayList<Service>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    services.addAll(response.body());
+                    List<Service> activeServices = new ArrayList<>();
+                    for (Service service : response.body()) {
+                        if (!OfferStatus.DELETED.equals(service.getStatus())) {
+                            activeServices.add(service);
+                        }
+                    }
+                    services.addAll(activeServices);
                     adapter.notifyDataSetChanged();
                 } else {
                     Toast.makeText(getContext(), "Failed to fetch data", Toast.LENGTH_SHORT).show();
@@ -74,6 +74,7 @@ public class ServicesViewFragment extends Fragment {
             public void onFailure(Call<ArrayList<Service>> call, Throwable t) {
                 Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
+
         });
 
         return view;

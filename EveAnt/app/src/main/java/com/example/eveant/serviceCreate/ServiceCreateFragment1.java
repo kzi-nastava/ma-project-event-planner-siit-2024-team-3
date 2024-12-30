@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 
 import android.view.LayoutInflater;
@@ -25,14 +26,16 @@ import android.widget.AdapterView;
 
 import com.example.eveant.MainActivity;
 import com.example.eveant.R;
+import com.example.eveant.service.ServiceCreateViewModel;
+import com.example.eveant.service.model.Service;
 
 public class ServiceCreateFragment1 extends Fragment {
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_service_create1, container, false);
-
         ToggleButton availableButton = view.findViewById(R.id.availableButton);
         ToggleButton unavailableButton = view.findViewById(R.id.unavailableButton);
 
@@ -141,6 +144,30 @@ public class ServiceCreateFragment1 extends Fragment {
             public void onClick(View v) {
                 showCheckboxDialog(selectedEventsTextView);
             }
+        });
+
+        ServiceCreateViewModel viewModel = new ViewModelProvider(requireActivity()).get(ServiceCreateViewModel.class);
+
+
+        TextView name=view.findViewById(R.id.name);
+        Spinner category=view.findViewById(R.id.category_spinner);
+
+
+        view.findViewById(R.id.next_button).setOnClickListener(v -> {
+            Service service = viewModel.getService().getValue();
+            service.setName(name.toString());
+//            service.setCategory(category.toString());
+            /*service.setEventTypes(name.toString());*/
+            /*service.setVisible(name.toString());
+            service.setStatus(name.toString());*/
+          /*  service.setPrice(price);*/
+            /*service.setDiscount(discount);
+*/
+            /*service.setCategory(R.id.category); // Primer za postavljanje kategorije*/
+            viewModel.updateService(service);
+
+            NavController navController = ((MainActivity) getActivity()).getNavController();
+            navController.navigate(R.id.serviceCreateFragment2);
         });
 
         return view;

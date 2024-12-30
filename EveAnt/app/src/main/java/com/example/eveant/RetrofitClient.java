@@ -2,7 +2,7 @@ package com.example.eveant;
 
 import android.util.Log;
 
-import com.example.eveant.service.model.ApiService;
+import com.example.eveant.service.service.ApiService;
 
 import java.util.concurrent.TimeUnit;
 

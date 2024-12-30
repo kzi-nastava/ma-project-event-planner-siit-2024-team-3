@@ -1,0 +1,22 @@
+package com.example.eveant.service.service;
+
+import com.example.eveant.service.model.Service;
+
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.DELETE;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.Path;
+
+public interface ApiService {
+    @GET("/api/services")
+    Call<ArrayList<Service>> getAllServices();
+
+    @POST("api/services/create")
+    Call<Void> createService(@Body Service service);
+    @DELETE("/api/services/{id}")
+    Call<Void> deleteService(@Path("id") int serviceId);
+}
