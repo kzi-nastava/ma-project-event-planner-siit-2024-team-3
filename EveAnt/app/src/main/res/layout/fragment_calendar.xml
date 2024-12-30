@@ -15,6 +15,7 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:text="Select a Date:"
+        android:textColor="@color/black"
         android:textSize="18sp" />
 
     <LinearLayout
@@ -35,6 +36,7 @@
             android:text="❮"
             android:textAlignment="center"
             android:textColor="@color/black"
+            android:background="@drawable/month_pagination_button"
             android:textSize="20sp"></Button>
 
         <TextView
@@ -55,6 +57,7 @@
             android:text="❯"
             android:textAlignment="center"
             android:textColor="@color/black"
+            android:background="@drawable/month_pagination_button"
             android:textSize="20sp" />
     </LinearLayout>
 

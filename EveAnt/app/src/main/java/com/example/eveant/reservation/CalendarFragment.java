@@ -1,5 +1,6 @@
 package com.example.eveant.reservation;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +30,7 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
     private LocalDate selectedDate;
+    private TextView selectedDateView;
 
     @Nullable
     @Override
@@ -111,14 +114,23 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
     }
 
     @Override
-    public void onItemClick(int position, String dayText)
-    {
+    public void onItemClick(int position, TextView day) {
+        if (!day.getText().toString().isEmpty()) {
+            if (selectedDateView != null) {
+                selectedDateView.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.cell_border));
+            }
 
-        if(!dayText.equals(""))
-        {
-            String message = "Selected Date " + dayText + " " + monthYearFromDate(selectedDate);
-            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show();
+            day.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.selected_cell_background));
+
+            selectedDateView = day;
+
+            int dayOfMonth = Integer.parseInt(day.getText().toString());
+            selectedDate = selectedDate.withDayOfMonth(dayOfMonth);
+
+            String message = "Selected Date: " + selectedDate.format(DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.getDefault()));
+            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
         }
     }
+
 
 }
