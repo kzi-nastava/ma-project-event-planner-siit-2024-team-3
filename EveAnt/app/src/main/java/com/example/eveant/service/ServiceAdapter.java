@@ -1,4 +1,4 @@
-package com.example.eveant.service.adapter;
+package com.example.eveant.service;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -47,7 +47,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
         holder.serviceName.setText(service.getName());
         holder.serviceStatus.setText(service.getStatus().toString());
         holder.servicePrice.setText(service.getPrice().toString());
-        holder.serviceCategory.setText(service.getCategory().getName());
+        holder.serviceCategory.setText(service.getCategory());
         holder.deleteIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

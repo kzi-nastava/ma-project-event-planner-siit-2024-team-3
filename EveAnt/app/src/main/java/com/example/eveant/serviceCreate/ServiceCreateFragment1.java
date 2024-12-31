@@ -1,5 +1,7 @@
 package com.example.eveant.serviceCreate;
 
+import static android.content.ContentValues.TAG;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +30,12 @@ import android.widget.AdapterView;
 import com.example.eveant.MainActivity;
 import com.example.eveant.R;
 import com.example.eveant.service.ServiceCreateViewModel;
+import com.example.eveant.service.model.Category;
+import com.example.eveant.service.model.OfferStatus;
 import com.example.eveant.service.model.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServiceCreateFragment1 extends Fragment {
 
@@ -44,8 +52,8 @@ public class ServiceCreateFragment1 extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     unavailableButton.setChecked(false);
-                    availableButton.setTextColor(ContextCompat.getColor(getContext(),R.color.white));
-                    unavailableButton.setTextColor(ContextCompat.getColor(getContext(),R.color.black));
+                    availableButton.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+                    unavailableButton.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
                 }
             }
         });
@@ -55,8 +63,8 @@ public class ServiceCreateFragment1 extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     availableButton.setChecked(false);
-                    availableButton.setTextColor(ContextCompat.getColor(getContext(),R.color.black));
-                    unavailableButton.setTextColor(ContextCompat.getColor(getContext(),R.color.white));
+                    availableButton.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+                    unavailableButton.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
                 }
             }
         });
@@ -69,8 +77,8 @@ public class ServiceCreateFragment1 extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     visibleButton.setChecked(false);
-                    hiddenButton.setTextColor(ContextCompat.getColor(getContext(),R.color.white));
-                    visibleButton.setTextColor(ContextCompat.getColor(getContext(),R.color.black));
+                    hiddenButton.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
+                    visibleButton.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
                 }
             }
         });
@@ -80,8 +88,8 @@ public class ServiceCreateFragment1 extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     hiddenButton.setChecked(false);
-                    hiddenButton.setTextColor(ContextCompat.getColor(getContext(),R.color.black));
-                    visibleButton.setTextColor(ContextCompat.getColor(getContext(),R.color.white));
+                    hiddenButton.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+                    visibleButton.setTextColor(ContextCompat.getColor(getContext(), R.color.white));
                 }
             }
         });
@@ -98,33 +106,46 @@ public class ServiceCreateFragment1 extends Fragment {
 
         checkBoxNewCategory.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                // Prikaži polje za unos nove kategorije
                 newCategoryInput.setVisibility(View.VISIBLE);
                 categorySpinner.setVisibility(View.GONE);
-                categorySpinner.setEnabled(false); // Onemogući Spinner
+                categorySpinner.setEnabled(false);
             } else {
-                // Sakrij polje za unos nove kategorije
                 newCategoryInput.setVisibility(View.GONE);
                 categorySpinner.setVisibility(View.VISIBLE);
-                categorySpinner.setEnabled(true); // Omogući Spinner
+                categorySpinner.setEnabled(true);
             }
         });
 
-        /*Spinner categorySpinner = view.findViewById(R.id.category_spinner);*/
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
-                R.array.categories, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        categorySpinner.setAdapter(adapter);
+        ServiceCreateViewModel viewModel = new ViewModelProvider(requireActivity()).get(ServiceCreateViewModel.class);
 
-        // Set the default hint for Spinner to be removed once selection is made
+        viewModel.getCategoriesLiveData().observe(getViewLifecycleOwner(), categories -> {
+            if (categories != null) {
+                List<String> categoryNames = new ArrayList<>();
+                for (Category category : categories) {
+                    categoryNames.add(category.getName());
+                }
+
+                Log.d(TAG, "onCreateView: Dobavljene kategorije: " + categoryNames);
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                        getContext(),
+                        android.R.layout.simple_spinner_item,
+                        categoryNames
+                );
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                categorySpinner.setAdapter(adapter);
+            }
+        });
+
+        viewModel.fetchCategories();
+
         categorySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                // Get selected category
                 String selectedCategory = parentView.getItemAtPosition(position).toString();
 
-                // Make "Select Category" disappear after selection
-                if (position != 0) {  // Position 0 is assumed to be "Select Category"
+                if (position != 0) {
                     categorySpinner.setPrompt("Select category");
                 }
             }
@@ -146,29 +167,56 @@ public class ServiceCreateFragment1 extends Fragment {
             }
         });
 
-        ServiceCreateViewModel viewModel = new ViewModelProvider(requireActivity()).get(ServiceCreateViewModel.class);
+      /*  viewModel = new ViewModelProvider(requireActivity()).get(ServiceCreateViewModel.class);
+*/
 
+        TextView name = view.findViewById(R.id.name);
+        final Spinner category = view.findViewById(R.id.category_spinner);
+        EditText price = view.findViewById(R.id.price);
+        EditText discount = view.findViewById(R.id.discount);
 
-        TextView name=view.findViewById(R.id.name);
-        Spinner category=view.findViewById(R.id.category_spinner);
 
 
         view.findViewById(R.id.next_button).setOnClickListener(v -> {
             Service service = viewModel.getService().getValue();
-            service.setName(name.toString());
-//            service.setCategory(category.toString());
-            /*service.setEventTypes(name.toString());*/
-            /*service.setVisible(name.toString());
-            service.setStatus(name.toString());*/
-          /*  service.setPrice(price);*/
-            /*service.setDiscount(discount);
-*/
-            /*service.setCategory(R.id.category); // Primer za postavljanje kategorije*/
+
+            String serviceName = name.getText().toString();
+            service.setName(serviceName);
+
+            if (checkBoxNewCategory.isChecked()) {
+                String newCategory = newCategoryInput.getText().toString();
+                service.setCategory(newCategory);
+            } else {
+                String selectedCategory = categorySpinner.getSelectedItem().toString();
+                service.setCategory(selectedCategory);
+            }
+
+            /*tip usluga*/
+
+            if (availableButton.isChecked()) {
+                service.setStatus(OfferStatus.AVAILABLE);
+            } else {
+                service.setStatus(OfferStatus.UNAVAILABLE);
+            }
+
+            service.setVisible(visibleButton.isChecked());
+
+
+            String strPrice = price.getText().toString();
+            Long servicePrice = Long.parseLong(strPrice);
+            service.setPrice(servicePrice);
+
+            String strDisc = discount.getText().toString();
+            Integer serviceDiscount = Integer.parseInt(strDisc);
+            service.setDiscount(serviceDiscount);
+
+
             viewModel.updateService(service);
 
             NavController navController = ((MainActivity) getActivity()).getNavController();
             navController.navigate(R.id.serviceCreateFragment2);
         });
+
 
         return view;
     }

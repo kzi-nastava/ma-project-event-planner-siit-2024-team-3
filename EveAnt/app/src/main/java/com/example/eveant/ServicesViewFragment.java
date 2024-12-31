@@ -19,9 +19,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eveant.service.model.OfferStatus;
-import com.example.eveant.service.service.ApiService;
+import com.example.eveant.service.ApiService;
 import com.example.eveant.service.model.Service;
-import com.example.eveant.service.adapter.ServiceAdapter;
+import com.example.eveant.service.ServiceAdapter;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
@@ -199,6 +199,4 @@ public class ServicesViewFragment extends Fragment {
 
         dialog.show();
     }
-
-
 }

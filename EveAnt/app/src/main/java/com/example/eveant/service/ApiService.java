@@ -1,8 +1,10 @@
-package com.example.eveant.service.service;
+package com.example.eveant.service;
 
+import com.example.eveant.service.model.Category;
 import com.example.eveant.service.model.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -15,8 +17,11 @@ public interface ApiService {
     @GET("/api/services")
     Call<ArrayList<Service>> getAllServices();
 
-    @POST("api/services/create")
+    @POST("/api/services")
     Call<Void> createService(@Body Service service);
     @DELETE("/api/services/{id}")
     Call<Void> deleteService(@Path("id") int serviceId);
+
+    @GET("/api/categories")
+    Call<List<Category>> getCategories();
 }

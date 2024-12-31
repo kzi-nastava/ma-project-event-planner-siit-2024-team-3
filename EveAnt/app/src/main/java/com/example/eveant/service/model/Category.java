@@ -10,6 +10,12 @@ public class Category {
     public Category() {
     }
 
+    public Category(String name){
+        this.name = name;
+        /*this.createdBy = createdBy;*/
+        this.status = CategoryStatus.SUGGESTED;
+    }
+
     public Category(int id, String name, String description, String createdBy, CategoryStatus status) {
         this.id = id;
         this.name = name;

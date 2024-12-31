@@ -179,7 +179,7 @@
                 android:imeActionLabel="@string/action_sign_in_short"
                 android:imeOptions="actionDone"
                 android:inputType="number"
-                android:selectAllOnFocus="true"/>
+                android:selectAllOnFocus="true" />
 
         </LinearLayout>
         <LinearLayout

@@ -1,7 +1,7 @@
 package com.example.eveant.user;
 
 import com.example.eveant.BuildConfig;
-import com.example.eveant.service.service.ApiService;
+import com.example.eveant.service.ApiService;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

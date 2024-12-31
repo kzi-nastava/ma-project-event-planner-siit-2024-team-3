@@ -9,7 +9,7 @@ public class Offer {
     private Provider provider;
     private Date lastModification;
     private String name;
-    private Category category;
+    private String category;
     private String description;
     private List<Integer> eventTypes;
     private Long price;
@@ -21,7 +21,7 @@ public class Offer {
     public Offer() {
     }
 
-    public Offer(Integer id, Provider provider, Date lastModification, String name, Category category,
+    public Offer(Integer id, Provider provider, Date lastModification, String name, String category,
                  String description, List<Integer> eventTypes, Long price, int discount,
                  Boolean visible, OfferStatus status, List<String> photos) {
         this.id = id;
@@ -70,11 +70,11 @@ public class Offer {
         this.name = name;
     }
 
-    public Category getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
@@ -132,5 +132,15 @@ public class Offer {
 
     public void setPhotos(List<String> photos) {
         this.photos = photos;
+    }
+
+    @Override
+    public String toString() {
+        return "Service{" +
+                "name='" + name + '\'' +
+                ", price=" + price +
+                ", description='" + description + '\'' +
+                ", category=" + category +
+                '}';
     }
 }

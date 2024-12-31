@@ -2,7 +2,7 @@ package com.example.eveant;
 
 import android.util.Log;
 
-import com.example.eveant.service.service.ApiService;
+import com.example.eveant.service.ApiService;
 
 import java.util.concurrent.TimeUnit;
 
@@ -19,6 +19,7 @@ public class RetrofitClient {
            .addConverterFactory(GsonConverterFactory.create())
            .client(test())
            .build();
+
 
    public static OkHttpClient test(){
       Log.d("RetrofitClient", "Base URL: " + SERVICE_API_PATH);
