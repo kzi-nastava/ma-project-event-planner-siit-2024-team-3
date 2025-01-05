@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 
 import android.view.LayoutInflater;
@@ -15,17 +16,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.example.eveant.MainActivity;
 import com.example.eveant.R;
+import com.example.eveant.service.ServiceCreateViewModel;
+import com.example.eveant.service.model.OfferStatus;
+import com.example.eveant.service.model.Service;
 
 public class ServiceEditFragment1 extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_service_edit1, container, false);
+        ServiceCreateViewModel viewModel = new ViewModelProvider(requireActivity()).get(ServiceCreateViewModel.class);
 
         ToggleButton availableButton = view.findViewById(R.id.availableButton);
         ToggleButton unavailableButton = view.findViewById(R.id.unavailableButton);
@@ -77,12 +84,6 @@ public class ServiceEditFragment1 extends Fragment {
             }
         });
 
-        view.findViewById(R.id.next_button).setOnClickListener(v -> {
-            NavController navController = ((MainActivity) getActivity()).getNavController();
-            navController.navigate(R.id.serviceEditFragment2);
-        });
-
-
         TextView selectedEventsTextView = view.findViewById(R.id.selectedEventsTextView);
 
         Button buttonShowCheckboxes = view.findViewById(R.id.buttonShowCheckboxes);
@@ -93,6 +94,72 @@ public class ServiceEditFragment1 extends Fragment {
                 showCheckboxDialog(selectedEventsTextView);
             }
         });
+
+        buttonShowCheckboxes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCheckboxDialog(selectedEventsTextView);
+            }
+        });
+
+        TextView name = view.findViewById(R.id.name);
+        EditText price = view.findViewById(R.id.price);
+        EditText discount = view.findViewById(R.id.discount);
+        TextView category=view.findViewById(R.id.category);
+
+        Service service = viewModel.getService().getValue();
+
+        name.setText(service.getName());
+        price.setText(service.getPrice().toString());
+        category.setText(service.getCategory().getName());
+
+
+        if(service.getVisible()){
+            visibleButton.setChecked(true);
+        }else{
+            hiddenButton.setChecked(true);
+        }
+
+        if(service.getStatus()==OfferStatus.AVAILABLE){
+            availableButton.setChecked(true);
+        }else if(service.getStatus()==OfferStatus.UNAVAILABLE){
+            unavailableButton.setChecked(true);
+        }
+
+        view.findViewById(R.id.next_button).setOnClickListener(v -> {
+
+            String serviceName = name.getText().toString();
+            service.setName(serviceName);
+
+
+            /*tip usluga*/
+
+            if (availableButton.isChecked()) {
+                service.setStatus(OfferStatus.AVAILABLE);
+            } else {
+                service.setStatus(OfferStatus.UNAVAILABLE);
+            }
+
+            service.setVisible(visibleButton.isChecked());
+
+
+            String strPrice = price.getText().toString();
+            Long servicePrice = strPrice.isEmpty() ? 0:Long.parseLong(strPrice);
+
+            service.setPrice(servicePrice);
+
+            String strDisc = discount.getText().toString();
+            Integer serviceDiscount = strDisc.isEmpty() ? 0:Integer.parseInt(strDisc);
+            service.setDiscount(serviceDiscount);
+
+
+            viewModel.updateService(service);
+
+            NavController navController = ((MainActivity) getActivity()).getNavController();
+            navController.navigate(R.id.serviceEditFragment2);
+        });
+
+
 
         return view;
     }

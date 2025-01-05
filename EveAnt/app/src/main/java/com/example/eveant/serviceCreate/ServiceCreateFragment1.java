@@ -33,6 +33,8 @@ import com.example.eveant.service.ServiceCreateViewModel;
 import com.example.eveant.service.model.Category;
 import com.example.eveant.service.model.OfferStatus;
 import com.example.eveant.service.model.Service;
+import com.example.eveant.service.model.ServiceDTO;
+import com.example.eveant.service.model.ServiceMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -180,38 +182,42 @@ public class ServiceCreateFragment1 extends Fragment {
         view.findViewById(R.id.next_button).setOnClickListener(v -> {
             Service service = viewModel.getService().getValue();
 
+            ServiceDTO serviceDTO = ServiceMapper.INSTANCE.toDTO(service);
+
             String serviceName = name.getText().toString();
-            service.setName(serviceName);
+            serviceDTO.setName(serviceName);
 
             if (checkBoxNewCategory.isChecked()) {
                 String newCategory = newCategoryInput.getText().toString();
-                service.setCategory(newCategory);
+                serviceDTO.setCategory(newCategory);
             } else {
                 String selectedCategory = categorySpinner.getSelectedItem().toString();
-                service.setCategory(selectedCategory);
+                serviceDTO.setCategory(selectedCategory);
             }
 
             /*tip usluga*/
 
             if (availableButton.isChecked()) {
-                service.setStatus(OfferStatus.AVAILABLE);
+                serviceDTO.setStatus(OfferStatus.AVAILABLE);
             } else {
-                service.setStatus(OfferStatus.UNAVAILABLE);
+                serviceDTO.setStatus(OfferStatus.UNAVAILABLE);
             }
 
-            service.setVisible(visibleButton.isChecked());
+            serviceDTO.setVisible(visibleButton.isChecked());
 
 
             String strPrice = price.getText().toString();
-            Long servicePrice = Long.parseLong(strPrice);
-            service.setPrice(servicePrice);
+            Long servicePrice = strPrice.isEmpty() ? 0:Long.parseLong(strPrice);
+
+            serviceDTO.setPrice(servicePrice);
 
             String strDisc = discount.getText().toString();
-            Integer serviceDiscount = Integer.parseInt(strDisc);
-            service.setDiscount(serviceDiscount);
+            Integer serviceDiscount = strDisc.isEmpty() ? 0:Integer.parseInt(strDisc);
 
+            serviceDTO.setDiscount(serviceDiscount);
 
-            viewModel.updateService(service);
+            Service service1 = ServiceMapper.INSTANCE.toEntity(serviceDTO);
+            viewModel.updateService(service1);
 
             NavController navController = ((MainActivity) getActivity()).getNavController();
             navController.navigate(R.id.serviceCreateFragment2);

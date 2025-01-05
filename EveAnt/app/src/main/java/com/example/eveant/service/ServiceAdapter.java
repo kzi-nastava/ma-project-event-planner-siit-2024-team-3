@@ -3,6 +3,7 @@ package com.example.eveant.service;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eveant.R;
@@ -27,9 +33,14 @@ import retrofit2.Response;
 public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceViewHolder> {
 
     private ArrayList<Service> serviceList;
-
+    private Fragment fragment;
     public ServiceAdapter(ArrayList<Service> serviceList) {
         this.serviceList = serviceList;
+    }
+
+    public ServiceAdapter(ArrayList<Service> serviceList, Fragment fragment) {
+        this.serviceList = serviceList;
+        this.fragment = fragment;
     }
 
     @NonNull
@@ -40,6 +51,8 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
         return new ServiceViewHolder(view);
     }
 
+
+
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ServiceViewHolder holder, @SuppressLint("RecyclerView") int position) {
@@ -47,13 +60,25 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
         holder.serviceName.setText(service.getName());
         holder.serviceStatus.setText(service.getStatus().toString());
         holder.servicePrice.setText(service.getPrice().toString());
-        holder.serviceCategory.setText(service.getCategory());
+        holder.serviceCategory.setText(service.getCategory().getName());
         holder.deleteIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDeleteDialog(service, position, holder.itemView.getContext());
             }
         });
+
+        holder.editIcon.setOnClickListener(v -> {
+            ServiceCreateViewModel viewModel = new ViewModelProvider(fragment.requireActivity())
+                    .get(ServiceCreateViewModel.class);
+            viewModel.updateService(service);
+
+            NavController navController = NavHostFragment.findNavController(fragment);
+            navController.navigate(R.id.serviceEditFragment1);
+        });
+
+
+
     }
 
     @Override
@@ -64,6 +89,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
     public static class ServiceViewHolder extends RecyclerView.ViewHolder {
         TextView serviceName, serviceDescription,serviceCategory,servicePrice,serviceStatus;
         ImageButton deleteIcon;
+        ImageButton editIcon;
 
         public ServiceViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -72,7 +98,10 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
             serviceStatus = itemView.findViewById(R.id.service_availability);
             servicePrice = itemView.findViewById(R.id.service_price);
             deleteIcon = itemView.findViewById(R.id.deleteServiceButton);
+            editIcon=itemView.findViewById(R.id.editServiceButton);
         }
+
+
     }
     private void showDeleteDialog(Service service, int position, Context context) {
 

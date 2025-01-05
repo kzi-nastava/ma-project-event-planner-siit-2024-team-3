@@ -22,6 +22,7 @@ import com.example.eveant.service.model.OfferStatus;
 import com.example.eveant.service.ApiService;
 import com.example.eveant.service.model.Service;
 import com.example.eveant.service.ServiceAdapter;
+import com.example.eveant.service.model.ServiceDTO;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
@@ -47,12 +48,10 @@ public class ServicesViewFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_services);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Inicijalizacija praznog adaptera
         ArrayList<Service> services = new ArrayList<>();
-        ServiceAdapter adapter = new ServiceAdapter(services);
+        ServiceAdapter adapter = new ServiceAdapter(services,this);
         recyclerView.setAdapter(adapter);
 
-        // Dohvatanje podataka iz API-ja
         RetrofitClient.apiService.getAllServices().enqueue(new Callback<ArrayList<Service>>() {
             @Override
             public void onResponse(Call<ArrayList<Service>> call, Response<ArrayList<Service>> response) {
@@ -66,13 +65,13 @@ public class ServicesViewFragment extends Fragment {
                     services.addAll(activeServices);
                     adapter.notifyDataSetChanged();
                 } else {
-                    Toast.makeText(getContext(), "Failed to fetch data", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), " eco me tu sam Failed to fetch data", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ArrayList<Service>> call, Throwable t) {
-                Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "evo me tu sam Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
         });

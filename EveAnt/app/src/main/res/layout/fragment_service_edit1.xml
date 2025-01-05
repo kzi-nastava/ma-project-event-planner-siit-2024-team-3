@@ -46,7 +46,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/loginInputText"
-            android:hint="@string/category"
             android:background="@drawable/rounded_corners_dark_gray"
             android:padding="10dp"
             android:layout_marginTop="8dp"/>

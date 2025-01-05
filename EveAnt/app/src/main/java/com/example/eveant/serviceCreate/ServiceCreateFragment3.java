@@ -1,5 +1,7 @@
 package com.example.eveant.serviceCreate;
 
+import static android.content.ContentValues.TAG;
+
 import android.os.Bundle;
 
 import androidx.lifecycle.ViewModelProvider;
@@ -24,6 +26,8 @@ import com.example.eveant.RetrofitClient;
 import com.example.eveant.service.ApiService;
 import com.example.eveant.service.ServiceCreateViewModel;
 import com.example.eveant.service.model.Service;
+import com.example.eveant.service.model.ServiceDTO;
+import com.example.eveant.service.model.ServiceMapper;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,8 +44,6 @@ public class ServiceCreateFragment3 extends Fragment {
         View view = inflater.inflate(R.layout.fragment_service_create3, container, false);
 
         viewModel = new ViewModelProvider(requireActivity()).get(ServiceCreateViewModel.class);
-
-
 
         view.findViewById(R.id.previous_button).setOnClickListener(v -> {
             NavController navController = ((MainActivity) getActivity()).getNavController();
@@ -132,11 +134,11 @@ public class ServiceCreateFragment3 extends Fragment {
                 }
 
                 String strDeadline = reservationPeriod.getText().toString();
-                int serviceDeadline = Integer.parseInt(strDeadline);
+                int serviceDeadline = strDeadline.isEmpty() ? 0 : Integer.parseInt(strDeadline);
                 service.setReservationDeadLine(serviceDeadline);
 
                 String strCancellation = cancellationPeriod.getText().toString();
-                int serviceCancellation = Integer.parseInt(strCancellation);
+                int serviceCancellation = strCancellation.isEmpty() ? 0 : Integer.parseInt(strCancellation);
                 service.setCancellationPeriod(serviceCancellation);
 
                 service.setAutomation(automaticButton.isChecked());
@@ -157,11 +159,15 @@ public class ServiceCreateFragment3 extends Fragment {
 
     private void saveService() {
         Service serviceToSave = viewModel.getService().getValue();
-        if (serviceToSave != null) {
-            ApiService apiService = RetrofitClient.apiService;
-            Log.d("ServiceToSave", "Service to save: " + serviceToSave.toString());
 
-            apiService.createService(serviceToSave).enqueue(new Callback<Void>() {
+        ServiceDTO serviceDTO = ServiceMapper.INSTANCE.toDTO(serviceToSave);
+
+        Log.d(TAG, "saveService: "+serviceDTO.getPrice());
+        if (serviceDTO != null) {
+            ApiService apiService = RetrofitClient.apiService;
+            Log.d("ServiceToSave", "Service to save: " + serviceDTO.toString());
+
+            apiService.createService(serviceDTO).enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {

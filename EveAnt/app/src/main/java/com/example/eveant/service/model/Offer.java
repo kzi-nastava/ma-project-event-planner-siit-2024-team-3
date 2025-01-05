@@ -1,15 +1,14 @@
 package com.example.eveant.service.model;
 
-import java.security.Provider;
 import java.util.Date;
 import java.util.List;
 
 public class Offer {
     private Integer id;
-    private Provider provider;
+    private String provider;
     private Date lastModification;
     private String name;
-    private String category;
+    private Category category;
     private String description;
     private List<Integer> eventTypes;
     private Long price;
@@ -21,7 +20,7 @@ public class Offer {
     public Offer() {
     }
 
-    public Offer(Integer id, Provider provider, Date lastModification, String name, String category,
+    public Offer(Integer id, String provider, Date lastModification, String name, Category category,
                  String description, List<Integer> eventTypes, Long price, int discount,
                  Boolean visible, OfferStatus status, List<String> photos) {
         this.id = id;
@@ -46,11 +45,11 @@ public class Offer {
         this.id = id;
     }
 
-    public Provider getProvider() {
+    public String getProvider() {
         return provider;
     }
 
-    public void setProvider(Provider provider) {
+    public void setProvider(String provider) {
         this.provider = provider;
     }
 
@@ -70,11 +69,11 @@ public class Offer {
         this.name = name;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 

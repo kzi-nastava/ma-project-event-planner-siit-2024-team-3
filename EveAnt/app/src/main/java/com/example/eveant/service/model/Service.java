@@ -1,6 +1,5 @@
 package com.example.eveant.service.model;
 
-import java.security.Provider;
 import java.util.List;
 
 public class Service extends Offer {
@@ -15,7 +14,7 @@ public class Service extends Offer {
         super();
     }
 
-    public Service(Integer id, Provider provider, String name, String description, String category,
+    public Service(Integer id, String provider, String name, String description, Category category,
                    List<Integer> eventTypes, Long price, int discount, Boolean visible,
                    OfferStatus status, List<String> photos, String specification,
                    Integer maxEngagement, Integer minEngagement, Boolean automation,

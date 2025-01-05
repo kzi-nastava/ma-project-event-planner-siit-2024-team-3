@@ -14,9 +14,6 @@ import com.example.eveant.R;
 
 public class ServiceEditFragment extends Fragment {
 
-    public ServiceEditFragment() {
-        // Required empty public constructor
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

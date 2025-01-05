@@ -1,5 +1,9 @@
 package com.example.eveant.service;
 
+import static android.content.ContentValues.TAG;
+
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -22,11 +26,12 @@ public class ServiceCreateViewModel extends ViewModel {
     public LiveData<Service> getService() {
         return service;
     }
+
+
     public void updateService(Service updatedService) {
         service.setValue(updatedService);
+        Log.d(TAG, "updateService: "+service.getValue());
     }
-
-
 
     private final MutableLiveData<List<Category>> categories = new MutableLiveData<>();
 
@@ -48,7 +53,6 @@ public class ServiceCreateViewModel extends ViewModel {
             }
         });
     }
-
 
 
 }
