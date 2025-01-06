@@ -12,7 +12,7 @@ public class Offer {
     private String description;
     private List<Integer> eventTypes;
     private Long price;
-    private int discount;
+    private Integer discount;
     private Boolean visible;
     private OfferStatus status;
     private List<String> photos;

@@ -1,4 +1,4 @@
-package com.example.eveant.serviceEdit;
+package com.example.eveant.service.serviceEdit;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;

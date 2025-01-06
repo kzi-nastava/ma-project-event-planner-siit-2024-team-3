@@ -1,4 +1,4 @@
-package com.example.eveant.serviceCreate;
+package com.example.eveant.service.serviceCreate;
 
 import static android.content.ContentValues.TAG;
 

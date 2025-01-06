@@ -77,7 +77,13 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
             navController.navigate(R.id.serviceEditFragment1);
         });
 
-
+        holder.viewMoreButton.setOnClickListener(v->{
+            ServiceCreateViewModel viewModel = new ViewModelProvider(fragment.requireActivity())
+                    .get(ServiceCreateViewModel.class);
+            viewModel.updateService(service);
+            NavController navController = NavHostFragment.findNavController(fragment);
+            navController.navigate(R.id.serviceDetailsFragment);
+        });
 
     }
 
@@ -90,6 +96,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
         TextView serviceName, serviceDescription,serviceCategory,servicePrice,serviceStatus;
         ImageButton deleteIcon;
         ImageButton editIcon;
+        ImageButton viewMoreButton;
 
         public ServiceViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -99,6 +106,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
             servicePrice = itemView.findViewById(R.id.service_price);
             deleteIcon = itemView.findViewById(R.id.deleteServiceButton);
             editIcon=itemView.findViewById(R.id.editServiceButton);
+            viewMoreButton=itemView.findViewById(R.id.viewMoreButton);
         }
 
 

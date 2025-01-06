@@ -1,4 +1,4 @@
-package com.example.eveant.serviceCreate;
+package com.example.eveant.service.serviceCreate;
 
 import android.os.Bundle;
 
@@ -16,10 +16,7 @@ import android.widget.EditText;
 import com.example.eveant.MainActivity;
 import com.example.eveant.R;
 import com.example.eveant.service.ServiceCreateViewModel;
-import com.example.eveant.service.model.Category;
-import com.example.eveant.service.model.OfferStatus;
 import com.example.eveant.service.model.Service;
-import com.example.eveant.serviceEdit.ServiceEditFragment1;
 
 
 public class ServiceCreateFragment2 extends Fragment {
