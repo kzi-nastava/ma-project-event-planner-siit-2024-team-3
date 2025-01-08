@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 
@@ -24,8 +23,7 @@ import android.widget.ToggleButton;
 import com.example.eveant.MainActivity;
 import com.example.eveant.R;
 import com.example.eveant.RetrofitClient;
-import com.example.eveant.ServicesViewFragment;
-import com.example.eveant.service.ApiService;
+import com.example.eveant.service.ServiceService;
 import com.example.eveant.service.ServiceCreateViewModel;
 import com.example.eveant.service.model.Service;
 import com.example.eveant.service.model.ServiceDTO;
@@ -223,10 +221,10 @@ public class ServiceEditFragment3 extends Fragment {
 
         Log.d(TAG, "updateService:ovo gledaj to mi trebaaaaa "+serviceDTO);
         if (serviceToSave != null) {
-            ApiService apiService = RetrofitClient.apiService;
+            ServiceService serviceService = RetrofitClient.serviceService;
             Log.d("ServiceToSave", "Service to save: " + serviceToSave.toString());
 
-            apiService.updateService(serviceToSave.getId(),serviceDTO).enqueue(new Callback<Void>() {
+            serviceService.updateService(serviceToSave.getId(),serviceDTO).enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {

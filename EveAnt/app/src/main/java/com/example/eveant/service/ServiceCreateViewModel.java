@@ -12,7 +12,6 @@ import com.example.eveant.RetrofitClient;
 import com.example.eveant.service.model.Category;
 import com.example.eveant.service.model.Service;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,8 +38,8 @@ public class ServiceCreateViewModel extends ViewModel {
         return categories;
     }
     public void fetchCategories() {
-        ApiService apiService = RetrofitClient.apiService;
-        apiService.getCategories().enqueue(new Callback<List<Category>>() {
+        ServiceService serviceService = RetrofitClient.serviceService;
+        serviceService.getCategories().enqueue(new Callback<List<Category>>() {
             @Override
             public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
                 if (response.isSuccessful() && response.body() != null) {

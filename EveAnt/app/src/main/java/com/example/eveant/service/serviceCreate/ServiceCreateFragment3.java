@@ -23,7 +23,7 @@ import android.widget.ToggleButton;
 import com.example.eveant.MainActivity;
 import com.example.eveant.R;
 import com.example.eveant.RetrofitClient;
-import com.example.eveant.service.ApiService;
+import com.example.eveant.service.ServiceService;
 import com.example.eveant.service.ServiceCreateViewModel;
 import com.example.eveant.service.model.Service;
 import com.example.eveant.service.model.ServiceDTO;
@@ -164,10 +164,10 @@ public class ServiceCreateFragment3 extends Fragment {
 
         Log.d(TAG, "saveService: "+serviceDTO.getPrice());
         if (serviceDTO != null) {
-            ApiService apiService = RetrofitClient.apiService;
+            ServiceService serviceService = RetrofitClient.serviceService;
             Log.d("ServiceToSave", "Service to save: " + serviceDTO.toString());
 
-            apiService.createService(serviceDTO).enqueue(new Callback<Void>() {
+            serviceService.createService(serviceDTO).enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {

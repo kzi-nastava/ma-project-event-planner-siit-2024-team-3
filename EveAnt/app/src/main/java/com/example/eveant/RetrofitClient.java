@@ -2,7 +2,7 @@ package com.example.eveant;
 
 import android.util.Log;
 
-import com.example.eveant.service.ApiService;
+import com.example.eveant.service.ServiceService;
 
 import java.util.concurrent.TimeUnit;
 
@@ -35,5 +35,6 @@ public class RetrofitClient {
       return client;
    }
 
-   public static  ApiService apiService=retrofit.create(ApiService.class);
+   public static ServiceService serviceService =retrofit.create(ServiceService.class);
+   public static CategoryService categoryService =retrofit.create(CategoryService.class);
 }

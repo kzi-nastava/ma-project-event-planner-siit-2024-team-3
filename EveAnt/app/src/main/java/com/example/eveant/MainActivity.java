@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         final MutableLiveData<String> errorMessage = new MutableLiveData<>();
         final MutableLiveData<ArrayList<Service>> serviceLiveData = new MutableLiveData<>();
-        Call<ArrayList<Service>> call = RetrofitClient.apiService.getAllServices();
+        Call<ArrayList<Service>> call = RetrofitClient.serviceService.getAllServices();
         call.enqueue(new Callback<ArrayList<Service>>() {
             @Override
             public void onResponse(Call<ArrayList<Service>> call, Response<ArrayList<Service>> response) {

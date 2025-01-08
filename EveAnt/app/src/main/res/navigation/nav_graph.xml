@@ -16,7 +16,7 @@
         tools:layout="@layout/activity_login" />
     <fragment
         android:id="@+id/servicesViewFragment"
-        android:name="com.example.eveant.ServicesViewFragment"
+        android:name="com.example.eveant.CategoryManagement"
         android:label="ServicesViewFragment"/>
     <fragment
         android:id="@+id/serviceCreateFragment1"

@@ -19,10 +19,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eveant.service.model.OfferStatus;
-import com.example.eveant.service.ApiService;
+import com.example.eveant.service.ServiceService;
 import com.example.eveant.service.model.Service;
 import com.example.eveant.service.ServiceAdapter;
-import com.example.eveant.service.model.ServiceDTO;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
@@ -36,7 +35,7 @@ public class ServicesViewFragment extends Fragment {
 
     private RelativeLayout filterButton;
 
-    private ApiService apiService;
+    private ServiceService serviceService;
 
     private List<Service> services = new ArrayList<>();
 
@@ -52,7 +51,7 @@ public class ServicesViewFragment extends Fragment {
         ServiceAdapter adapter = new ServiceAdapter(services,this);
         recyclerView.setAdapter(adapter);
 
-        RetrofitClient.apiService.getAllServices().enqueue(new Callback<ArrayList<Service>>() {
+        RetrofitClient.serviceService.getAllServices().enqueue(new Callback<ArrayList<Service>>() {
             @Override
             public void onResponse(Call<ArrayList<Service>> call, Response<ArrayList<Service>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -162,40 +161,5 @@ public class ServicesViewFragment extends Fragment {
         bottomSheetDialog.show();
     }
 
-    private void showDeleteDialog() {
-        // Kreiraj AlertDialog sa prilagođenim stilom i layout-om
-        AlertDialog.Builder builder = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            builder = new AlertDialog.Builder(getContext(), R.style.CustomDialog);
-        }
-        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.delete_dialog_box, null);
-        builder.setView(dialogView);
 
-        AlertDialog dialog = builder.create();
-
-        // Postavi zaobljenu pozadinu iz drawable resursa
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-        // Postavi akcije za dugmad iz dijaloga
-        Button buttonYes = dialogView.findViewById(R.id.button_yes);
-        Button buttonNo = dialogView.findViewById(R.id.button_no);
-
-        buttonYes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Logika za brisanje usluge
-                dialog.dismiss(); // Zatvori dijalog
-            }
-        });
-
-        buttonNo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Zatvori dijalog bez dodatne akcije
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
-    }
 }
