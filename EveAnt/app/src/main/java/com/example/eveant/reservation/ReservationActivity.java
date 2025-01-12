@@ -36,7 +36,6 @@ public class ReservationActivity extends AppCompatActivity{
 
 
         if (savedInstanceState == null) {
-            // Replace "YourFragment" with the name of your fragment class
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_calendar, new CalendarFragment())
                     .commit();

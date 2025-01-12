@@ -41,14 +41,34 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         selectedDate = LocalDate.now();
         setMonthView();
 
-        Button previousButton = view.findViewById(R.id.previousMonthButton);
-        Button nextButton = view.findViewById(R.id.nextMonthButton);
+        Button previousMonthButton = view.findViewById(R.id.previousMonthButton);
+        Button nextMonthButton = view.findViewById(R.id.nextMonthButton);
+        Button nextButton = view.findViewById(R.id.nextButton);
+        Button backButton = view.findViewById(R.id.backButton);
 
-        previousButton.setOnClickListener(v -> previousMonthAction(v));
-        nextButton.setOnClickListener(v -> nextMonthAction(v));
-
+        previousMonthButton.setOnClickListener(v -> previousMonthAction(v));
+        nextMonthButton.setOnClickListener(v -> nextMonthAction(v));
+        nextButton.setOnClickListener(v -> nextButton(v));
 
         return view;
+    }
+
+    private void nextButton(View view){
+        if (selectedDate != null) {
+            Bundle bundle = new Bundle();
+            bundle.putString("selectedDate", selectedDate.toString());
+
+            Fragment nextFragment = new TimelineFragment();
+            nextFragment.setArguments(bundle);
+
+            // Use FragmentManager to navigate
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_timeline, nextFragment)
+                    .addToBackStack(null)
+                    .commit();
+        } else {
+            Toast.makeText(requireContext(), "Please select a date first", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void initWidgets(View view){
@@ -116,16 +136,25 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
     @Override
     public void onItemClick(int position, TextView day) {
         if (!day.getText().toString().isEmpty()) {
+            int dayOfMonth = Integer.parseInt(day.getText().toString());
+            LocalDate clickedDate = selectedDate.withDayOfMonth(dayOfMonth);
+            if (clickedDate.isBefore(LocalDate.now())) {
+                Toast.makeText(requireContext(), "Past dates are not selectable", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (clickedDate.equals(LocalDate.now())){
+                Toast.makeText(requireContext(), "Today is not selectable", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             if (selectedDateView != null) {
                 selectedDateView.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.cell_border));
             }
 
             day.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.selected_cell_background));
-
             selectedDateView = day;
 
-            int dayOfMonth = Integer.parseInt(day.getText().toString());
-            selectedDate = selectedDate.withDayOfMonth(dayOfMonth);
+            selectedDate = clickedDate;
 
             String message = "Selected Date: " + selectedDate.format(DateTimeFormatter.ofPattern("dd MMMM yyyy", Locale.getDefault()));
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
