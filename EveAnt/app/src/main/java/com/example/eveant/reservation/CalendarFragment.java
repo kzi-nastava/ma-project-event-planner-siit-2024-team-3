@@ -53,23 +53,25 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         return view;
     }
 
-    private void nextButton(View view){
+    private void nextButton(View view) {
         if (selectedDate != null) {
+            // Create the next fragment (TimelineFragment)
             Bundle bundle = new Bundle();
             bundle.putString("selectedDate", selectedDate.toString());
-
             Fragment nextFragment = new TimelineFragment();
             nextFragment.setArguments(bundle);
 
-            // Use FragmentManager to navigate
+            // Use FragmentManager to navigate to the new fragment
             requireActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_timeline, nextFragment)
-                    .addToBackStack(null)
+                    .replace(R.id.fragment_container, nextFragment) // Replace the container with the TimelineFragment
+                    .addToBackStack(null)  // Add the fragment to the back stack so the user can go back
                     .commit();
         } else {
             Toast.makeText(requireContext(), "Please select a date first", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 
     private void initWidgets(View view){
         calendarRecyclerView = view.findViewById(R.id.calendarRecyclerView);

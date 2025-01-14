@@ -37,7 +37,7 @@ public class ReservationActivity extends AppCompatActivity{
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_calendar, new CalendarFragment())
+                    .replace(R.id.fragment_container, new CalendarFragment())
                     .commit();
         }
 
