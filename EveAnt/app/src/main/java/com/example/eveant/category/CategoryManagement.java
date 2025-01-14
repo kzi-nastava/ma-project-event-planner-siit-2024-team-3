@@ -1,4 +1,4 @@
-package com.example.eveant;
+package com.example.eveant.category;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -12,11 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.eveant.service.ServiceAdapter;
+import com.example.eveant.R;
+import com.example.eveant.RetrofitClient;
 import com.example.eveant.service.model.Category;
 import com.example.eveant.service.model.CategoryStatus;
-import com.example.eveant.service.model.OfferStatus;
-import com.example.eveant.service.model.Service;
 
 import java.util.ArrayList;
 import java.util.List;

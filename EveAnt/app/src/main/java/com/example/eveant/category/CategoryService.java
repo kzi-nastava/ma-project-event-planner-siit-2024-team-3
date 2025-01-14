@@ -1,4 +1,4 @@
-package com.example.eveant;
+package com.example.eveant.category;
 
 import com.example.eveant.service.model.Category;
 

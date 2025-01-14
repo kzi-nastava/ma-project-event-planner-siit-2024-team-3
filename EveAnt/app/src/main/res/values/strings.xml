@@ -150,6 +150,8 @@
     <string name="adminName">Admin</string>
     <string name="category_name">Category Name</string>
     <string name="suggested">Suggested</string>
+    <string name="budget_create">Create budget</string>
+    <string name="select_event">Select event type</string>
 
     <string-array name="categories">
         <item>Select category</item>

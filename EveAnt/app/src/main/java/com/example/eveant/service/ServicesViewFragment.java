@@ -1,7 +1,5 @@
-package com.example.eveant;
+package com.example.eveant.service;
 
-import android.app.AlertDialog;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,10 +16,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.eveant.R;
+import com.example.eveant.RetrofitClient;
 import com.example.eveant.service.model.OfferStatus;
-import com.example.eveant.service.ServiceService;
 import com.example.eveant.service.model.Service;
-import com.example.eveant.service.ServiceAdapter;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;

@@ -2,6 +2,9 @@ package com.example.eveant;
 
 import android.util.Log;
 
+import com.example.eveant.budget.BudgetService;
+import com.example.eveant.category.CategoryService;
+import com.example.eveant.priceList.OfferService;
 import com.example.eveant.service.ServiceService;
 
 import java.util.concurrent.TimeUnit;
@@ -37,4 +40,6 @@ public class RetrofitClient {
 
    public static ServiceService serviceService =retrofit.create(ServiceService.class);
    public static CategoryService categoryService =retrofit.create(CategoryService.class);
+   public static BudgetService budgetService=retrofit.create(BudgetService.class);
+   public static OfferService offerService=retrofit.create(OfferService.class);
 }
