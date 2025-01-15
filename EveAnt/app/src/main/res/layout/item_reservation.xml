@@ -3,26 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:padding="10dp"
-    android:layout_marginBottom="10dp"
-    android:background="?android:attr/selectableItemBackground">
+    android:padding="8dp"
+    android:background="@color/white">
 
-    <!-- Ordinal number -->
     <TextView
         android:id="@+id/ordinal_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="1"
+        android:text="1."
+        android:textColor="@color/black"
         android:textSize="16sp"
-        android:layout_marginEnd="8dp"
-        android:gravity="center_vertical"/>
+        android:layout_marginEnd="8dp" />
 
-    <!-- Start and end times -->
     <TextView
         android:id="@+id/start_end_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start: 10:00 AM - End: 11:00 AM"
-        android:textSize="16sp"
-        android:gravity="center_vertical" />
+        android:text="02:00 - 05:00"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
 </LinearLayout>

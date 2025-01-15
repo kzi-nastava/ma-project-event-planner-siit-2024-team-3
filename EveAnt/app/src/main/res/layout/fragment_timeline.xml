@@ -47,6 +47,7 @@
             android:layout_height="wrap_content"
             android:text=":"
             android:textSize="16sp"
+            android:textColor="@color/black"
             android:layout_marginHorizontal="4dp" />
 
         <EditText
@@ -92,6 +93,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=":"
+            android:textColor="@color/black"
             android:textSize="16sp"
             android:layout_marginHorizontal="4dp" />
 
@@ -111,15 +113,19 @@
         android:id="@+id/reservation_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Reservations:"
+        android:text="Unavailable Timeslots:"
+        android:textColor="@color/black"
         android:textSize="18sp"
-        android:layout_marginBottom="8dp" />
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="16dp"  />
 
     <!-- RecyclerView for displaying reservations -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/reservation_list"
         android:layout_width="match_parent"
-        android:layout_height="300dp" />
+        android:layout_height="300dp"
+        android:padding="8dp"
+        android:background="@drawable/edittext_background" />
 
     <LinearLayout
         style="?android:attr/buttonBarStyle"

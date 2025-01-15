@@ -21,8 +21,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.eveant.R;
 import com.example.eveant.service.model.Service;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.Button;
@@ -56,6 +60,20 @@ public class TimelineFragment extends Fragment {
         service = new Service();
         service.setMaxEngagement(40);
         service.setMinEngagement(30);
+
+        Reservation r1 = new Reservation();
+        r1.setStartTime("2025-01-23T02:00:00");
+        r1.setEndTime("2025-01-23T05:00:00");
+
+        Reservation r2 = new Reservation();
+        r2.setStartTime("2025-01-23T06:00:00");
+        r2.setEndTime("2025-01-23T07:00:00");
+
+        Reservation r3 = new Reservation();
+        r3.setStartTime("2025-01-23T01:00:00");
+        r3.setEndTime("2025-01-23T01:30:00");
+
+        reservations = new Reservation[]{r1, r2, r3};
 
         // Set up RecyclerView
         RecyclerView recyclerView = view.findViewById(R.id.reservation_list);
@@ -225,6 +243,10 @@ public class TimelineFragment extends Fragment {
             return;
         }
 
+        if (isOverlapping(startHourText + ":" + startMinuteText, endHourText + ":" + endMinuteText)) {
+            Toast.makeText(getContext(), "Time slot overlaps with an existing reservation!", Toast.LENGTH_SHORT).show();
+        }
+
         // Validate that total time is between minEngagement and maxEngagement if maxEngagement > 0
         if (service.getMaxEngagement() > 0) {
             int minEngagement = service.getMinEngagement() != null ? service.getMinEngagement() : 0;
@@ -240,6 +262,37 @@ public class TimelineFragment extends Fragment {
         }
 
         showToast("Time input is valid.");
+    }
+
+    private boolean isOverlapping(String inputStartTime, String inputEndTime) {
+        try {
+            // Parse the input times
+            SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+            Date inputStart = timeFormat.parse(inputStartTime);
+            Date inputEnd = timeFormat.parse(inputEndTime);
+
+            // Check for valid input
+            if (inputStart == null || inputEnd == null || inputStart.after(inputEnd)) {
+                return true; // Invalid input
+            }
+
+            // Check against existing reservations
+            for (Reservation reservation : reservations) {
+                Date reservationStart = timeFormat.parse(reservation.getStartTime().split("T")[1].substring(0, 5));
+                Date reservationEnd = timeFormat.parse(reservation.getEndTime().split("T")[1].substring(0, 5));
+
+                if (reservationStart != null && reservationEnd != null) {
+                    // Check if the times overlap
+                    if (inputStart.before(reservationEnd) && inputEnd.after(reservationStart)) {
+                        return true; // Overlap found
+                    }
+                }
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return false; // No overlap
     }
 
 }

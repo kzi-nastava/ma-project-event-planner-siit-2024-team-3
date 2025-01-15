@@ -10,12 +10,25 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.eveant.R;
 import com.example.eveant.reservation.Reservation;
 
+import java.time.LocalTime;
+import java.util.Arrays;
+import java.util.Comparator;
+
 public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.ReservationViewHolder> {
 
     private Reservation[] reservations;
 
-    // Constructor to receive the list of reservations
     public ReservationAdapter(Reservation[] reservations) {
+        // Sort the reservations by start time
+        Arrays.sort(reservations, new Comparator<Reservation>() {
+            @Override
+            public int compare(Reservation r1, Reservation r2) {
+                LocalTime time1 = LocalTime.parse(r1.getStartTime().split("T")[1]);
+                LocalTime time2 = LocalTime.parse(r2.getStartTime().split("T")[1]);
+                return time1.compareTo(time2);
+            }
+        });
+
         this.reservations = reservations;
     }
 
@@ -30,12 +43,14 @@ public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.
     public void onBindViewHolder(ReservationViewHolder holder, int position) {
         Reservation reservation = reservations[position];
 
-        // Setting the ordinal number (position + 1)
-        holder.ordinalNumberTextView.setText(String.valueOf(position + 1));
+        // Extract and format the time parts
+        String startTime = reservation.getStartTime().split("T")[1].substring(0, 5);
+        String endTime = reservation.getEndTime().split("T")[1].substring(0, 5);
 
-        // Setting the start and end times
-        String startEndTime = "Start: " + reservation.getStartTime() + " - End: " + reservation.getEndTime();
+        String startEndTime = "Start: " + startTime + " - End: " + endTime;
         holder.startEndTimeTextView.setText(startEndTime);
+
+        holder.ordinalNumberTextView.setText(String.valueOf(position + 1));
     }
 
     @Override

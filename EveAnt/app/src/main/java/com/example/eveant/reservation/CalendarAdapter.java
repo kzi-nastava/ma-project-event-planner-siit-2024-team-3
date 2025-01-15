@@ -18,13 +18,16 @@ import androidx.core.content.ContextCompat;
 import java.time.LocalDate;
 
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
-   private final ArrayList<String> daysOfMonth;
-   private final OnItemListener onItemListener;
+    private final ArrayList<String> daysOfMonth;
+    private final OnItemListener onItemListener;
+    private final LocalDate selectedDate;  // Store the selectedDate
+    private final int reservationDeadline;
 
-
-    public CalendarAdapter(ArrayList<String> daysOfMonth, OnItemListener onItemListener) {
+    public CalendarAdapter(ArrayList<String> daysOfMonth, OnItemListener onItemListener, LocalDate selectedDate, int reservationDeadline) {
         this.daysOfMonth = daysOfMonth;
         this.onItemListener = onItemListener;
+        this.selectedDate = selectedDate;  // Assign selectedDate
+        this.reservationDeadline = reservationDeadline;
     }
 
     @NonNull
@@ -44,17 +47,23 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
 
         if (!day.isEmpty()) {
             int dayOfMonth = Integer.parseInt(day);
-            YearMonth currentYearMonth = YearMonth.from(LocalDate.now());
-            LocalDate cellDate = currentYearMonth.atDay(dayOfMonth);
+            YearMonth displayedMonth = YearMonth.from(LocalDate.of(selectedDate.getYear(), selectedDate.getMonth(), 1));
+            LocalDate cellDate = displayedMonth.atDay(dayOfMonth);
+            LocalDate maxSelectableDate = LocalDate.now().plusDays(reservationDeadline);
 
             if (cellDate.isBefore(LocalDate.now())) {
+                // Grey out past dates
                 holder.dayOfMonth.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.gray));
-                holder.itemView.setEnabled(false); // Disable past dates
-            } else if (cellDate.equals(LocalDate.now())) {
+                holder.itemView.setEnabled(false);
+            }  else if (cellDate.equals(LocalDate.now())) {
+                // Highlight today's date
                 holder.dayOfMonth.setBackground(ContextCompat.getDrawable(holder.itemView.getContext(), R.drawable.today_cell_background));
+            } else if (cellDate.isBefore(maxSelectableDate)) {
+                holder.dayOfMonth.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.red));
             } else {
+                // Enable future dates
                 holder.dayOfMonth.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.black));
-                holder.itemView.setEnabled(true); // Enable future dates
+                holder.itemView.setEnabled(true);
             }
         }
     }
@@ -64,7 +73,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarViewHolder> {
         return daysOfMonth.size();
     }
 
-    public interface OnItemListener{
+    public interface OnItemListener {
         void onItemClick(int position, TextView day);
     }
 }

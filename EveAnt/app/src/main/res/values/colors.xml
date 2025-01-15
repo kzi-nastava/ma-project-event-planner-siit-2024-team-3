@@ -14,6 +14,7 @@
     <color name="cancellationPeriodBackground">#FFEB3B</color>  <!-- Yellow for cancellation period -->
     <color name="defaultTextColor">#000000</color>  <!-- Black for default text -->
     <color name="selectedTextColor">#FFFFFF</color> <!-- White for selected text -->
-    <color name="disabledTextColor">#9E9E9E</color> <!-- Light gray for disabled text -->
+    <color name="disabledTextColor">#9E9E9E</color>
+    <color name="red">#cc0000</color> <!-- Light gray for disabled text -->
 
 </resources>

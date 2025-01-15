@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eveant.R;
+import com.example.eveant.service.model.Service;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -31,11 +32,15 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
     private RecyclerView calendarRecyclerView;
     private LocalDate selectedDate;
     private TextView selectedDateView;
+    private Service service;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
+
+        service = new Service();
+        service.setReservationDeadLine(3);
 
         initWidgets(view);
         selectedDate = LocalDate.now();
@@ -45,6 +50,7 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         Button nextMonthButton = view.findViewById(R.id.nextMonthButton);
         Button nextButton = view.findViewById(R.id.nextButton);
         Button backButton = view.findViewById(R.id.backButton);
+
 
         previousMonthButton.setOnClickListener(v -> previousMonthAction(v));
         nextMonthButton.setOnClickListener(v -> nextMonthAction(v));
@@ -78,15 +84,16 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         monthYearText = view.findViewById(R.id.monthYearTV);
     }
 
-    private void setMonthView(){
+    private void setMonthView() {
         monthYearText.setText(monthYearFromDate(selectedDate));
         ArrayList<String> daysInMonth = daysInMonthArray(selectedDate);
 
-        CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this);
+        CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this, selectedDate, service.getReservationDeadLine());  // Pass selectedDate to the adapter
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(requireContext(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
     }
+
 
     private String monthYearFromDate(LocalDate date){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.getDefault());
@@ -140,12 +147,17 @@ public class CalendarFragment extends Fragment implements CalendarAdapter.OnItem
         if (!day.getText().toString().isEmpty()) {
             int dayOfMonth = Integer.parseInt(day.getText().toString());
             LocalDate clickedDate = selectedDate.withDayOfMonth(dayOfMonth);
+            LocalDate maxSelectableDate = LocalDate.now().plusDays(service.getReservationDeadLine());
             if (clickedDate.isBefore(LocalDate.now())) {
                 Toast.makeText(requireContext(), "Past dates are not selectable", Toast.LENGTH_SHORT).show();
                 return;
             }
             if (clickedDate.equals(LocalDate.now())){
                 Toast.makeText(requireContext(), "Today is not selectable", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (clickedDate.isBefore(maxSelectableDate)) {
+                Toast.makeText(requireContext(), "This date isn't available", Toast.LENGTH_SHORT).show();
                 return;
             }
 
