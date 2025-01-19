@@ -5,14 +5,14 @@ import java.util.List;
 
 public class ServiceDTO {
     private Integer id;
-    private String provider;
+    private Integer provider;
     private Date lastModification;
     private String name;
     private String category;
     private String description;
     private List<Integer> eventTypes;
     private Long price;
-    private int discount;
+    private Integer discount;
     private Boolean visible;
     private OfferStatus status;
     private List<String> photos;
@@ -28,8 +28,8 @@ public class ServiceDTO {
         super();
     }
 
-    public ServiceDTO(Integer id, String provider, String name, String description, String category,
-                   List<Integer> eventTypes, Long price, int discount, Boolean visible,
+    public ServiceDTO(Integer id, Integer provider, String name, String description, String category,
+                   List<Integer> eventTypes, Long price, Integer discount, Boolean visible,
                    OfferStatus status, List<String> photos, String specification,
                    Integer maxEngagement, Integer minEngagement, Boolean automation,
                    Integer reservationDeadLine, Integer cancellationPeriod) {
@@ -99,11 +99,11 @@ public class ServiceDTO {
         this.id = id;
     }
 
-    public String getProvider() {
+    public Integer getProvider() {
         return provider;
     }
 
-    public void setProvider(String provider) {
+    public void setProvider(Integer provider) {
         this.provider = provider;
     }
 
@@ -155,11 +155,11 @@ public class ServiceDTO {
         this.price = price;
     }
 
-    public int getDiscount() {
+    public Integer getDiscount() {
         return discount;
     }
 
-    public void setDiscount(int discount) {
+    public void setDiscount(Integer discount) {
         this.discount = discount;
     }
 

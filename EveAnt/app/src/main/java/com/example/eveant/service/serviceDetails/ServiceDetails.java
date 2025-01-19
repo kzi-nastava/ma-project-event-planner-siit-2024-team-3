@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.eveant.R;
 import com.example.eveant.RetrofitClient;
+import com.example.eveant.communication.ChatActivity;
 import com.example.eveant.review.Review;
 import com.example.eveant.review.ReviewDTO;
 import com.example.eveant.review.ReviewService;
@@ -60,17 +62,28 @@ public class ServiceDetails extends Fragment {
         btnBuyProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle Buy Product action
+                /*doda se u listu za kupljene i moze da prica sa pupom*/
                 Toast.makeText(getActivity(), "Product Bought", Toast.LENGTH_SHORT).show();
             }
         });
 
+        Service service = viewModel.getService().getValue();
+        currentOffer=service;
+
         btnProviderInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Handle Provider Info action
-                Toast.makeText(getActivity(), "Provider Info", Toast.LENGTH_SHORT).show();
-                Toast.makeText(getActivity(), "Provider Info", Toast.LENGTH_SHORT).show();
+
+                Log.d(TAG, "onClick: "+currentOffer);
+                Log.d(TAG, "onClick: "+ currentUser);
+                if ( currentOffer != null) {  /*currentUser != null &&*/
+                    Intent chatIntent = new Intent(getActivity(), ChatActivity.class);
+                    chatIntent.putExtra("userId", 1);/*currentUser.getId()*/
+                    chatIntent.putExtra("providerId", 1);/*currentOffer.getProvider()*/
+                    startActivity(chatIntent);
+                } else {
+                    Toast.makeText(getActivity(), "User or provider data is missing", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -81,9 +94,6 @@ public class ServiceDetails extends Fragment {
                 Toast.makeText(getActivity(), "Company Info", Toast.LENGTH_SHORT).show();
             }
         });
-
-        Service service = viewModel.getService().getValue();
-        currentOffer=service;
 
         TextView serviceName=view.findViewById(R.id.serviceName);
         TextView serviceCategory=view.findViewById(R.id.serviceCategory);

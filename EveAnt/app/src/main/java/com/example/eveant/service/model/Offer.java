@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Offer {
     private Integer id;
-    private String provider;
+    private Integer provider;
     private Date lastModification;
     private String name;
     private Category category;
@@ -20,7 +20,7 @@ public class Offer {
     public Offer() {
     }
 
-    public Offer(Integer id, String provider, Date lastModification, String name, Category category,
+    public Offer(Integer id, Integer provider, Date lastModification, String name, Category category,
                  String description, List<Integer> eventTypes, Long price, int discount,
                  Boolean visible, OfferStatus status, List<String> photos) {
         this.id = id;
@@ -45,11 +45,11 @@ public class Offer {
         this.id = id;
     }
 
-    public String getProvider() {
+    public Integer getProvider() {
         return provider;
     }
 
-    public void setProvider(String provider) {
+    public void setProvider(Integer provider) {
         this.provider = provider;
     }
 
@@ -101,11 +101,11 @@ public class Offer {
         this.price = price;
     }
 
-    public int getDiscount() {
+    public Integer getDiscount() {
         return discount;
     }
 
-    public void setDiscount(int discount) {
+    public void setDiscount(Integer discount) {
         this.discount = discount;
     }
 

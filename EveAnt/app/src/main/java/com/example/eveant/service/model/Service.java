@@ -14,7 +14,7 @@ public class Service extends Offer {
         super();
     }
 
-    public Service(Integer id, String provider, String name, String description, Category category,
+    public Service(Integer id, Integer provider, String name, String description, Category category,
                    List<Integer> eventTypes, Long price, int discount, Boolean visible,
                    OfferStatus status, List<String> photos, String specification,
                    Integer maxEngagement, Integer minEngagement, Boolean automation,

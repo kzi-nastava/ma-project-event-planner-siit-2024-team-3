@@ -25,7 +25,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class CreateBudget extends Fragment {
+public class BudgetList extends Fragment {
     private int budgetId=1;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

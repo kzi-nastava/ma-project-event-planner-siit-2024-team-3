@@ -68,4 +68,13 @@
         android:id="@+id/serviceDetailsFragment"
         android:name="com.example.eveant.service.serviceDetails.ServiceDetails"
         android:label="Service Details"/>
+
+    <fragment
+        android:id="@+id/createBudget1"
+        android:name="com.example.eveant.budget.CreateBudget1"
+        android:label="Create Budget"/>
+    <fragment
+        android:id="@+id/budgetList"
+        android:name="com.example.eveant.budget.BudgetList"
+        android:label="Budget List"/>
 </navigation>

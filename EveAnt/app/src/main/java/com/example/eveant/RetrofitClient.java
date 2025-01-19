@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.eveant.budget.BudgetService;
 import com.example.eveant.category.CategoryService;
+import com.example.eveant.communication.ChatSessionService;
 import com.example.eveant.priceList.OfferService;
 import com.example.eveant.review.ReviewService;
 import com.example.eveant.service.ServiceService;
@@ -24,7 +25,6 @@ public class RetrofitClient {
            .client(test())
            .build();
 
-
    public static OkHttpClient test(){
       Log.d("RetrofitClient", "Base URL: " + SERVICE_API_PATH);
       HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
@@ -44,4 +44,5 @@ public class RetrofitClient {
    public static BudgetService budgetService=retrofit.create(BudgetService.class);
    public static OfferService offerService=retrofit.create(OfferService.class);
    public static ReviewService reviewService=retrofit.create(ReviewService.class);
+   public static ChatSessionService chatSessionService=retrofit.create(ChatSessionService.class);
 }

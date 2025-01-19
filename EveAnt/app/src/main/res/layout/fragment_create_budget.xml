@@ -26,30 +26,7 @@
             android:textSize="25sp"
             android:textColor="@color/black" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="8dp"
-            android:padding="8dp"
-            android:background="@drawable/rounded_corners_f0f3ff">
 
-            <Spinner
-                android:id="@+id/category_spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginVertical="8dp"
-                android:prompt="@string/select_event" />
-
-        </LinearLayout>
-
-        <!--<androidx.recyclerview.widget.RecyclerView android:id="@+id/budget_item"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="16dp"
-            android:clipToPadding="false"
-            tools:listitem="@layout/item_service"
-            xmlns:tools="http://schemas.android.com/tools" />-->
 
 
         <ScrollView

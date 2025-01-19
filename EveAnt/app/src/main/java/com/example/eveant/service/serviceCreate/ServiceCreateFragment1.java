@@ -197,7 +197,9 @@ public class ServiceCreateFragment1 extends Fragment {
 
             /*tip usluga*/
 
-            if (availableButton.isChecked()) {
+            if(checkBoxNewCategory.isChecked()){
+                serviceDTO.setStatus(OfferStatus.PENDING);
+            } else if (availableButton.isChecked()) {
                 serviceDTO.setStatus(OfferStatus.AVAILABLE);
             } else {
                 serviceDTO.setStatus(OfferStatus.UNAVAILABLE);
