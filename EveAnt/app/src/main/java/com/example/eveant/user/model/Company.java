@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import java.util.List;
 
 public class Company implements Parcelable {
-    private String companyName;
+    private String name;
     private String email;
     private Address address;
     private String contact;
@@ -17,7 +17,7 @@ public class Company implements Parcelable {
     public Company() {}
 
     public Company(String companyName, String email, Address address, String contact, String description, List<String> photos) {
-        this.companyName = companyName;
+        this.name = companyName;
         this.email = email;
         this.address = address;
         this.contact = contact;
@@ -25,7 +25,7 @@ public class Company implements Parcelable {
         this.photos = photos;
     }
     protected Company(Parcel in) {
-        companyName = in.readString();
+        name = in.readString();
         email = in.readString();
         address = in.readParcelable(Address.class.getClassLoader());
         contact = in.readString();
@@ -35,7 +35,7 @@ public class Company implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(companyName);
+        dest.writeString(name);
         dest.writeString(email);
         dest.writeParcelable(address, flags);
         dest.writeString(contact);
@@ -62,8 +62,8 @@ public class Company implements Parcelable {
 
 
     // Getters and Setters
-    public String getCompanyName() { return companyName; }
-    public void setCompanyName(String name) { this.companyName = name; }
+    public String getCompanyName() { return name; }
+    public void setCompanyName(String name) { this.name = name; }
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }

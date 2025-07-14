@@ -1,11 +1,13 @@
 package com.example.eveant.service.model;
 
+import com.example.eveant.user.model.Provider;
+
 import java.util.Date;
 import java.util.List;
 
 public class ServiceDTO {
     private Integer id;
-    private Integer provider;
+    private Provider provider;
     private Date lastModification;
     private String name;
     private String category;
@@ -99,11 +101,11 @@ public class ServiceDTO {
         this.id = id;
     }
 
-    public Integer getProvider() {
+    public Provider getProvider() {
         return provider;
     }
 
-    public void setProvider(Integer provider) {
+    public void setProvider(Provider provider) {
         this.provider = provider;
     }
 

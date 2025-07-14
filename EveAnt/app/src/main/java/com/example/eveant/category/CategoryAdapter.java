@@ -30,8 +30,12 @@ import retrofit2.Response;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
     private ArrayList<Category> categoryList;
     private Fragment fragment;
-    public CategoryAdapter(ArrayList<Category> categoryList) {
-        this.categoryList = categoryList;
+
+
+    private boolean isBudgetMode = false;
+
+    public void setBudgetMode(boolean budgetMode) {
+        this.isBudgetMode = budgetMode;
     }
 
     public CategoryAdapter(ArrayList<Category> categoryList, Fragment fragment) {
@@ -39,29 +43,40 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         this.fragment = fragment;
     }
 
-    @Override
     public int getItemViewType(int position) {
+        if (isBudgetMode) return 2;
         Category category = categoryList.get(position);
         return CategoryStatus.SUGGESTED.equals(category.getStatus()) ? 0 : 1;
     }
 
-    @NonNull
     @Override
     public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
         if (viewType == 0) {
-            view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.suggested_category, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.suggested_category, parent, false);
+        } else if (viewType == 1) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.category, parent, false);
         } else {
-            view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.category, parent, false);
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.budget_item_category, parent, false);
         }
         return new CategoryViewHolder(view, viewType);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Category category = categoryList.get(position);
+
+        if (getItemViewType(position) == 2) {
+            holder.categoryTitle.setText(category.getName());
+            holder.addCategory.setOnClickListener(v -> {
+                if (onAddToBudgetClickListener != null) {
+                    onAddToBudgetClickListener.onAddToBudget(category);
+                }
+            });
+            return;
+        }
+
         holder.categoryName.setText(category.getName());
         if(holder.fabAddCategory!=null) {
             holder.fabAddCategory.setOnClickListener(v -> {
@@ -98,6 +113,16 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         return categoryList.size();
     }
 
+    public interface OnAddToBudgetClickListener {
+        void onAddToBudget(Category category);
+    }
+
+    private OnAddToBudgetClickListener onAddToBudgetClickListener;
+
+    public void setOnAddToBudgetClickListener(OnAddToBudgetClickListener listener) {
+        this.onAddToBudgetClickListener = listener;
+    }
+
 
     public static class CategoryViewHolder extends RecyclerView.ViewHolder {
 
@@ -105,12 +130,18 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         ImageButton addCategoryButton,editButtoncategory,deleteButtonCategory;
         ImageButton fabAddCategory;
 
+        TextView categoryTitle;
+        Button addCategory;
+
         public CategoryViewHolder(@NonNull View itemView, int viewType) {
             super(itemView);
 
             fabAddCategory = itemView.findViewById(R.id.fabAddCategory);
-
-            if (viewType == 0) { // Suggested category
+            if (viewType == 2) {
+                categoryTitle = itemView.findViewById(R.id.category_title);
+                addCategory = itemView.findViewById(R.id.add_category);
+            }
+            else if (viewType == 0) { // Suggested category
                 addCategoryButton = itemView.findViewById(R.id.addCategoryButton);
                 categoryName = itemView.findViewById(R.id.categoryName);
                 status = itemView.findViewById(R.id.status);

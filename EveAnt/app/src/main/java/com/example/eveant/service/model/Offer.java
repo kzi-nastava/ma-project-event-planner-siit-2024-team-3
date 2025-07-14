@@ -1,11 +1,15 @@
 package com.example.eveant.service.model;
 
+
+import com.example.eveant.user.model.Provider;
+
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Offer {
+public class Offer implements Serializable {
     private Integer id;
-    private Integer provider;
+    private Provider provider;
     private Date lastModification;
     private String name;
     private Category category;
@@ -20,7 +24,7 @@ public class Offer {
     public Offer() {
     }
 
-    public Offer(Integer id, Integer provider, Date lastModification, String name, Category category,
+    public Offer(Integer id, Provider provider, Date lastModification, String name, Category category,
                  String description, List<Integer> eventTypes, Long price, int discount,
                  Boolean visible, OfferStatus status, List<String> photos) {
         this.id = id;
@@ -45,11 +49,11 @@ public class Offer {
         this.id = id;
     }
 
-    public Integer getProvider() {
+    public Provider getProvider() {
         return provider;
     }
 
-    public void setProvider(Integer provider) {
+    public void setProvider(Provider provider) {
         this.provider = provider;
     }
 

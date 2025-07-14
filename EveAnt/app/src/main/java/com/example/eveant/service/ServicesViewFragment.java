@@ -1,6 +1,7 @@
 package com.example.eveant.service;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +21,12 @@ import com.example.eveant.R;
 import com.example.eveant.RetrofitClient;
 import com.example.eveant.service.model.OfferStatus;
 import com.example.eveant.service.model.Service;
+import com.example.eveant.service.model.ServiceDTO;
+import com.example.eveant.service.model.ServiceMapper;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -35,7 +39,7 @@ public class ServicesViewFragment extends Fragment {
 
     private ServiceService serviceService;
 
-    private List<Service> services = new ArrayList<>();
+    private ArrayList<Service> services = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,33 +49,38 @@ public class ServicesViewFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view_services);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        ArrayList<Service> services = new ArrayList<>();
         ServiceAdapter adapter = new ServiceAdapter(services,this);
         recyclerView.setAdapter(adapter);
 
-        RetrofitClient.serviceService.getAllServices().enqueue(new Callback<ArrayList<Service>>() {
+
+
+        RetrofitClient.serviceService.getAllServices().enqueue(new Callback<ArrayList<ServiceDTO>>() {
             @Override
-            public void onResponse(Call<ArrayList<Service>> call, Response<ArrayList<Service>> response) {
+            public void onResponse(Call<ArrayList<ServiceDTO>> call, Response<ArrayList<ServiceDTO>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<Service> activeServices = new ArrayList<>();
-                    for (Service service : response.body()) {
-                        if (!OfferStatus.DELETED.equals(service.getStatus())) {
+                    for (ServiceDTO dto : response.body()) {
+                        Service service = ServiceMapper.INSTANCE.toEntity(dto); // mapiramo u entitet
+                        if (service != null && !OfferStatus.DELETED.equals(service.getStatus())) {
                             activeServices.add(service);
                         }
                     }
+                    services.clear();
                     services.addAll(activeServices);
                     adapter.notifyDataSetChanged();
+                    Log.d("service", Arrays.toString(services.toArray()));
                 } else {
-                    Toast.makeText(getContext(), " eco me tu sam Failed to fetch data", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Greška pri dobavljanju podataka", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<ArrayList<Service>> call, Throwable t) {
-                Toast.makeText(getContext(), "evo me tu sam Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<ArrayList<ServiceDTO>> call, Throwable t) {
+                Log.e("RetrofitError", "Deserialization failed", t);
+                Toast.makeText(getContext(), "Greška: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
-
         });
+
 
         return view;
     }

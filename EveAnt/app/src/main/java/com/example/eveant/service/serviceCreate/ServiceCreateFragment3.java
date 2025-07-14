@@ -159,7 +159,7 @@ public class ServiceCreateFragment3 extends Fragment {
 
     private void saveService() {
         Service serviceToSave = viewModel.getService().getValue();
-        serviceToSave.setProvider(1);
+        serviceToSave.setProvider(null);
 
         ServiceDTO serviceDTO = ServiceMapper.INSTANCE.toDTO(serviceToSave);
 

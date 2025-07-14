@@ -1,24 +1,39 @@
 package com.example.eveant.budget;
 
+import com.example.eveant.service.model.Category;
+import com.example.eveant.service.model.Offer;
+
 public class ItemDTO {
-    private int category;
+    private String name;
+    private Category category;
     private Long maxPrice;
-    private int offer;
-    private Long price;
+    private Offer offer;
 
-    public ItemDTO(int id, long priceMax, int offer, long price) {
-        this.category=id;
-        this.maxPrice=priceMax;
-        this.offer=offer;
-        this.price=price;
+    // Default constructor
+    public ItemDTO() {}
 
+    // Parameterized constructor
+    public ItemDTO(String name, Category category, Long maxPrice, Offer offer) {
+        this.category = category;
+        this.name=name;
+        this.maxPrice = maxPrice;
+        this.offer = offer;
     }
 
-    public int getCategory() {
+
+    public String getName(){
+        return name;
+    }
+
+    public void setName(String name){
+        this.name=name;
+    }
+
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(int category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
@@ -30,19 +45,12 @@ public class ItemDTO {
         this.maxPrice = maxPrice;
     }
 
-    public int getOffer() {
+    public Offer getOffer() {
         return offer;
     }
 
-    public void setOffer(int offer) {
+    public void setOffer(Offer offer) {
         this.offer = offer;
     }
 
-    public Long getPrice() {
-        return price;
-    }
-
-    public void setPrice(Long price) {
-        this.price = price;
-    }
 }

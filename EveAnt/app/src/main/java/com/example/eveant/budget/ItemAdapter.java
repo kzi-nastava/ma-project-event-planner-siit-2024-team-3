@@ -1,5 +1,6 @@
 package com.example.eveant.budget;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,14 @@ import java.util.List;
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
 
     private List<Item> items;
+    public interface OnItemEditListener {
+        void onEdit(Item item);
+    }
+
+    private OnItemEditListener editListener;
+    public void setOnItemEditListener(OnItemEditListener listener) {
+        this.editListener = listener;
+    }
 
     public ItemAdapter(List<Item> items) {
         this.items = items;
@@ -28,11 +37,19 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         return new ItemViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         Item item = items.get(position);
+        holder.itemName.setText(item.getName());
         holder.itemTitle.setText(item.getCategory().getName());
-        holder.itemPrice.setText(String.valueOf(item.getPrice()));
+        holder.itemPrice.setText(String.valueOf(item.getMaxPrice())+"$");
+        holder.itemPrice.setOnClickListener(v -> {
+            if (editListener != null) {
+                editListener.onEdit(item);
+            }
+        });
+
     }
 
     @Override
@@ -42,10 +59,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
     static class ItemViewHolder extends RecyclerView.ViewHolder {
         TextView itemTitle;
+        TextView itemName;
         Button itemPrice;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
+            itemName=itemView.findViewById(R.id.item_name);
             itemTitle = itemView.findViewById(R.id.item_title);
             itemPrice = itemView.findViewById(R.id.item_price);
         }

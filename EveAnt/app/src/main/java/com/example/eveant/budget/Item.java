@@ -5,40 +5,38 @@ import com.example.eveant.service.model.Offer;
 
 public class Item {
     private Long id;
-    private Budget budget;
+    private String name;
     private Category category;
     private Long maxPrice;
     private Offer offer;
-    private Long price;
 
     // Default constructor
     public Item() {}
 
     // Parameterized constructor
-    public Item(Long id, Budget budget, Category category, Long maxPrice, Offer offer, Long price) {
+    public Item(Long id, String name, Category category, Long maxPrice, Offer offer) {
         this.id = id;
-        this.budget = budget;
         this.category = category;
+        this.name=name;
         this.maxPrice = maxPrice;
         this.offer = offer;
-        this.price = price;
     }
 
     // Getters and Setters
-    public Long getId() {
-        return id;
+    public int getId() {
+        return Math.toIntExact(id);
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public Budget getBudget() {
-        return budget;
+    public String getName(){
+        return name;
     }
 
-    public void setBudget(Budget budget) {
-        this.budget = budget;
+    public void setName(String name){
+        this.name=name;
     }
 
     public Category getCategory() {
@@ -65,11 +63,4 @@ public class Item {
         this.offer = offer;
     }
 
-    public Long getPrice() {
-        return price;
-    }
-
-    public void setPrice(Long price) {
-        this.price = price;
-    }
 }

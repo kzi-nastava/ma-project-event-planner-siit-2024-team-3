@@ -17,7 +17,7 @@ import retrofit2.http.Path;
 
 public interface ServiceService {
     @GET("/api/services")
-    Call<ArrayList<Service>> getAllServices();
+    Call<ArrayList<ServiceDTO>> getAllServices();
 
     @POST("/api/services")
     Call<Void> createService(@Body ServiceDTO service);
@@ -29,6 +29,9 @@ public interface ServiceService {
 
     @PUT("/api/services/{id}")
     Call<Void> updateService(@Path("id") int id, @Body ServiceDTO serviceDTO);
+
+    @GET("/api/services/category/{categoryId}")
+    Call<List<ServiceDTO>> getServicesByCategory(@Path("categoryId") int categoryId);
 
 
 }

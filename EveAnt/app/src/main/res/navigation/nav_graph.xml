@@ -70,11 +70,49 @@
         android:label="Service Details"/>
 
     <fragment
-        android:id="@+id/createBudget1"
-        android:name="com.example.eveant.budget.CreateBudget1"
-        android:label="Create Budget"/>
-    <fragment
         android:id="@+id/budgetList"
         android:name="com.example.eveant.budget.BudgetList"
         android:label="Budget List"/>
+
+
+    <fragment
+        android:id="@+id/createBudget1"
+        android:name="com.example.eveant.budget.CreateBudget1"
+        android:label="Create Budget 1">
+        <action
+            android:id="@+id/action_createBudget1_to_createBudget"
+            app:destination="@id/createBudget" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/createBudget"
+        android:name="com.example.eveant.budget.CreateBudget"
+        android:label="Create Budget">
+        <argument
+            android:name="eventTypeId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_createBudget_to_reviewBudget"
+            app:destination="@id/reviewBudgetFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/reviewBudgetFragment"
+        android:name="com.example.eveant.budget.ReviewBudgetFragment"
+        android:label="Review Budget">
+        <argument
+            android:name="eventTypeId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_reviewBudget_to_serviceDetailsFragment"
+            app:destination="@id/serviceDetailsFragment" />
+        <action
+            android:id="@+id/action_reviewBudget_to_servicesForCategoryFragment"
+            app:destination="@id/servicesForCategoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/servicesForCategoryFragment"
+        android:name="com.example.eveant.budget.ReviewBudgetFragment"
+        android:label="Service for category">
+    </fragment>
+
 </navigation>
