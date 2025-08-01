@@ -29,6 +29,7 @@ import com.example.eveant.review.ReviewDTO;
 import com.example.eveant.review.ReviewService;
 import com.example.eveant.service.ServiceCreateViewModel;
 import com.example.eveant.service.model.Service;
+import com.example.eveant.service.model.ServiceDTO;
 import com.example.eveant.user.model.User;
 
 import retrofit2.Call;
@@ -42,9 +43,65 @@ public class ServiceDetails extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_service_details, container, false);
+        long serviceId = getArguments().getLong("serviceId");
+
+
         ServiceCreateViewModel viewModel = new ViewModelProvider(requireActivity()).get(ServiceCreateViewModel.class);
+        Service serviceModel = viewModel.getService().getValue();
+
+        TextView serviceName = view.findViewById(R.id.serviceName);
+        TextView serviceCategory = view.findViewById(R.id.serviceCategory);
+        TextView description = view.findViewById(R.id.description);
+        TextView specification = view.findViewById(R.id.specification);
+        TextView newPrice = view.findViewById(R.id.newPrice);
+        TextView oldPrice = view.findViewById(R.id.oldPrice);
+        TextView discountBadge = view.findViewById(R.id.discountBadge);
+
+        RetrofitClient.serviceService.getService(serviceId).enqueue(new Callback<ServiceDTO>() {
+            @Override
+            public void onResponse(Call<ServiceDTO> call, Response<ServiceDTO> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.i("ovde sam i pogledaj me","pogledaj me");
+                    ServiceDTO service = response.body();
+                    currentOffer = null;
+
+                    serviceName.setText(service.getName());
+                    serviceCategory.setText(service.getCategory());
+                    description.setText(service.getDescription());
+                    specification.setText(service.getSpecification());
+                    oldPrice.setText(String.valueOf(service.getPrice()));
+                    discountBadge.setText(String.valueOf(service.getDiscount()));
+                    newPrice.setText(String.valueOf(
+                            (int) (service.getPrice() - (service.getPrice() * service.getDiscount() / 100)))
+                    );
+                    /*TODO datviti da nema buy prodact kada je vec kupljen dugme vec samo da se vidi kakvo je*/
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ServiceDTO> call, Throwable t) {
+                Toast.makeText(getContext(), "Error loading service", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+         if (serviceModel != null) {
+            currentOffer = serviceModel;
+
+            serviceName.setText(serviceModel.getName());
+            /*serviceCategory.setText(serviceModel.getCategory().getName());*/ // objekat Category
+            description.setText(serviceModel.getDescription());
+            specification.setText(serviceModel.getSpecification());
+            /*oldPrice.setText(String.valueOf(serviceModel.getPrice()));
+            discountBadge.setText(String.valueOf(serviceModel.getDiscount()));
+            newPrice.setText(String.valueOf(
+                    (int) (serviceModel.getPrice() - (serviceModel.getPrice() * serviceModel.getDiscount() / 100)))
+            );*/
+
+        } else {
+            Toast.makeText(getContext(), "Service details not available", Toast.LENGTH_SHORT).show();
+        }
+
 
         ImageView btnAddToFavourites = view.findViewById(R.id.favourite);
         Button btnBuyProduct = view.findViewById(R.id.btn_buy_product);
@@ -94,24 +151,34 @@ public class ServiceDetails extends Fragment {
                 Toast.makeText(getActivity(), "Company Info", Toast.LENGTH_SHORT).show();
             }
         });
-
-        TextView serviceName=view.findViewById(R.id.serviceName);
-        TextView serviceCategory=view.findViewById(R.id.serviceCategory);
-        TextView description=view.findViewById(R.id.description);
-        TextView specification=view.findViewById(R.id.specification);
-        TextView newPrice =view.findViewById(R.id.newPrice);
-        TextView oldPrice=view.findViewById(R.id.oldPrice);
-        TextView discountBadge=view.findViewById(R.id.discountBadge);
-
-        serviceName.setText(service.getName());
-        serviceCategory.setText(service.getCategory().getName());
-        description.setText(service.getDescription());
-        specification.setText(service.getSpecification());
-        oldPrice.setText(service.getPrice().toString());
-        discountBadge.setText(String.valueOf(service.getDiscount()));
-        newPrice.setText(String.valueOf((int) (service.getPrice()-(service.getPrice()*service.getDiscount()/100))));
+       /* setupButtons(view);*/
 
         return view;
+    }
+    private void setupButtons(View view) {
+        ImageView btnAddToFavourites = view.findViewById(R.id.favourite);
+        Button btnBuyProduct = view.findViewById(R.id.btn_buy_product);
+        Button btnProviderInfo = view.findViewById(R.id.btn_provider_info);
+        Button btnCompanyInfo = view.findViewById(R.id.btn_company_info);
+
+        btnAddToFavourites.setOnClickListener(v -> showReviewPopup());
+
+        btnBuyProduct.setOnClickListener(v ->
+                Toast.makeText(getActivity(), "Product Bought", Toast.LENGTH_SHORT).show());
+
+        btnProviderInfo.setOnClickListener(v -> {
+            if (currentOffer != null) {
+                Intent chatIntent = new Intent(getActivity(), ChatActivity.class);
+                chatIntent.putExtra("userId", 1); // TODO: zameni sa realnim ID
+                chatIntent.putExtra("providerId", 1); // TODO: zameni sa provider id
+                startActivity(chatIntent);
+            } else {
+                Toast.makeText(getActivity(), "Provider data is missing", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        btnCompanyInfo.setOnClickListener(v ->
+                Toast.makeText(getActivity(), "Company Info", Toast.LENGTH_SHORT).show());
     }
 
 

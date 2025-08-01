@@ -25,6 +25,7 @@ import com.example.eveant.user.UserService;
 import com.example.eveant.user.model.Address;
 import com.example.eveant.user.model.Company;
 import com.example.eveant.user.model.Profile;
+import com.example.eveant.user.model.Provider;
 import com.example.eveant.user.model.User;
 import com.example.eveant.user.model.UserProfileRequest;
 
@@ -85,16 +86,15 @@ public class ActivationFragment extends Fragment {
         address.setPostalNumber(bundle.getString("postalNumber"));
         address.setHouseNumber(bundle.getString("houseNumber"));
 
-        User user = new User();
-
-        user.setAddress(address);
-        user.setFirstName(bundle.getString("firstName"));
-        user.setLastName(bundle.getString("lastName"));
-        user.setGender(bundle.getString("gender"));
-        user.setPhoneNumber(bundle.getString("phoneNumber"));
-        user.setDateOfBirth(bundle.getString("birthday"));
-        user.setRole(bundle.getString("role"));
-        if (user.getRole().equals("PROVIDER")){
+        Provider provider=new Provider();
+        provider.setAddress(address);
+        provider.setFirstName(bundle.getString("firstName"));
+        provider.setGender(bundle.getString("gender"));
+        provider.setLastName(bundle.getString("lastName"));
+        provider.setPhoneNumber(bundle.getString("phoneNumber"));
+        provider.setDateOfBirth(bundle.getString("birthday"));
+       /* provider.setRole(bundle.getString("role"));*/
+       /* if (provider.getRole().equals("PROVIDER")){
             Company company = new Company();
             company.setCompanyName(bundle.getString("companyName"));
             company.setEmail(bundle.getString("companyEmail"));
@@ -111,10 +111,10 @@ public class ActivationFragment extends Fragment {
 
             company.setAddress(companyAddress);
             user.setCompany(company);
-        }
+        }*/
         UserProfileRequest userProfileRequest = new UserProfileRequest();
         userProfileRequest.setCreateProfileDTO(profile);
-        userProfileRequest.setCreateUserDTO(user);
+        userProfileRequest.setCreateUserDTO(provider);
         userService = UserClientUtils.getClient().create(UserService.class);
         Call<ResponseBody> call = userService.registerUser(userProfileRequest);
         call.enqueue(new Callback<ResponseBody>() {

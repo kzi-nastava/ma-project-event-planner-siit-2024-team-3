@@ -2,6 +2,7 @@ package com.example.eveant.service.serviceCreate;
 
 import static android.content.ContentValues.TAG;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.lifecycle.ViewModelProvider;
@@ -20,6 +21,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ToggleButton;
 
+import com.auth0.android.jwt.JWT;
 import com.example.eveant.MainActivity;
 import com.example.eveant.R;
 import com.example.eveant.RetrofitClient;
@@ -159,10 +161,19 @@ public class ServiceCreateFragment3 extends Fragment {
 
     private void saveService() {
         Service serviceToSave = viewModel.getService().getValue();
-        serviceToSave.setProvider(null);
+
 
         ServiceDTO serviceDTO = ServiceMapper.INSTANCE.toDTO(serviceToSave);
 
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("UserSession", getContext().MODE_PRIVATE);
+        String token = sharedPreferences.getString("token", null);
+        if (token != null) {
+            JWT jwt = new JWT(token);
+            String username = jwt.getClaim("sub").asString();
+            if (username != null) {
+                serviceDTO.setProvider(username);
+            }
+        }
         Log.d(TAG, "saveService: "+serviceDTO.getPrice());
         if (serviceDTO != null) {
             ServiceService serviceService = RetrofitClient.serviceService;

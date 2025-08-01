@@ -22,6 +22,7 @@ import com.example.eveant.user.UserClientUtils;
 import com.example.eveant.user.UserService;
 import com.example.eveant.user.model.Address;
 import com.example.eveant.user.model.Profile;
+import com.example.eveant.user.model.Provider;
 import com.example.eveant.user.model.User;
 import com.example.eveant.user.model.UserProfileRequest;
 import com.google.gson.Gson;
@@ -37,6 +38,7 @@ import retrofit2.Response;
 public class AccountFragment2 extends Fragment {
     private UserService userService;
     private User user;
+    private Provider provider;
     private Profile profile;
     private FragmentAccount2Binding binding;
 
@@ -49,7 +51,6 @@ public class AccountFragment2 extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentAccount2Binding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        user = new User();
         profile = new Profile();
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("UserSession", MODE_PRIVATE);
         String token = sharedPreferences.getString("token", "");
@@ -131,19 +132,19 @@ public class AccountFragment2 extends Fragment {
         });
     }
     private void saveChanges() {
-        user.setFirstName(binding.name.getText().toString());
-        user.setLastName(binding.surname.getText().toString());
+        provider.setFirstName(binding.name.getText().toString());
+        provider.setLastName(binding.surname.getText().toString());
         profile.setEmail(binding.email.getText().toString());
         profile.setUsername(binding.username.getText().toString());
-        user.setDateOfBirth(binding.birthday.getText().toString());
-        user.setPhoneNumber(binding.phoneNumber.getText().toString());
+        provider.setDateOfBirth(binding.birthday.getText().toString());
+        provider.setPhoneNumber(binding.phoneNumber.getText().toString());
 
         String streetAndHouse = binding.street.getText().toString();
         String[] streetParts = streetAndHouse.split(" ");
         String street = streetParts.length > 0 ? streetParts[0] : "";
         String houseNumber = streetParts.length > 1 ? streetParts[1] : "";
 
-        Address address = user.getAddress();
+        Address address = provider.getAddress();
         address.setCountry(binding.country.getText().toString());
         address.setCity(binding.city.getText().toString());
         address.setStreet(street);

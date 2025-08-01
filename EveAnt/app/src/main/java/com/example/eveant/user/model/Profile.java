@@ -9,34 +9,32 @@ public class Profile implements Parcelable {
     private String password;
     private String email;
 
-    // Constructors
     public Profile() {}
 
-    public Profile(int id, String username, String password, String email){
+    public Profile(int id, String username, String password, String email) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
     }
+
     protected Profile(Parcel in) {
+        id = in.readInt();
         username = in.readString();
         password = in.readString();
         email = in.readString();
-        id = in.readInt();
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
         dest.writeString(username);
         dest.writeString(password);
         dest.writeString(email);
-        dest.writeInt(id);
     }
 
     @Override
-    public int describeContents() {
-        return 0;
-    }
+    public int describeContents() { return 0; }
 
     public static final Creator<Profile> CREATOR = new Creator<Profile>() {
         @Override
@@ -50,10 +48,9 @@ public class Profile implements Parcelable {
         }
     };
 
-    // Getters and Setters
-
-    public int getId() {return id;}
-    public void setId(int id) {this.id = id;}
+    // Getters & Setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
@@ -63,6 +60,4 @@ public class Profile implements Parcelable {
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
-
-    }
-
+}

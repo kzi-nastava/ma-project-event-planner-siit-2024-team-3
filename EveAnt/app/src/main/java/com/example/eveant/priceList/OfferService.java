@@ -12,7 +12,7 @@ import retrofit2.http.Path;
 public interface OfferService {
 
     @GET("/api/offers/priceList/{id}")
-    Call<List<PriceListItem>> getPriceList(@Path("id") int id);
+    Call<List<PriceListItem>> getPriceList(@Path("id") String id);
 
     @PUT("/api/offers/priceList/{id}")
     Call<PriceListItem> updateOfferPriceAndDiscount(@Path("id") int id, @Body PriceListItem priceListItem);

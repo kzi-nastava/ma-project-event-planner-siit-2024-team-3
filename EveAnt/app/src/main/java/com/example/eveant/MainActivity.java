@@ -3,14 +3,15 @@ package com.example.eveant;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.eveant.service.ServiceAdapter;
 import com.example.eveant.service.model.Service;
 import com.example.eveant.service.model.ServiceDTO;
 import com.example.eveant.service.model.ServiceMapper;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private AppBarConfiguration appBarConfiguration;
 
+    private BottomNavigationView bottomNavigationView;
 
     private WebSocketHandler webSocketHandler;
     @Override
@@ -45,88 +47,41 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        String role = getIntent().getStringExtra("role");
+        navController = ((NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.nav_host_fragment)).getNavController();
 
-// Navigation setup
-        drawerLayout = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.navigation_view);
-
-        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.nav_host_fragment);
-        navController = navHostFragment.getNavController();
-
-// Povezujemo bočni meni i donju navigaciju
-        appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.homeFragment, R.id.budgetList, R.id.servicesViewFragment,
-                R.id.categoryFragment, R.id.chatFragment)
-                .setOpenableLayout(drawerLayout)
-                .build();
-
-// Povezujemo toolbar (za hamburger ikonu)
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
-
-
-        webSocketHandler = new WebSocketHandler();
-        webSocketHandler.connect(new NotificationWebSocketListener() {
-            @Override
-            public void showNotification(String message) {
-                NotificationHelper.showNotification(MainActivity.this, "New Notification", message);
-            }
-        });
-        final MutableLiveData<String> errorMessage = new MutableLiveData<>();
-        final MutableLiveData<ArrayList<Service>> serviceLiveData = new MutableLiveData<>();
-
-        Call<ArrayList<ServiceDTO>> call = RetrofitClient.serviceService.getAllServices();
-        call.enqueue(new Callback<ArrayList<ServiceDTO>>() {
-            @Override
-            public void onResponse(Call<ArrayList<ServiceDTO>> call, Response<ArrayList<ServiceDTO>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<ServiceDTO> dtoList = response.body();
-                    ArrayList<Service> services = new ArrayList<>();
-                    for (ServiceDTO dto : dtoList) {
-                        services.add(ServiceMapper.INSTANCE.toEntity(dto));
-                        Log.d("MainActivity", "Service: " + dto.getName());
-                    }
-                    serviceLiveData.postValue(services);
-                } else {
-                    errorMessage.postValue("Failed to fetch products. Code: " + response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<ServiceDTO>> call, Throwable t) {
-                errorMessage.postValue("Failed to fetch products. Error: " + t.getMessage());
-                Log.e("MainActivity", "Fetch error: ", t);
-            }
-        });
 
 
         /*-----------------------------------------------------------*/
 
         SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
-        String role = sharedPreferences.getString("role", "USER");
+        role = sharedPreferences.getString("role", Constants.ROLE_USER);
 
-        /*NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.nav_host_fragment);*/
-        navController = navHostFragment.getNavController();
+        // Dinamičko podešavanje donjeg menija po ulozi
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.getMenu().clear();
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-
-        if (role.equals("ORGANIZER")) {
-            bottomNavigationView.getMenu().clear();
-            bottomNavigationView.inflateMenu(R.menu.organizer_menu);
-        } else if (role.equals("PROVIDER")) {
-            bottomNavigationView.getMenu().clear();
-            bottomNavigationView.inflateMenu(R.menu.provider_menu);
-        } else if (role.equals("ADMIN")) {
-            bottomNavigationView.getMenu().clear();
-            bottomNavigationView.inflateMenu(R.menu.admin_menu);
-        } else {
-            bottomNavigationView.getMenu().clear();
-            bottomNavigationView.inflateMenu(R.menu.bottom_nav_menu);
+        switch (role) {
+            case Constants.ROLE_ADMIN:
+                bottomNavigationView.inflateMenu(R.menu.bottom_nav_admin);
+                break;
+            case Constants.ROLE_PROVIDER:
+                bottomNavigationView.inflateMenu(R.menu.bottom_nav_pup);
+                break;
+            case Constants.ROLE_ORGANIZER:
+                bottomNavigationView.inflateMenu(R.menu.bottom_nav_organizer);
+                break;
+            default:
+                bottomNavigationView.inflateMenu(R.menu.bottom_nav_menu);
+                break;
         }
+        Log.d("MainActivity", "Korisnik ima ulogu: " + role);
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
+
     }
+
 
     public NavController getNavController() {
         return navController;
@@ -139,6 +94,30 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
+    }
+
+    private void setupBottomNavigationForPUP() {
+        bottomNavigationView.getMenu().clear();
+        bottomNavigationView.inflateMenu(R.menu.bottom_nav_pup);
+
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
+    }
+
+    private void setupBottomNavigationForOrganizer() {
+        bottomNavigationView.getMenu().clear();
+        bottomNavigationView.inflateMenu(R.menu.bottom_nav_organizer);
+
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
+    }
+
+    private void setupBottomNavigationForAdmin() {
+        bottomNavigationView.getMenu().clear();
+        bottomNavigationView.inflateMenu(R.menu.bottom_nav_admin);
+
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
     }
 
 }

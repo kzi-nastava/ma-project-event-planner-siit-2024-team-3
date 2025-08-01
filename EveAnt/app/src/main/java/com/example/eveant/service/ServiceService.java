@@ -34,4 +34,6 @@ public interface ServiceService {
     Call<List<ServiceDTO>> getServicesByCategory(@Path("categoryId") int categoryId);
 
 
+    @GET("/api/services/{id}")
+    Call<ServiceDTO> getService(@Path("id") long serviceId);
 }

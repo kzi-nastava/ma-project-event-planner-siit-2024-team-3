@@ -1,84 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/homeFragment">
 
-    <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.example.eveant.HomeFragment"
-        android:label="HomeFragment" />
+    <!--  Login -->
     <activity
         android:id="@+id/loginActivity"
-        android:name="com.example.eveant.user.LoginActivity"
-        android:label="activity_login"
-        tools:layout="@layout/activity_login" />
+        android:name="com.example.eveant.user.LoginActivity" />
+
+    <!--  Home -->
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.eveant.HomeFragment" />
+
+    <!--  Service Flow -->
     <fragment
         android:id="@+id/servicesViewFragment"
-        android:name="com.example.eveant.service.ServicesViewFragment"
-        android:label="ServicesViewFragment"/>
+        android:name="com.example.eveant.service.ServicesViewFragment" />
+    <fragment
+        android:id="@+id/nav_create_service"
+        android:name="com.example.eveant.service.serviceCreate.ServiceCreateFragment1"
+        android:label="Create Service" />
+
     <fragment
         android:id="@+id/serviceCreateFragment1"
-        android:name="com.example.eveant.service.serviceCreate.ServiceCreateFragment1"
-        android:label="ServiceCreateFragment1" />
+        android:name="com.example.eveant.service.serviceCreate.ServiceCreateFragment1" />
+
     <fragment
         android:id="@+id/serviceCreateFragment2"
-        android:name="com.example.eveant.service.serviceCreate.ServiceCreateFragment2"
-        android:label="ServiceCreateFragment2" />
+        android:name="com.example.eveant.service.serviceCreate.ServiceCreateFragment2" />
+
     <fragment
         android:id="@+id/serviceCreateFragment3"
-        android:name="com.example.eveant.service.serviceCreate.ServiceCreateFragment3"
-        android:label="ServiceCreateFragment3" />
-    <action
-        android:id="@+id/actionCreateFragment_toViewServices"
-        app:destination="@+id/servicesViewFragment" />
+        android:name="com.example.eveant.service.serviceCreate.ServiceCreateFragment3">
+
+        <action
+            android:id="@+id/actionCreateFragment_toViewServices"
+            app:destination="@id/servicesViewFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/serviceEditFragment"
-        android:name="com.example.eveant.service.serviceEdit.ServiceEditFragment"
-        android:label="ServiceEditFragment" />
+        android:name="com.example.eveant.service.serviceEdit.ServiceEditFragment" />
+
     <fragment
         android:id="@+id/serviceEditFragment1"
-        android:name="com.example.eveant.service.serviceEdit.ServiceEditFragment1"
-        android:label="ServiceEditFragment1" />
+        android:name="com.example.eveant.service.serviceEdit.ServiceEditFragment1" />
+
     <fragment
         android:id="@+id/serviceEditFragment2"
-        android:name="com.example.eveant.service.serviceEdit.ServiceEditFragment2"
-        android:label="ServiceEditFragment2" />
+        android:name="com.example.eveant.service.serviceEdit.ServiceEditFragment2" />
+
     <fragment
         android:id="@+id/serviceEditFragment3"
-        android:name="com.example.eveant.service.serviceEdit.ServiceEditFragment3"
-        android:label="ServiceEditFragment3" />
-    <fragment
-        android:id="@+id/accountFragment1"
-        android:name="com.example.eveant.user.account.AccountFragment1"
-        android:label="AccountFragment1">
-    </fragment>
-    <fragment
-        android:id="@+id/accountFragment2"
-        android:name="com.example.eveant.user.account.AccountFragment2"
-        android:label="AccountFragment2">
-    </fragment>
-    <fragment
-        android:id="@+id/categoryFragment"
-        android:name="com.example.eveant.admin.CategoryManagement"
-        android:label="CategoryFragment">
-    </fragment>
+        android:name="com.example.eveant.service.serviceEdit.ServiceEditFragment3" />
+
     <fragment
         android:id="@+id/serviceDetailsFragment"
-        android:name="com.example.eveant.service.serviceDetails.ServiceDetails"
-        android:label="Service Details"/>
+        android:name="com.example.eveant.service.serviceDetails.ServiceDetails">
+        <argument
+            android:name="serviceId"
+            app:argType="long" />
+    </fragment>
 
+    <!--  Budget Flow -->
     <fragment
         android:id="@+id/budgetList"
-        android:name="com.example.eveant.budget.BudgetList"
-        android:label="Budget List"/>
-
+        android:name="com.example.eveant.budget.BudgetList" />
 
     <fragment
         android:id="@+id/createBudget1"
-        android:name="com.example.eveant.budget.CreateBudget1"
-        android:label="Create Budget 1">
+        android:name="com.example.eveant.budget.CreateBudget1">
         <action
             android:id="@+id/action_createBudget1_to_createBudget"
             app:destination="@id/createBudget" />
@@ -86,8 +79,7 @@
 
     <fragment
         android:id="@+id/createBudget"
-        android:name="com.example.eveant.budget.CreateBudget"
-        android:label="Create Budget">
+        android:name="com.example.eveant.budget.CreateBudget">
         <argument
             android:name="eventTypeId"
             app:argType="string" />
@@ -95,10 +87,10 @@
             android:id="@+id/action_createBudget_to_reviewBudget"
             app:destination="@id/reviewBudgetFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/reviewBudgetFragment"
-        android:name="com.example.eveant.budget.ReviewBudgetFragment"
-        android:label="Review Budget">
+        android:name="com.example.eveant.budget.ReviewBudgetFragment">
         <argument
             android:name="eventTypeId"
             app:argType="string" />
@@ -108,11 +100,32 @@
         <action
             android:id="@+id/action_reviewBudget_to_servicesForCategoryFragment"
             app:destination="@id/servicesForCategoryFragment" />
+        <action
+            android:id="@+id/action_reviewBudget_to_servicesViewFragment"
+            app:destination="@id/servicesViewFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/servicesForCategoryFragment"
-        android:name="com.example.eveant.budget.ReviewBudgetFragment"
-        android:label="Service for category">
-    </fragment>
+        android:name="com.example.eveant.budget.ReviewBudgetFragment" />
+
+    <!--  Cenovnik -->
+    <fragment
+        android:id="@+id/priceList"
+        android:name="com.example.eveant.priceList.PriceListFragment" />
+
+    <!--  User / Account -->
+    <fragment
+        android:id="@+id/accountFragment1"
+        android:name="com.example.eveant.user.account.AccountFragment1" />
+
+    <fragment
+        android:id="@+id/accountFragment2"
+        android:name="com.example.eveant.user.account.AccountFragment2" />
+
+    <!--  Admin -->
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="com.example.eveant.admin.CategoryManagement" />
 
 </navigation>

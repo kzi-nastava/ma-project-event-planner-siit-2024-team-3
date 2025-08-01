@@ -7,7 +7,7 @@
     <LinearLayout
         android:id="@+id/fragment_container_layout"
         android:layout_width="match_parent"
-        android:layout_height="700dp"
+        android:layout_height="600dp"
         android:layout_gravity="center"
         android:layout_margin="20dp"
         android:background="@drawable/rounded_corners_white"
@@ -81,12 +81,12 @@
 
 
 
-            <LinearLayout
+           <!-- <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <!-- Dugme za otvaranje CheckBox dijaloga -->
+                &lt;!&ndash; Dugme za otvaranje CheckBox dijaloga &ndash;&gt;
                 <Button
                     android:id="@+id/buttonShowCheckboxes"
                     android:layout_width="match_parent"
@@ -96,7 +96,7 @@
                     android:textColor="@color/white"
                     android:text="@string/select_type_of_events" />
 
-            </LinearLayout>
+            </LinearLayout>-->
         <TextView
             android:id="@+id/selectedEventsTextView"
             android:layout_width="match_parent"

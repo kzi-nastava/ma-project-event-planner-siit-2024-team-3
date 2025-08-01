@@ -2,12 +2,13 @@ package com.example.eveant.service.model;
 
 import com.example.eveant.user.model.Provider;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class ServiceDTO {
+public class ServiceDTO implements Serializable {
     private Integer id;
-    private Provider provider;
+    private String provider;
     private Date lastModification;
     private String name;
     private String category;
@@ -30,7 +31,7 @@ public class ServiceDTO {
         super();
     }
 
-    public ServiceDTO(Integer id, Integer provider, String name, String description, String category,
+    public ServiceDTO(Integer id, String provider, String name, String description, String category,
                    List<Integer> eventTypes, Long price, Integer discount, Boolean visible,
                    OfferStatus status, List<String> photos, String specification,
                    Integer maxEngagement, Integer minEngagement, Boolean automation,
@@ -101,11 +102,11 @@ public class ServiceDTO {
         this.id = id;
     }
 
-    public Provider getProvider() {
+    public String getProvider() {
         return provider;
     }
 
-    public void setProvider(Provider provider) {
+    public void setProvider(String provider) {
         this.provider = provider;
     }
 

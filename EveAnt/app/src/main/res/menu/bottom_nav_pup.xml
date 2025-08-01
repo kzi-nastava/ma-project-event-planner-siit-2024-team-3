@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
+        android:id="@+id/nav_services"
+        android:icon="@drawable/ic_search"
+        android:title="Services" />
+    <item
+        android:id="@+id/nav_create_service"
+        android:icon="@drawable/ic_add"
+        android:title="Add service" />
+    <item
+        android:id="@+id/nav_price_list"
+        android:icon="@drawable/ic_price"
+        android:title="Price list" />
+    <item
+        android:id="@+id/nav_messages"
+        android:icon="@drawable/ic_message"
+        android:title="Messages" />
+    <!--<item
         android:id="@+id/homeFragment"
         android:icon="@drawable/bottom_nav_ic_home"
         android:title="Home" />
@@ -15,5 +31,5 @@
     <item
         android:id="@+id/accountFragment1"
         android:icon="@drawable/bottom_nav_ic_profile"
-        android:title="Profile" />
+        android:title="Profile" />-->
 </menu>

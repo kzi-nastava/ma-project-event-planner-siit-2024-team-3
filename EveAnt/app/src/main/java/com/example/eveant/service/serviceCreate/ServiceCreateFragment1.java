@@ -160,14 +160,14 @@ public class ServiceCreateFragment1 extends Fragment {
 
         TextView selectedEventsTextView = view.findViewById(R.id.selectedEventsTextView);
 
-        Button buttonShowCheckboxes = view.findViewById(R.id.buttonShowCheckboxes);
+        /*Button buttonShowCheckboxes = view.findViewById(R.id.buttonShowCheckboxes);
 
         buttonShowCheckboxes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showCheckboxDialog(selectedEventsTextView);
             }
-        });
+        });*/
 
       /*  viewModel = new ViewModelProvider(requireActivity()).get(ServiceCreateViewModel.class);
 */

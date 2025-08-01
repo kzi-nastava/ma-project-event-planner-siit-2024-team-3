@@ -30,7 +30,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PriceListFragment extends Fragment {
-    private int providerId=1;
+    private int providerId=1; /*TODO da uzme korisnika a ne staticko*/
     public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_price_list,container,false);
 
@@ -45,7 +45,7 @@ public class PriceListFragment extends Fragment {
 
 
 
-        RetrofitClient.offerService.getPriceList(providerId).enqueue(new Callback<List<PriceListItem>>() {
+        RetrofitClient.offerService.getPriceList("michaelsmith").enqueue(new Callback<List<PriceListItem>>() {
             @Override
             public void onResponse(Call<List<PriceListItem>> call, Response<List<PriceListItem>> response) {
                 if(response.isSuccessful()&&response.body()!=null){
