@@ -14,7 +14,7 @@ public class Offer implements Serializable {
     private String name;
     private Category category;
     private String description;
-    private List<Integer> eventTypes;
+    private List<EventType> eventTypes;
     private Long price;
     private Integer discount;
     private Boolean visible;
@@ -25,7 +25,7 @@ public class Offer implements Serializable {
     }
 
     public Offer(Integer id, Provider provider, Date lastModification, String name, Category category,
-                 String description, List<Integer> eventTypes, Long price, int discount,
+                 String description, List<EventType> eventTypes, Long price, int discount,
                  Boolean visible, OfferStatus status, List<String> photos) {
         this.id = id;
         this.provider = provider;
@@ -89,11 +89,11 @@ public class Offer implements Serializable {
         this.description = description;
     }
 
-    public List<Integer> getEventTypes() {
+    public List<EventType> getEventTypes() {
         return eventTypes;
     }
 
-    public void setEventTypes(List<Integer> eventTypes) {
+    public void setEventTypes(List<EventType> eventTypes) {
         this.eventTypes = eventTypes;
     }
 

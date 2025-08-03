@@ -49,7 +49,7 @@ public class PriceListAdapter extends RecyclerView.Adapter<PriceListAdapter.Pric
     public void onBindViewHolder(@NonNull PriceListViewHolder holder, @SuppressLint("RecyclerView") int position) {
         PriceListItem priceListItem = priceList.get(position);
 
-        holder.number.setText(String.valueOf(position));
+        holder.number.setText(String.valueOf(position + 1));
         holder.offerName.setText(priceListItem.getName());
         holder.price.setText(String.valueOf(priceListItem.getPrice()));
         holder.discount.setText(String.valueOf(priceListItem.getDiscount()));

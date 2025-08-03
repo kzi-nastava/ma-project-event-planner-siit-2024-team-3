@@ -7,7 +7,7 @@
     <LinearLayout
         android:id="@+id/fragment_container_layout"
         android:layout_width="match_parent"
-        android:layout_height="600dp"
+        android:layout_height="700dp"
         android:layout_gravity="center"
         android:layout_margin="20dp"
         android:background="@drawable/rounded_corners_white"
@@ -67,9 +67,8 @@
                 android:inputType="text"
                 android:backgroundTint="#8599e0"/>
 
-
-
         </LinearLayout>
+
         <CheckBox
             android:id="@+id/checkbox_new_category"
             android:layout_width="wrap_content"
@@ -97,6 +96,17 @@
                     android:text="@string/select_type_of_events" />
 
             </LinearLayout>-->
+
+        <Button
+            android:id="@+id/buttonSelectEventTypes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_corners_8599e0"
+            android:text="@string/select_type_of_events"
+            android:textColor="@color/white"
+            android:fontFamily="@font/poppins_medium"/>
+
         <TextView
             android:id="@+id/selectedEventsTextView"
             android:layout_width="match_parent"

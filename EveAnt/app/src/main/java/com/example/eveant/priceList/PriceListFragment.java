@@ -22,16 +22,20 @@ import com.example.eveant.RetrofitClient;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PriceListFragment extends Fragment {
-    private int providerId=1; /*TODO da uzme korisnika a ne staticko*/
+    private String providerUsername = "faks1543@gmail.com"; /*TODO da uzme korisnika a ne staticko*/
     public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState){
+
+
         View view = inflater.inflate(R.layout.fragment_price_list,container,false);
 
         RecyclerView recyclerView=view.findViewById(R.id.priceListItem);
@@ -41,11 +45,11 @@ public class PriceListFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         Button exportPdfButton = view.findViewById(R.id.export_pdf_button);
-        exportPdfButton.setOnClickListener(v -> generatePDF(priceList));
+        exportPdfButton.setOnClickListener(v -> downloadPdf(providerUsername));
 
 
 
-        RetrofitClient.offerService.getPriceList("michaelsmith").enqueue(new Callback<List<PriceListItem>>() {
+        RetrofitClient.offerService.getPriceList(providerUsername).enqueue(new Callback<List<PriceListItem>>() {
             @Override
             public void onResponse(Call<List<PriceListItem>> call, Response<List<PriceListItem>> response) {
                 if(response.isSuccessful()&&response.body()!=null){
@@ -66,39 +70,46 @@ public class PriceListFragment extends Fragment {
         return view;
     }
 
-    private void generatePDF(ArrayList<PriceListItem> priceList) {
-        PdfDocument pdfDocument = new PdfDocument();
-        Paint paint = new Paint();
+    private void downloadPdf(String providerUsername) {
+        RetrofitClient.offerService.downloadPriceListPdf(providerUsername).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    boolean saved = savePdfToDownloads(response.body().byteStream());
+                    if (saved) {
+                        Toast.makeText(getContext(), "PDF saved !", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getContext(), "Saving failed PDF-a", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
+                }
+            }
 
-        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(595, 842, 1).create(); // A4 veličina
-        PdfDocument.Page page = pdfDocument.startPage(pageInfo);
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
-        Canvas canvas = page.getCanvas();
-
-        int x = 10, y = 25;
-        paint.setTextSize(12);
-        canvas.drawText("Cenovnik", x, y, paint);
-
-        y += 20;
-        for (PriceListItem item : priceList) {
-            String line = "Naziv: " + item.getName() + ", Cena: " + item.getPrice() +
-                    ", Popust: " + item.getDiscount() + ", Cena sa popustom: " + item.getPriceWithDiscount();
-            canvas.drawText(line, x, y, paint);
-            y += 20;
-        }
-
-        pdfDocument.finishPage(page);
-
-        // Sačuvaj PDF u uređaj
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Cenovnik.pdf");
+    private boolean savePdfToDownloads(InputStream inputStream) {
         try {
-            pdfDocument.writeTo(new FileOutputStream(file));
-            Toast.makeText(getContext(), "PDF je sačuvan u Downloads folderu!", Toast.LENGTH_LONG).show();
+            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "PriceList.pdf");
+            FileOutputStream outputStream = new FileOutputStream(file);
+            byte[] buffer = new byte[4096];
+            int read;
+            while ((read = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, read);
+            }
+            outputStream.flush();
+            outputStream.close();
+            inputStream.close();
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
-            Toast.makeText(getContext(), "Greška prilikom pravljenja PDF-a", Toast.LENGTH_SHORT).show();
+            return false;
         }
-
-        pdfDocument.close();
     }
+
 }

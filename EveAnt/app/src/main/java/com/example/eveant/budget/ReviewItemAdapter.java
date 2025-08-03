@@ -158,7 +158,7 @@ public class ReviewItemAdapter extends RecyclerView.Adapter<ReviewItemAdapter.Vi
                                         TextView price = serviceView.findViewById(R.id.service_price);
 
                                         name.setText(service.getName());
-                                        category.setText(service.getCategory()); // category je String u DTO-u
+                                        category.setText(service.getCategory().getName()); // category je String u DTO-u
                                         price.setText(service.getPrice() + " RSD");
 
                                         serviceView.findViewById(R.id.editServiceButton).setVisibility(View.GONE);
@@ -193,7 +193,7 @@ public class ReviewItemAdapter extends RecyclerView.Adapter<ReviewItemAdapter.Vi
                 TextView category = serviceView.findViewById(R.id.service_category);
                 TextView price = serviceView.findViewById(R.id.service_price);
                 name.setText(service.getName());
-                category.setText(service.getCategory());
+                category.setText(service.getCategory().getCreatedBy());
                 price.setText(service.getPrice() + " RSD");
                 serviceView.findViewById(R.id.editServiceButton).setVisibility(View.GONE);
                 serviceView.findViewById(R.id.deleteServiceButton).setVisibility(View.GONE);

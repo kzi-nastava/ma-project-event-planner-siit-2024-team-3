@@ -10,8 +10,10 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.eveant.RetrofitClient;
 import com.example.eveant.service.model.Category;
+import com.example.eveant.service.model.EventType;
 import com.example.eveant.service.model.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,9 +35,25 @@ public class ServiceCreateViewModel extends ViewModel {
     }
 
     private final MutableLiveData<List<Category>> categories = new MutableLiveData<>();
+    private final MutableLiveData<List<EventType>> eventTypes = new MutableLiveData<>();
+
+    private final MutableLiveData<List<EventType>> selectedEventTypes = new MutableLiveData<>(new ArrayList<>());
+
+    public LiveData<List<EventType>> getSelectedEventTypes() {
+        return selectedEventTypes;
+    }
+
+    public void updateSelectedEventTypes(List<EventType> selectedTypes) {
+        selectedEventTypes.setValue(selectedTypes);
+    }
+
 
     public LiveData<List<Category>> getCategoriesLiveData() {
         return categories;
+    }
+
+    public LiveData<List<EventType>> getEventTypesLiveData() {
+        return eventTypes;
     }
     public void fetchCategories() {
         ServiceService serviceService = RetrofitClient.serviceService;
@@ -53,5 +71,20 @@ public class ServiceCreateViewModel extends ViewModel {
         });
     }
 
+    public void fetchEventTypes() {
+        ServiceService serviceService = RetrofitClient.serviceService;
+        serviceService.getEventTypes().enqueue(new Callback<List<EventType>>() {
+            @Override
+            public void onResponse(Call<List<EventType>> call, Response<List<EventType>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    eventTypes.setValue(response.body());
+                }
+            }
 
+            @Override
+            public void onFailure(Call<List<EventType>> call, Throwable t) {
+                eventTypes.setValue(Collections.emptyList());
+            }
+        });
+    }
 }

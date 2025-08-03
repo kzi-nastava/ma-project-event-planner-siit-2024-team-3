@@ -11,12 +11,11 @@ public interface ServiceMapper {
     ServiceMapper INSTANCE = Mappers.getMapper(ServiceMapper.class);
 
     // Service → ServiceDTO
-    @Mapping(source = "category.name", target = "category")
     @Mapping(source = "provider", target = "provider")
     ServiceDTO toDTO(Service service);
 
+
     // ServiceDTO → Service
-    @Mapping(source = "category", target = "category.name")
     @Mapping(source = "provider", target = "provider")
     Service toEntity(ServiceDTO serviceDTO);
 

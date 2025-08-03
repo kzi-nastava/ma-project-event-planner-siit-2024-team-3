@@ -9,7 +9,7 @@
         android:icon="@drawable/ic_add"
         android:title="Add service" />
     <item
-        android:id="@+id/nav_price_list"
+        android:id="@+id/priceListFragment"
         android:icon="@drawable/ic_price"
         android:title="Price list" />
     <item

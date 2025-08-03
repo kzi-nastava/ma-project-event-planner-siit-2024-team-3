@@ -3,6 +3,7 @@ package com.example.eveant.service;
 import com.example.eveant.service.model.Category;
 import com.example.eveant.service.model.Service;
 import com.example.eveant.service.model.ServiceDTO;
+import com.example.eveant.service.model.EventType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,4 +37,9 @@ public interface ServiceService {
 
     @GET("/api/services/{id}")
     Call<ServiceDTO> getService(@Path("id") long serviceId);
+
+    @GET("/api/event-types")
+    Call<List<EventType>> getEventTypes();
+
+
 }

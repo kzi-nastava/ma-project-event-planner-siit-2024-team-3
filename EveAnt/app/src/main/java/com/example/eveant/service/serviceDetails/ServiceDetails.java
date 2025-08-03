@@ -67,7 +67,7 @@ public class ServiceDetails extends Fragment {
                     currentOffer = null;
 
                     serviceName.setText(service.getName());
-                    serviceCategory.setText(service.getCategory());
+                    serviceCategory.setText(service.getCategory().getName());
                     description.setText(service.getDescription());
                     specification.setText(service.getSpecification());
                     oldPrice.setText(String.valueOf(service.getPrice()));

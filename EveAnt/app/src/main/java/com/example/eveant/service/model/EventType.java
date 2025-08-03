@@ -4,16 +4,17 @@ import java.io.Serializable;
 import java.util.List;
 
 public class EventType implements Serializable {
-    private Long id;
+    private Integer id;
     private String name;
     private String description;
     private List<Category> suggestedCategories;
     private boolean active;
 
-    // Getteri i setteri
-    public Long getId() { return id; }
 
-    public void setId(Long id) { this.id = id; }
+    // Getteri i setteri
+    public Integer getId() { return id; }
+
+    public void setId(Integer id) { this.id = id; }
 
     public String getName() { return name; }
 

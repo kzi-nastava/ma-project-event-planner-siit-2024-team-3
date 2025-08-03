@@ -111,8 +111,10 @@
 
     <!--  Cenovnik -->
     <fragment
-        android:id="@+id/priceList"
-        android:name="com.example.eveant.priceList.PriceListFragment" />
+        android:id="@+id/priceListFragment"
+        android:name="com.example.eveant.priceList.PriceListFragment"
+        android:label="Price List" />
+
 
     <!--  User / Account -->
     <fragment
