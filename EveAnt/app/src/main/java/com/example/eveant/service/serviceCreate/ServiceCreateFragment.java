@@ -1,6 +1,4 @@
-package com.example.eveant.serviceCreate;
-import com.example.eveant.serviceEdit.ServiceEditFragment1;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+package com.example.eveant.service.serviceCreate;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

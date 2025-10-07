@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -16,67 +15,65 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.eveant.serviceCreate.ServiceCreateFragment;
-import com.example.eveant.serviceEdit.ServiceEditFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.example.eveant.service.model.OfferStatus;
+import com.example.eveant.service.ServiceService;
+import com.example.eveant.service.model.Service;
+import com.example.eveant.service.ServiceAdapter;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ServicesViewFragment extends Fragment {
 
     private RelativeLayout filterButton;
 
+    private ServiceService serviceService;
+
+    private List<Service> services = new ArrayList<>();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the fragment layout
         View view = inflater.inflate(R.layout.fragment_services_view, container, false);
 
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view_services);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Povezivanje dugmeta za filtere
-        filterButton = view.findViewById(R.id.filter_button);
+        ArrayList<Service> services = new ArrayList<>();
+        ServiceAdapter adapter = new ServiceAdapter(services,this);
+        recyclerView.setAdapter(adapter);
 
-        filterButton.setOnClickListener(new View.OnClickListener() {
+        RetrofitClient.serviceService.getAllServices().enqueue(new Callback<ArrayList<Service>>() {
             @Override
-            public void onClick(View v) {
-                showFilterBottomSheet();
+            public void onResponse(Call<ArrayList<Service>> call, Response<ArrayList<Service>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Service> activeServices = new ArrayList<>();
+                    for (Service service : response.body()) {
+                        if (!OfferStatus.DELETED.equals(service.getStatus())) {
+                            activeServices.add(service);
+                        }
+                    }
+                    services.addAll(activeServices);
+                    adapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(getContext(), " eco me tu sam Failed to fetch data", Toast.LENGTH_SHORT).show();
+                }
             }
-        });
 
-        // Edit dugme - otvara novu aktivnost
-        ImageButton editServiceButton = view.findViewById(R.id.editServiceButton);
-        editServiceButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                NavController navController = ((MainActivity) getActivity()).getNavController();
-                navController.navigate(R.id.serviceEditFragment);
+            public void onFailure(Call<ArrayList<Service>> call, Throwable t) {
+                Toast.makeText(getContext(), "evo me tu sam Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
-        });
 
-        // Delete dugme - prikazuje dijalog
-        ImageButton deleteServiceButton = view.findViewById(R.id.deleteServiceButton);
-        deleteServiceButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDeleteDialog();
-            }
         });
-
-        ImageButton viewMoreButton = view.findViewById(R.id.viewMoreButton);
-        viewMoreButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                NavController navController = ((MainActivity) getActivity()).getNavController();
-                navController.navigate(R.id.serviceDetailsFragment);
-            }
-        });
-
 
         return view;
     }
@@ -162,43 +159,6 @@ public class ServicesViewFragment extends Fragment {
         // Prikaz BottomSheet-a
         bottomSheetDialog.setContentView(bottomSheetView);
         bottomSheetDialog.show();
-    }
-
-    private void showDeleteDialog() {
-        // Kreiraj AlertDialog sa prilagođenim stilom i layout-om
-        AlertDialog.Builder builder = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            builder = new AlertDialog.Builder(getContext(), R.style.CustomDialog);
-        }
-        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.delete_dialog_box, null);
-        builder.setView(dialogView);
-
-        AlertDialog dialog = builder.create();
-
-        // Postavi zaobljenu pozadinu iz drawable resursa
-        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-
-        // Postavi akcije za dugmad iz dijaloga
-        Button buttonYes = dialogView.findViewById(R.id.button_yes);
-        Button buttonNo = dialogView.findViewById(R.id.button_no);
-
-        buttonYes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Logika za brisanje usluge
-                dialog.dismiss(); // Zatvori dijalog
-            }
-        });
-
-        buttonNo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Zatvori dijalog bez dodatne akcije
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
     }
 
 
