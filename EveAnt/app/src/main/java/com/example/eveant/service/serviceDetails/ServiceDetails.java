@@ -23,7 +23,6 @@ import android.widget.Toast;
 
 import com.example.eveant.R;
 import com.example.eveant.RetrofitClient;
-import com.example.eveant.communication.ChatActivity;
 import com.example.eveant.review.Review;
 import com.example.eveant.review.ReviewDTO;
 import com.example.eveant.review.ReviewService;
@@ -133,14 +132,14 @@ public class ServiceDetails extends Fragment {
 
                 Log.d(TAG, "onClick: "+currentOffer);
                 Log.d(TAG, "onClick: "+ currentUser);
-                if ( currentOffer != null) {  /*currentUser != null &&*/
+                /*if ( currentOffer != null) {  *//*currentUser != null &&*//*
                     Intent chatIntent = new Intent(getActivity(), ChatActivity.class);
-                    chatIntent.putExtra("userId", 1);/*currentUser.getId()*/
-                    chatIntent.putExtra("providerId", 1);/*currentOffer.getProvider()*/
+                    chatIntent.putExtra("userId", 1);*//*currentUser.getId()*//*
+                    chatIntent.putExtra("providerId", 1);*//*currentOffer.getProvider()*//*
                     startActivity(chatIntent);
                 } else {
                     Toast.makeText(getActivity(), "User or provider data is missing", Toast.LENGTH_SHORT).show();
-                }
+                }*/
             }
         });
 
@@ -167,14 +166,14 @@ public class ServiceDetails extends Fragment {
                 Toast.makeText(getActivity(), "Product Bought", Toast.LENGTH_SHORT).show());
 
         btnProviderInfo.setOnClickListener(v -> {
-            if (currentOffer != null) {
+            /*if (currentOffer != null) {
                 Intent chatIntent = new Intent(getActivity(), ChatActivity.class);
                 chatIntent.putExtra("userId", 1); // TODO: zameni sa realnim ID
                 chatIntent.putExtra("providerId", 1); // TODO: zameni sa provider id
                 startActivity(chatIntent);
             } else {
                 Toast.makeText(getActivity(), "Provider data is missing", Toast.LENGTH_SHORT).show();
-            }
+            }*/
         });
 
         btnCompanyInfo.setOnClickListener(v ->

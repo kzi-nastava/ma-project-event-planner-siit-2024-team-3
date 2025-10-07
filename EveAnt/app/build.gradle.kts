@@ -65,6 +65,13 @@ dependencies {
     implementation(libs.jwtdecode)
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
     implementation("org.mapstruct:mapstruct:1.5.5.Final")
+    implementation("com.google.code.gson:gson:2.10.1")
+    implementation ("com.github.NaikSoftware:StompProtocolAndroid:1.6.6")
+    implementation ("io.reactivex.rxjava2:rxjava:2.2.21")
+    implementation ("io.reactivex.rxjava2:rxandroid:2.1.1")
+
+
+
     annotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
 
 }

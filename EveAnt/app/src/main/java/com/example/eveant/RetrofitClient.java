@@ -4,7 +4,8 @@ import android.util.Log;
 
 import com.example.eveant.budget.BudgetService;
 import com.example.eveant.category.CategoryService;
-import com.example.eveant.communication.ChatSessionService;
+
+import com.example.eveant.communication.ChatService;
 import com.example.eveant.priceList.OfferService;
 import com.example.eveant.review.ReviewService;
 import com.example.eveant.service.EventTypeService;
@@ -45,6 +46,6 @@ public class RetrofitClient {
    public static BudgetService budgetService=retrofit.create(BudgetService.class);
    public static OfferService offerService=retrofit.create(OfferService.class);
    public static ReviewService reviewService=retrofit.create(ReviewService.class);
-   public static ChatSessionService chatSessionService=retrofit.create(ChatSessionService.class);
+   public static ChatService chatService=retrofit.create(ChatService.class);
    public static EventTypeService eventTypeService=retrofit.create(EventTypeService.class);
 }

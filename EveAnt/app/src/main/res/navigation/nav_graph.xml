@@ -130,4 +130,16 @@
         android:id="@+id/categoryFragment"
         android:name="com.example.eveant.admin.CategoryManagement" />
 
+    <fragment
+        android:id="@+id/nav_messages"
+        android:name="com.example.eveant.communication.ChatFragment">
+        <argument
+            android:name="provider"
+            app:argType="string" />
+
+        <argument
+            android:name="admin"
+            app:argType="string" />
+    </fragment>
+
 </navigation>

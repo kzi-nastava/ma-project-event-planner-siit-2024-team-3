@@ -15,9 +15,6 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.eveant.service.model.Service;
 import com.example.eveant.service.model.ServiceDTO;
 import com.example.eveant.service.model.ServiceMapper;
-import com.example.eveant.websocket.NotificationHelper;
-import com.example.eveant.websocket.NotificationWebSocketListener;
-import com.example.eveant.websocket.WebSocketHandler;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -40,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
 
-    private WebSocketHandler webSocketHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,11 +82,7 @@ public class MainActivity extends AppCompatActivity {
     public NavController getNavController() {
         return navController;
     }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        webSocketHandler.closeConnection();
-    }
+
     @Override
     public boolean onSupportNavigateUp() {
         return NavigationUI.navigateUp(navController, appBarConfiguration) || super.onSupportNavigateUp();
