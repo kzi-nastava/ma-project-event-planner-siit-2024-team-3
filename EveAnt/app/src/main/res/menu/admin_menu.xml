@@ -11,9 +11,9 @@
     <item
         android:id="@+id/eventTypeFragment"
         android:icon="@drawable/bottom_nav_ic_calendar"
-        android:title="My services" />
+        android:title="Event types" />
     <item
-        android:id="@+id/accountFragment1"
+        android:id="@+id/accountFragment"
         android:icon="@drawable/bottom_nav_ic_profile"
         android:title="Profile" />
 </menu>

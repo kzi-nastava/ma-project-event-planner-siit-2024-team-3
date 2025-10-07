@@ -50,14 +50,9 @@
         android:name="com.example.eveant.service.serviceEdit.ServiceEditFragment3"
         android:label="ServiceEditFragment3" />
     <fragment
-        android:id="@+id/accountFragment1"
-        android:name="com.example.eveant.user.account.AccountFragment1"
-        android:label="AccountFragment1">
-    </fragment>
-    <fragment
-        android:id="@+id/accountFragment2"
-        android:name="com.example.eveant.user.account.AccountFragment2"
-        android:label="AccountFragment2">
+        android:id="@+id/accountFragment"
+        android:name="com.example.eveant.user.AccountFragment"
+        android:label="AccountFragment">
     </fragment>
     <fragment
         android:id="@+id/categoryFragment"
@@ -68,4 +63,8 @@
         android:id="@+id/serviceDetailsFragment"
         android:name="com.example.eveant.service.serviceDetails.ServiceDetails"
         android:label="Service Details"/>
+    <fragment
+        android:id="@+id/eventTypeFragment"
+        android:name="com.example.eveant.eventType.EventTypeFragment"
+        android:label="Event Type"/>
 </navigation>

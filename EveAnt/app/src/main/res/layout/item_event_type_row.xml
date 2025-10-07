@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="1000dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:gravity="center_vertical">
+
+            <ImageButton
+                android:id="@+id/btnEdit"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_edit_blue"
+                android:contentDescription="@string/edit" />
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="260dp"
+                android:layout_height="wrap_content"
+                android:textColor="#1b1b1b"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvSubtitle"
+                android:layout_width="380dp"
+                android:layout_height="wrap_content"
+                android:textColor="#424242"
+                android:lineSpacingExtra="2dp" />
+
+            <LinearLayout
+                android:id="@+id/llSuggestedContainer"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <!-- Segmented (fallback pozadina i boje da se uvek vide) -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="16dp"
+                android:background="#E1E5FB"
+                android:padding="2dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/btnActivate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:minWidth="96dp"
+                    android:gravity="center"
+                    android:text="Activate"
+                    android:textColor="@android:color/white"
+                    android:background="#8599e0"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp" />
+
+                <TextView
+                    android:id="@+id/btnDeactivate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:minWidth="96dp"
+                    android:gravity="center"
+                    android:text="Deactivate"
+                    android:textColor="#3B3F58"
+                    android:background="@android:color/white"
+                    android:paddingLeft="12dp"
+                    android:paddingRight="12dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="1000dp"
+            android:layout_height="1dp"
+            android:background="#EDEFFE" />
+    </LinearLayout>
+</layout>

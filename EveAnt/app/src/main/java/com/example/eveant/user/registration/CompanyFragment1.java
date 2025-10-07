@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.eveant.R;
-import com.example.eveant.model.Company;
+import com.example.eveant.user.model.Company;
 
 public class CompanyFragment1 extends Fragment {
     private Button goToNext, goToBack;

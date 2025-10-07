@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.auth0.android.jwt.JWT;
 import com.example.eveant.R;
 import com.example.eveant.MainActivity;
-import com.example.eveant.model.LoginRequest;
+import com.example.eveant.user.model.LoginRequest;
 import com.example.eveant.user.registration.RegistrationActivity;
 
 import java.util.Map;

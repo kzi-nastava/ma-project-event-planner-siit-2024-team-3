@@ -1,4 +1,4 @@
-package com.example.eveant.user.account;
+package com.example.eveant.user;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -14,14 +14,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.eveant.databinding.FragmentAccount2Binding;
-import com.example.eveant.model.Address;
-import com.example.eveant.model.Organizer;
-import com.example.eveant.model.Profile;
-import com.example.eveant.model.Provider;
-import com.example.eveant.model.User;
-import com.example.eveant.user.UserClientUtils;
-import com.example.eveant.user.UserService;
+import com.example.eveant.databinding.FragmentAccountBinding;
+import com.example.eveant.user.model.Address;
+import com.example.eveant.user.model.Organizer;
+import com.example.eveant.user.model.Profile;
+import com.example.eveant.user.model.Provider;
+import com.example.eveant.user.model.User;
 
 import org.json.JSONObject;
 
@@ -31,13 +29,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AccountFragment2 extends Fragment {
+public class AccountFragment extends Fragment {
     private UserService userService;
     private User user;
     private Profile profile;
     private String token;
     private String role;
-    private FragmentAccount2Binding binding;
+    private FragmentAccountBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,7 +44,7 @@ public class AccountFragment2 extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = FragmentAccount2Binding.inflate(inflater, container, false);
+        binding = FragmentAccountBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         // Initialize user and profile
@@ -75,7 +73,7 @@ public class AccountFragment2 extends Fragment {
                 JSONObject jsonObject = new JSONObject(payload);
                 email = jsonObject.optString("sub");
                 role = jsonObject.optString("role");
-                Log.e("AccountFragment2", "This is email:" + email + ", role: " + role);
+                Log.e("AccountFragment", "This is email:" + email + ", role: " + role);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -95,16 +93,16 @@ public class AccountFragment2 extends Fragment {
                     binding.setProfile(profile);
                 } else {
                     try {
-                        Log.e("AccountFragment2", "Failed to fetch profile: " + response.errorBody().string());
+                        Log.e("AccountFragment", "Failed to fetch profile: " + response.errorBody().string());
                     } catch (Exception e) {
-                        Log.e("AccountFragment2", "Error reading errorBody", e);
+                        Log.e("AccountFragment", "Error reading errorBody", e);
                     }
                 }
             }
 
             @Override
             public void onFailure(Call<Profile> call, Throwable t) {
-                Log.e("AccountFragment2", "Failed to fetch profile", t);
+                Log.e("AccountFragment", "Failed to fetch profile", t);
             }
         });
     }
@@ -125,7 +123,7 @@ public class AccountFragment2 extends Fragment {
                         Organizer organizer = new Organizer();
                         copyUserToUserSubclass(fetchedUser, organizer);
                         user = organizer;
-                        Log.e("AccountFragment2", String.valueOf(user));
+                        Log.e("AccountFragment", String.valueOf(user));
                     } else {
                         user = fetchedUser;
                     }
@@ -134,15 +132,15 @@ public class AccountFragment2 extends Fragment {
                     if (user.getAddress() == null) user.setAddress(new Address());
 
                     binding.setUser(user);
-                    Log.d("AccountFragment2", "User fetched: " + user.getFirstName());
+                    Log.d("AccountFragment", "User fetched: " + user.getFirstName());
                 } else {
-                    Log.e("AccountFragment2", "Failed to fetch user: " + response.code());
+                    Log.e("AccountFragment", "Failed to fetch user: " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Log.e("AccountFragment2", "Error fetching user", t);
+                Log.e("AccountFragment", "Error fetching user", t);
             }
         });
     }
@@ -229,9 +227,9 @@ public class AccountFragment2 extends Fragment {
 
     private void updateUser() {
         String email = profile.getEmail();
-        Log.e("AccountFragment2", String.valueOf(user));
+        Log.e("AccountFragment", String.valueOf(user));
         if (email == null) {
-            Log.e("AccountFragment2", "Email is null, cannot update user");
+            Log.e("AccountFragment", "Email is null, cannot update user");
             return;
         }
 
@@ -242,15 +240,15 @@ public class AccountFragment2 extends Fragment {
                 @Override
                 public void onResponse(Call<Provider> call, Response<Provider> response) {
                     if (response.isSuccessful()) {
-                        Log.i("AccountFragment2", "Provider updated successfully");
+                        Log.i("AccountFragment", "Provider updated successfully");
                     } else {
-                        Log.e("AccountFragment2", "Failed to update provider: " + response.code());
+                        Log.e("AccountFragment", "Failed to update provider: " + response.code());
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Provider> call, Throwable t) {
-                    Log.e("AccountFragment2", "Error updating provider", t);
+                    Log.e("AccountFragment", "Error updating provider", t);
                 }
             });
         } else if (user instanceof Organizer) {
@@ -260,19 +258,19 @@ public class AccountFragment2 extends Fragment {
                 @Override
                 public void onResponse(Call<Organizer> call, Response<Organizer> response) {
                     if (response.isSuccessful()) {
-                        Log.i("AccountFragment2", "Organizer updated successfully");
+                        Log.i("AccountFragment", "Organizer updated successfully");
                     } else {
-                        Log.e("AccountFragment2", "Failed to update organizer: " + response);
+                        Log.e("AccountFragment", "Failed to update organizer: " + response);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Organizer> call, Throwable t) {
-                    Log.e("AccountFragment2", "Error updating organizer", t);
+                    Log.e("AccountFragment", "Error updating organizer", t);
                 }
             });
         } else {
-            Log.e("AccountFragment2", "User type unknown, cannot update");
+            Log.e("AccountFragment", "User type unknown, cannot update");
         }
     }
 
@@ -283,15 +281,15 @@ public class AccountFragment2 extends Fragment {
             @Override
             public void onResponse(Call<Profile> call, Response<Profile> response) {
                 if (response.isSuccessful()) {
-                    Log.i("AccountFragment2", "Profile updated successfully");
+                    Log.i("AccountFragment", "Profile updated successfully");
                 } else {
-                    Log.e("AccountFragment2", "Failed to update profile: " + response);
+                    Log.e("AccountFragment", "Failed to update profile: " + response);
                 }
             }
 
             @Override
             public void onFailure(Call<Profile> call, Throwable t) {
-                Log.e("AccountFragment2", "Error updating profile", t);
+                Log.e("AccountFragment", "Error updating profile", t);
             }
         });
     }
