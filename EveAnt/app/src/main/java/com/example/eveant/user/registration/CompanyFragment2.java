@@ -1,6 +1,5 @@
 package com.example.eveant.user.registration;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,7 +7,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,19 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.eveant.MainActivity;
 import com.example.eveant.R;
-import com.example.eveant.user.UserClientUtils;
-import com.example.eveant.user.UserService;
-import com.example.eveant.user.model.Address;
-import com.example.eveant.user.model.UserProfileRequest;
-
-import java.util.ArrayList;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class CompanyFragment2 extends Fragment {
     private Button goToNext, goToBack;

@@ -1,9 +1,6 @@
 package com.example.eveant.user.registration;
 
-import static android.content.Context.MODE_PRIVATE;
-
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
@@ -22,26 +19,20 @@ import com.example.eveant.MainActivity;
 import com.example.eveant.R;
 import com.example.eveant.user.UserClientUtils;
 import com.example.eveant.user.UserService;
-import com.example.eveant.user.model.Address;
-import com.example.eveant.user.model.Company;
-import com.example.eveant.user.model.Profile;
-import com.example.eveant.user.model.User;
-import com.example.eveant.user.model.UserProfileRequest;
+import com.example.eveant.model.Address;
+import com.example.eveant.model.Company;
+import com.example.eveant.model.Profile;
+import com.example.eveant.model.User;
+import com.example.eveant.model.UserProfileRequest;
 
-import org.json.JSONObject;
-
-import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import android.os.Handler;
 
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class ActivationFragment extends Fragment {
 
@@ -75,7 +66,7 @@ public class ActivationFragment extends Fragment {
 
         profile.setUsername(bundle.getString("username"));
         profile.setEmail(bundle.getString("email"));
-        profile.setPassword(bundle.getString("password"));
+//        profile.setPassword(bundle.getString("password"));
         email = bundle.getString("email");
         Address address = new Address();
 
@@ -93,8 +84,8 @@ public class ActivationFragment extends Fragment {
         user.setGender(bundle.getString("gender"));
         user.setPhoneNumber(bundle.getString("phoneNumber"));
         user.setDateOfBirth(bundle.getString("birthday"));
-        user.setRole(bundle.getString("role"));
-        if (user.getRole().equals("PROVIDER")){
+        String role = bundle.getString("role");
+        if (role.equals("PROVIDER")){
             Company company = new Company();
             company.setCompanyName(bundle.getString("companyName"));
             company.setEmail(bundle.getString("companyEmail"));

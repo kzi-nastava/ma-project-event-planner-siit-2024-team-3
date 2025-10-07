@@ -7,7 +7,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.eveant.R;
-import com.example.eveant.user.model.Company;
-import com.example.eveant.user.model.UserProfileRequest;
+import com.example.eveant.model.Company;
 
 public class CompanyFragment1 extends Fragment {
     private Button goToNext, goToBack;

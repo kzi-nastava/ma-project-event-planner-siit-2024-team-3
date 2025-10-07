@@ -9,22 +9,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.eveant.R;
 import com.example.eveant.databinding.FragmentAccount2Binding;
+import com.example.eveant.model.Address;
+import com.example.eveant.model.Organizer;
+import com.example.eveant.model.Profile;
+import com.example.eveant.model.Provider;
+import com.example.eveant.model.User;
 import com.example.eveant.user.UserClientUtils;
 import com.example.eveant.user.UserService;
-import com.example.eveant.user.model.Address;
-import com.example.eveant.user.model.Profile;
-import com.example.eveant.user.model.User;
-import com.example.eveant.user.model.UserProfileRequest;
-import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
@@ -38,6 +35,8 @@ public class AccountFragment2 extends Fragment {
     private UserService userService;
     private User user;
     private Profile profile;
+    private String token;
+    private String role;
     private FragmentAccount2Binding binding;
 
     @Override
@@ -49,33 +48,45 @@ public class AccountFragment2 extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentAccount2Binding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        // Initialize user and profile
         user = new User();
+        user.setAddress(new Address());
         profile = new Profile();
+
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("UserSession", MODE_PRIVATE);
-        String token = sharedPreferences.getString("token", "");
-        userService = UserClientUtils.getClient().create(UserService.class);
+        token = sharedPreferences.getString("token", "");
+
+        userService = UserClientUtils.getClient()
+                .create(UserService.class);
+
+
         fetchUserData(token);
+
         return root;
     }
+
     private void fetchUserData(String token) {
-        String username = "";
+        String email = "";
         try {
             String[] parts = token.split("\\.");
-
             if (parts.length == 3) {
                 String payload = new String(Base64.decode(parts[1], Base64.URL_SAFE), StandardCharsets.UTF_8);
                 JSONObject jsonObject = new JSONObject(payload);
-                username = jsonObject.optString("sub");
+                email = jsonObject.optString("sub");
+                role = jsonObject.optString("role");
+                Log.e("AccountFragment2", "This is email:" + email + ", role: " + role);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        fetchProfile(username);
-        fetchUserDetails(username);
+
+        fetchProfile(email);
+        fetchUserDetails(email);
     }
 
-    private void fetchProfile(String username) {
-        Call<Profile> profileCall = userService.getProfile(username);
+    private void fetchProfile(String email) {
+        Call<Profile> profileCall = userService.getProfile(email);
         profileCall.enqueue(new Callback<Profile>() {
             @Override
             public void onResponse(Call<Profile> call, Response<Profile> response) {
@@ -83,7 +94,11 @@ public class AccountFragment2 extends Fragment {
                     profile = response.body();
                     binding.setProfile(profile);
                 } else {
-                    Log.e("AccountFragment2", "Failed to fetch profile");
+                    try {
+                        Log.e("AccountFragment2", "Failed to fetch profile: " + response.errorBody().string());
+                    } catch (Exception e) {
+                        Log.e("AccountFragment2", "Error reading errorBody", e);
+                    }
                 }
             }
 
@@ -93,43 +108,68 @@ public class AccountFragment2 extends Fragment {
             }
         });
     }
-    private void fetchUserDetails(String username) {
-        Call<User> userCall = userService.getUser(username);
-        userCall.enqueue(new Callback<User>() {
+
+    private void fetchUserDetails(String email) {
+        Call<User> call = userService.getUserByEmail(email);
+        call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    user = response.body();
+                    User fetchedUser = response.body();
+                    // Instantiate the correct subclass based on role
+                    if ("PROVIDER".equalsIgnoreCase(role)) {
+                        Provider provider = new Provider();
+                        copyUserToUserSubclass(fetchedUser, provider);
+                        user = provider;
+                    } else if ("ORGANIZER".equalsIgnoreCase(role)) {
+                        Organizer organizer = new Organizer();
+                        copyUserToUserSubclass(fetchedUser, organizer);
+                        user = organizer;
+                        Log.e("AccountFragment2", String.valueOf(user));
+                    } else {
+                        user = fetchedUser;
+                    }
+
+                    // Ensure Address is initialized
+                    if (user.getAddress() == null) user.setAddress(new Address());
+
                     binding.setUser(user);
+                    Log.d("AccountFragment2", "User fetched: " + user.getFirstName());
                 } else {
-                    Log.e("AccountFragment2", "Failed to fetch user details");
+                    Log.e("AccountFragment2", "Failed to fetch user: " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-                Log.e("AccountFragment2", "Failed to fetch user details", t);
+                Log.e("AccountFragment2", "Error fetching user", t);
             }
         });
     }
+
+    private void copyUserToUserSubclass(User source, User target) {
+        target.setFirstName(source.getFirstName());
+        target.setLastName(source.getLastName());
+        target.setAddress(source.getAddress());
+        target.setDateOfBirth(source.getDateOfBirth());
+        target.setPhoneNumber(source.getPhoneNumber());
+        target.setGender(source.getGender());
+
+        // For provider only
+        if (target instanceof Provider && source instanceof Provider) {
+            ((Provider) target).setCompany(((Provider) source).getCompany());
+        }
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         disableEditing();
-        binding.saveChangesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveChanges();  // Call the saveChanges method when clicked
-            }
-        });
 
-        binding.editPersonalInfoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                enableEditing();  // Call the editPersonalInfo method when clicked
-            }
-        });
+        binding.saveChangesButton.setOnClickListener(v -> saveChanges());
+        binding.editPersonalInfoButton.setOnClickListener(v -> enableEditing());
     }
+
     private void saveChanges() {
         user.setFirstName(binding.name.getText().toString());
         user.setLastName(binding.surname.getText().toString());
@@ -167,9 +207,10 @@ public class AccountFragment2 extends Fragment {
         binding.street.setEnabled(false);
         binding.postalNumber.setEnabled(false);
 
-        binding.saveChangesButton.setVisibility(View.GONE); // Hide Save button
-        binding.editPersonalInfoButton.setVisibility(View.VISIBLE); // Show Edit button
+        binding.saveChangesButton.setVisibility(View.GONE);
+        binding.editPersonalInfoButton.setVisibility(View.VISIBLE);
     }
+
     private void enableEditing() {
         binding.name.setEnabled(true);
         binding.surname.setEnabled(true);
@@ -182,44 +223,74 @@ public class AccountFragment2 extends Fragment {
         binding.street.setEnabled(true);
         binding.postalNumber.setEnabled(true);
 
-        binding.saveChangesButton.setVisibility(View.VISIBLE); // Hide Save button
-        binding.editPersonalInfoButton.setVisibility(View.GONE); // Show Edit button
+        binding.saveChangesButton.setVisibility(View.VISIBLE);
+        binding.editPersonalInfoButton.setVisibility(View.GONE);
     }
 
-
     private void updateUser() {
-        Call<Void> updateUserCall = userService.updateUser(user.getId(), user);
-        updateUserCall.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    Log.i("AccountFragment2", "User updated successfully");
-                } else {
-                    Log.e("AccountFragment2", "Failed to update user: " + response.code());
-                }
-            }
+        String email = profile.getEmail();
+        Log.e("AccountFragment2", String.valueOf(user));
+        if (email == null) {
+            Log.e("AccountFragment2", "Email is null, cannot update user");
+            return;
+        }
 
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Log.e("AccountFragment2", "Error updating user", t);
-            }
-        });
+        if (user instanceof Provider) {
+            Provider provider = (Provider) user;
+            Call<Provider> call = userService.updateProvider( provider, email);
+            call.enqueue(new Callback<Provider>() {
+                @Override
+                public void onResponse(Call<Provider> call, Response<Provider> response) {
+                    if (response.isSuccessful()) {
+                        Log.i("AccountFragment2", "Provider updated successfully");
+                    } else {
+                        Log.e("AccountFragment2", "Failed to update provider: " + response.code());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Provider> call, Throwable t) {
+                    Log.e("AccountFragment2", "Error updating provider", t);
+                }
+            });
+        } else if (user instanceof Organizer) {
+            Organizer organizer = (Organizer) user;
+            Call<Organizer> call = userService.updateOrganizer(organizer, email);
+            call.enqueue(new Callback<Organizer>() {
+                @Override
+                public void onResponse(Call<Organizer> call, Response<Organizer> response) {
+                    if (response.isSuccessful()) {
+                        Log.i("AccountFragment2", "Organizer updated successfully");
+                    } else {
+                        Log.e("AccountFragment2", "Failed to update organizer: " + response);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Organizer> call, Throwable t) {
+                    Log.e("AccountFragment2", "Error updating organizer", t);
+                }
+            });
+        } else {
+            Log.e("AccountFragment2", "User type unknown, cannot update");
+        }
     }
 
     private void updateProfile() {
-        Call<Void> updateProfileCall = userService.updateProfile(profile.getId(), profile);
-        updateProfileCall.enqueue(new Callback<Void>() {
+
+        Call<Profile> updateProfileCall = userService.updateProfile( profile, profile.getEmail());
+        updateProfileCall.enqueue(new Callback<Profile>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(Call<Profile> call, Response<Profile> response) {
                 if (response.isSuccessful()) {
                     Log.i("AccountFragment2", "Profile updated successfully");
                 } else {
-                    Log.e("AccountFragment2", "Failed to update profile: " + response.code());
+                    Log.e("AccountFragment2", "Failed to update profile: " + response);
                 }
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<Profile> call, Throwable t) {
                 Log.e("AccountFragment2", "Error updating profile", t);
             }
         });
