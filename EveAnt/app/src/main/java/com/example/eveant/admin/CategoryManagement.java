@@ -26,14 +26,6 @@ public class CategoryManagement extends Fragment {
 
 
 
-       // Edit dugme - otvara novu aktivnost
-        ImageButton editButtoncategory = view.findViewById(R.id.editButtoncategory);
-        editButtoncategory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {showCategoryDialog();
-            }
-        });
-
         // Add dugme - otvara novu aktivnost
         ImageButton addCategoryButton = view.findViewById(R.id.addCategoryButton);
         addCategoryButton.setOnClickListener(new View.OnClickListener() {
@@ -57,6 +49,14 @@ public class CategoryManagement extends Fragment {
             @Override
             public void onClick(View v) {
                 showDeleteDialog();
+                // Edit dugme - otvara novu aktivnost
+                ImageButton editButtoncategory = view.findViewById(R.id.editButtoncategory);
+                editButtoncategory.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {showCategoryDialog();
+                    }
+                });
+
             }
         });
         return view;
