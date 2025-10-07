@@ -12,6 +12,7 @@ import java.util.Map;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -66,4 +67,6 @@ public interface UserService {
     @Headers("Content-Type: text/plain")
     Call<Map<String, String>> sendActivationEmail(@Body String email);
 
+    @DELETE("api/users/deactivate")
+    Call<Map<String, String>> deactivateAccount(@Query("email") String email);
 }

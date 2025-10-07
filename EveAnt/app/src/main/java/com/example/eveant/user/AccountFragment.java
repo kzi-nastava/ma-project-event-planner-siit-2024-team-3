@@ -168,6 +168,7 @@ public class AccountFragment extends Fragment {
         binding.saveChangesButton.setOnClickListener(v -> saveChanges());
         binding.editPersonalInfoButton.setOnClickListener(v -> enableEditing());
         binding.logout.setOnClickListener(v -> performLogout());
+        binding.btnDeactivateAccount.setOnClickListener(v -> confirmAndDeactivate());
     }
 
     private void saveChanges() {
@@ -307,5 +308,58 @@ public class AccountFragment extends Fragment {
         startActivity(i);
         requireActivity().finish();
     }
+    private void confirmAndDeactivate() {
+        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                .setTitle("Deactivate account?")
+                .setMessage("You won’t be able to use your account until it’s reactivated.")
+                .setNegativeButton("Cancel", null)
+                .setPositiveButton("Deactivate", (d, which) -> callDeactivate())
+                .show();
+    }
+
+    private void callDeactivate() {
+        binding.btnDeactivateAccount.setEnabled(false);
+
+        userService.deactivateAccount(profile.getEmail())
+                .enqueue(new retrofit2.Callback<java.util.Map<String, String>>() {
+                    @Override
+                    public void onResponse(Call<java.util.Map<String, String>> call,
+                                           Response<java.util.Map<String, String>> response) {
+                        binding.btnDeactivateAccount.setEnabled(true);
+
+                        if (response.isSuccessful()) {
+                            String msg = response.body() != null ? response.body().get("message") : "Account deactivated.";
+                            android.widget.Toast.makeText(requireContext(), msg, android.widget.Toast.LENGTH_LONG).show();
+
+                            // After deactivation, kick user to login & clear session
+                            performLogout();
+                            return;
+                        }
+
+                        // Show server error message (400/404) if present
+                        try {
+                            String err = response.errorBody() != null ? response.errorBody().string() : null;
+                            String toShow = "Error";
+                            if (err != null) {
+                                try {
+                                    org.json.JSONObject obj = new org.json.JSONObject(err);
+                                    toShow = obj.optString("error", toShow);
+                                } catch (Exception ignore) {}
+                            }
+                            android.widget.Toast.makeText(requireContext(), toShow, android.widget.Toast.LENGTH_LONG).show();
+                        } catch (Exception ex) {
+                            android.widget.Toast.makeText(requireContext(), "Request failed.", android.widget.Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<java.util.Map<String, String>> call, Throwable t) {
+                        binding.btnDeactivateAccount.setEnabled(true);
+                        android.widget.Toast.makeText(requireContext(), "Network error.", android.widget.Toast.LENGTH_LONG).show();
+                        Log.e("AccountFragment", "Deactivate failed", t);
+                    }
+                });
+    }
+
 
 }
