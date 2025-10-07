@@ -3,10 +3,10 @@
     <data>
         <variable
             name="user"
-            type="com.example.eveant.user.model.User" />
+            type="com.example.eveant.model.User" />
         <variable
             name="profile"
-            type="com.example.eveant.user.model.Profile"/>
+            type="com.example.eveant.model.Profile"/>
     </data>
     <ScrollView
         android:layout_width="match_parent"

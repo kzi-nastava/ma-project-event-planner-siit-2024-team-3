@@ -1,12 +1,9 @@
-package com.example.eveant.user.model;
+package com.example.eveant.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.time.LocalDate;
-
 public class User implements Parcelable {
-    private int id;
     private String firstName;
     private String lastName;
     private String dateOfBirth;
@@ -14,21 +11,9 @@ public class User implements Parcelable {
     private String phoneNumber;
     private String gender;
     private Company company;
-    private String role;
     // Constructors
     public User() {}
 
-    public User(int id, String firstName, String lastName, String dateOfBirth, Address address, String phoneNumber, String gender, Company company, String role) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.dateOfBirth = dateOfBirth;
-        this.address = address;
-        this.phoneNumber = phoneNumber;
-        this.gender = gender;
-        this.company = company;
-        this.role = role;
-        this.id = id;
-    }
     protected User(Parcel in) {
         firstName = in.readString();
         lastName = in.readString();
@@ -37,8 +22,6 @@ public class User implements Parcelable {
         phoneNumber = in.readString();
         gender = in.readString();
         company = in.readParcelable(Company.class.getClassLoader());
-        role = in.readString();
-        id = in.readInt();
     }
 
     @Override
@@ -50,8 +33,6 @@ public class User implements Parcelable {
         dest.writeString(phoneNumber);
         dest.writeString(gender);
         dest.writeParcelable(company, flags);
-        dest.writeString(role);
-        dest.writeInt(id);
     }
 
     @Override
@@ -71,9 +52,6 @@ public class User implements Parcelable {
         }
     };
     // Getters and Setters
-    public int getId(){return id; }
-
-    public void setId(int id){this.id = id;}
     public String getFirstName() {
         return firstName;
     }
@@ -128,12 +106,6 @@ public class User implements Parcelable {
 
     public void setCompany (Company company){
         this.company = company;
-    }
-    public String getRole(){
-        return role;
-    }
-    public void setRole (String role){
-        this.role = role;
     }
 }
 
