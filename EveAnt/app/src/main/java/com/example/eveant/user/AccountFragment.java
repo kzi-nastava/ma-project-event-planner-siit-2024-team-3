@@ -2,6 +2,7 @@ package com.example.eveant.user;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Base64;
@@ -166,6 +167,7 @@ public class AccountFragment extends Fragment {
 
         binding.saveChangesButton.setOnClickListener(v -> saveChanges());
         binding.editPersonalInfoButton.setOnClickListener(v -> enableEditing());
+        binding.logout.setOnClickListener(v -> performLogout());
     }
 
     private void saveChanges() {
@@ -293,4 +295,17 @@ public class AccountFragment extends Fragment {
             }
         });
     }
+    private void performLogout() {
+        // 1) Clear local auth/session
+        SharedPreferences sp = requireActivity().getSharedPreferences("UserSession", MODE_PRIVATE);
+        sp.edit()
+                .remove("token")
+                .apply();
+
+        Intent i = new Intent(requireContext(), com.example.eveant.user.LoginActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(i);
+        requireActivity().finish();
+    }
+
 }
