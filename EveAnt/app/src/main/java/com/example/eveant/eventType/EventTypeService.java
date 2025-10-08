@@ -33,4 +33,9 @@ public interface EventTypeService {
 
     @GET("event-types/by-name/{name}")
     Call<EventType> findByName(@Path("name") String name);
+
+    @PATCH("event-types/{id}")
+    Call<EventType> patch(@Path("id") int id,
+                          @Body com.example.eveant.eventType.EventTypeFragment.EventTypePatch dto);
+
 }

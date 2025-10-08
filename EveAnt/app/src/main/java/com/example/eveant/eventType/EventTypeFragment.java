@@ -13,11 +13,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eveant.RetrofitClient;
 import com.example.eveant.databinding.DialogEventTypeCreateBinding;
@@ -59,7 +62,7 @@ public class EventTypeFragment extends Fragment {
         token = sp.getString("token", "");
 
         setupRecycler();
-        fetchEventTypesActivated();
+        fetchEventTypesAll();
 
         binding.btnCreateEventType.setOnClickListener(v -> openCreateDialog());
 
@@ -69,34 +72,62 @@ public class EventTypeFragment extends Fragment {
     private void setupRecycler() {
         binding.rvEventTypes.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.rvEventTypes.setAdapter(eventTypeAdapter);
-
-        eventTypeAdapter.setOnEditClick(this::openEditDialog);
-        eventTypeAdapter.setOnToggleActive((et, newActive) -> {
-            et.setActive(newActive);
-            updateEventTypeOnServer(et);
+        eventTypeAdapter.setOnToggleActive((et, newActive, position) -> {
+            // optimistic UI if you like, but the method above already handles rollback
+            toggleEventTypeOnServer(et, newActive, position);
         });
+        eventTypeAdapter.setOnEditClick(this::openEditDialog);
     }
 
-    private void fetchEventTypesActivated() {
+    private void fetchEventTypesAll() {
         decodeAndLogToken(token);
 
-        RetrofitClient.eventTypeService.getAllActivated().enqueue(new Callback<List<EventType>>() {
+        RetrofitClient.eventTypeService.getAll().enqueue(new Callback<List<EventType>>() {
             @Override public void onResponse(Call<List<EventType>> call, Response<List<EventType>> resp) {
                 if (resp.isSuccessful() && resp.body() != null) {
                     eventTypes.clear();
                     eventTypes.addAll(resp.body());
                     eventTypeAdapter.submit(eventTypes);
                 } else {
-                    Log.e("EventTypeFragment", "fetch activated: " + resp.code());
+                    Log.e("EventTypeFragment", "fetch all: " + resp.code());
                     eventTypeAdapter.submit(Collections.emptyList());
                 }
             }
             @Override public void onFailure(Call<List<EventType>> call, Throwable t) {
-                Log.e("EventTypeFragment", "fetch activated error", t);
+                Log.e("EventTypeFragment", "fetch all error", t);
                 eventTypeAdapter.submit(Collections.emptyList());
             }
         });
     }
+    static class EventTypePatch {
+        Boolean active;
+        EventTypePatch(Boolean a){ this.active = a; }
+    }
+
+    private void toggleEventTypeOnServer(EventType et, boolean newActive, int adapterPosition) {
+        RetrofitClient.eventTypeService.patch(et.getId(), new EventTypePatch(newActive))
+                .enqueue(new Callback<EventType>() {
+                    @Override public void onResponse(Call<EventType> c, Response<EventType> r) {
+                        if (r.isSuccessful() && r.body()!=null) {
+                            et.setActive(r.body().getActive());
+                            eventTypeAdapter.notifyItemChanged(adapterPosition);
+                        } else {
+                            et.setActive(!newActive);
+                            eventTypeAdapter.notifyItemChanged(adapterPosition);
+                        }
+                        Toast.makeText(requireContext(),
+                                newActive ? "Event type activated" : "Event type deactivated",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    @Override public void onFailure(Call<EventType> c, Throwable t) {
+                        et.setActive(!newActive);
+                        eventTypeAdapter.notifyItemChanged(adapterPosition);
+                    }
+                });
+    }
+
+
+
 
     // ----- Create dialog -----
     private void openCreateDialog() {
@@ -267,12 +298,12 @@ public class EventTypeFragment extends Fragment {
         }
     }
 
-    // ===================== ADAPTER ZA TABELU =====================
 
-    private static class EventTypeAdapter extends androidx.recyclerview.widget.RecyclerView.Adapter<EventTypeAdapter.VH> {
+    // ===================== ADAPTER ZA TABELU =====================
+    private static class EventTypeAdapter extends RecyclerView.Adapter<EventTypeAdapter.VH> {
 
         interface OnEditClick { void onEdit(EventType et); }
-        interface OnToggleActive { void onToggle(EventType et, boolean newActive); }
+        interface OnToggleActive { void onToggle(EventType et, boolean newActive, int adapterPosition); }
 
         private final List<EventType> items = new ArrayList<>();
         private OnEditClick editClick;
@@ -287,14 +318,15 @@ public class EventTypeFragment extends Fragment {
             notifyDataSetChanged();
         }
 
-        static class VH extends androidx.recyclerview.widget.RecyclerView.ViewHolder {
+        static class VH extends RecyclerView.ViewHolder {
             final ItemEventTypeRowBinding b;
             VH(ItemEventTypeRowBinding b) { super(b.getRoot()); this.b = b; }
         }
 
         @NonNull @Override
         public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            ItemEventTypeRowBinding b = ItemEventTypeRowBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+            ItemEventTypeRowBinding b = ItemEventTypeRowBinding.inflate(
+                    LayoutInflater.from(parent.getContext()), parent, false);
             return new VH(b);
         }
 
@@ -302,17 +334,18 @@ public class EventTypeFragment extends Fragment {
         public void onBindViewHolder(@NonNull VH h, int position) {
             EventType it = items.get(position);
 
-            h.b.tvTitle.setText(n(it.getName()));
-            h.b.tvSubtitle.setText(n(it.getDescription()));
+            // Title + Description
+            h.b.tvTitle.setText(it.getName() == null ? "" : it.getName());
+            h.b.tvSubtitle.setText(it.getDescription() == null ? "" : it.getDescription());
 
-            // Suggested categories kao "linkovi"
+            // Suggested categories
             h.b.llSuggestedContainer.removeAllViews();
             if (it.getSuggestedCategories() != null) {
                 int pad = (int) (6f * h.itemView.getResources().getDisplayMetrics().density);
                 for (Category c : it.getSuggestedCategories()) {
                     TextView tv = new TextView(h.itemView.getContext());
-                    tv.setText(n(c.getName()));
-                    tv.setTextColor(0xFF2D6DE8); // vidljiv link
+                    tv.setText(c.getName() == null ? "" : c.getName());
+                    tv.setTextColor(0xFF2D6DE8);
                     tv.setTypeface(Typeface.DEFAULT_BOLD);
                     tv.setMaxLines(1);
                     tv.setEllipsize(TextUtils.TruncateAt.END);
@@ -324,20 +357,17 @@ public class EventTypeFragment extends Fragment {
             // Edit
             h.b.btnEdit.setOnClickListener(v -> { if (editClick != null) editClick.onEdit(it); });
 
-            // Segment UI
-            applySegment(h, Boolean.TRUE.equals(it.getActive()));
-            h.b.btnActivate.setOnClickListener(v -> {
-                if (!Boolean.TRUE.equals(it.getActive())) {
-                    it.setActive(true);
-                    applySegment(h, true);
-                    if (toggleActive != null) toggleActive.onToggle(it, true);
-                }
-            });
-            h.b.btnDeactivate.setOnClickListener(v -> {
-                if (Boolean.TRUE.equals(it.getActive())) {
-                    it.setActive(false);
-                    applySegment(h, false);
-                    if (toggleActive != null) toggleActive.onToggle(it, false);
+            // --- Switch binding ---
+            boolean isActive = Boolean.TRUE.equals(it.getActive());
+            h.b.swActive.setOnCheckedChangeListener(null);
+            h.b.swActive.setChecked(isActive);
+            applySwitchLabelAndColor(h, isActive);
+
+            h.b.swActive.setOnCheckedChangeListener((buttonView, checked) -> {
+                applySwitchLabelAndColor(h, checked);
+                int pos = h.getAdapterPosition();
+                if (pos != RecyclerView.NO_POSITION && toggleActive != null) {
+                    toggleActive.onToggle(it, checked, pos);
                 }
             });
         }
@@ -345,22 +375,12 @@ public class EventTypeFragment extends Fragment {
         @Override
         public int getItemCount() { return items.size(); }
 
-        private void applySegment(VH h, boolean active) {
-            if (active) {
-                h.b.btnActivate.setBackgroundColor(0xFF8599E0);
-                h.b.btnActivate.setTextColor(0xFFFFFFFF);
-                h.b.btnDeactivate.setBackgroundColor(0xFFFFFFFF);
-                h.b.btnDeactivate.setTextColor(0xFF3B3F58);
-            } else {
-                h.b.btnActivate.setBackgroundColor(0xFFFFFFFF);
-                h.b.btnActivate.setTextColor(0xFF3B3F58);
-                h.b.btnDeactivate.setBackgroundColor(0xFF8599E0);
-                h.b.btnDeactivate.setTextColor(0xFFFFFFFF);
-            }
+        private void applySwitchLabelAndColor(VH h, boolean active) {
+            h.b.swActive.setText(active ? "Active" : "Inactive");
+            h.b.swActive.setTextColor(active ? 0xFF2E7D32 : 0xFFD32F2F);
         }
-
-        private static String n(String s) { return s == null ? "" : s; }
     }
+
 
     // ===================== ADAPTER ZA CATEGORIES U DIJALOGU =====================
 
@@ -390,34 +410,10 @@ public class EventTypeFragment extends Fragment {
             h.b.tvCatDesc.setText(c.getDescription() == null ? "" : c.getDescription());
 
             boolean attached =  selectedIds.contains(c.getId());
-            applySegment(h, attached);
-
-            h.b.btnAttach.setOnClickListener(v -> {
-                selectedIds.add(c.getId());
-                applySegment(h, true);
-            });
-
-            h.b.btnDetach.setOnClickListener(v -> {
-                selectedIds.remove(c.getId());
-                applySegment(h, false);
-            });
         }
 
         @Override
         public int getItemCount() { return items.size(); }
-
-        private void applySegment(VH h, boolean attached) {
-            if (attached) {
-                h.b.btnAttach.setBackgroundColor(0xFF8599E0);
-                h.b.btnAttach.setTextColor(0xFFFFFFFF);
-                h.b.btnDetach.setBackgroundColor(0xFFFFFFFF);
-                h.b.btnDetach.setTextColor(0xFF3B3F58);
-            } else {
-                h.b.btnAttach.setBackgroundColor(0xFFFFFFFF);
-                h.b.btnAttach.setTextColor(0xFF3B3F58);
-                h.b.btnDetach.setBackgroundColor(0xFF8599E0);
-                h.b.btnDetach.setTextColor(0xFFFFFFFF);
-            }
-        }
     }
+
 }

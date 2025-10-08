@@ -29,34 +29,22 @@
         <LinearLayout
             android:id="@+id/segAttach"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="60dp"
             android:background="@drawable/bg_segment_container"
-            android:padding="2dp"
+            android:padding="10dp"
+            android:textColor="@color/black"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/btnAttach"
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/swActive"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:minWidth="88dp"
-                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:switchTextAppearance="@color/black"
+                android:showText="true"
                 android:text="Attach"
-                android:textColor="@android:color/white"
-                android:background="@drawable/bg_segment_left_active"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp" />
-
-            <TextView
-                android:id="@+id/btnDetach"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:minWidth="88dp"
-                android:gravity="center"
-                android:text="Detach"
-                android:textColor="#3B3F58"
-                android:background="@drawable/bg_segment_right_inactive"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp" />
+                android:textOff="Detach"
+                android:textOn="Attach" />
         </LinearLayout>
     </LinearLayout>
 </layout>
