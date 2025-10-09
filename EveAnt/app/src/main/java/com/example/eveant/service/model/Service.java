@@ -75,7 +75,4 @@ public class Service extends Offer {
     public void setCancellationPeriod(Integer cancellationPeriod) {
         this.cancellationPeriod = cancellationPeriod;
     }
-
-
-
 }
