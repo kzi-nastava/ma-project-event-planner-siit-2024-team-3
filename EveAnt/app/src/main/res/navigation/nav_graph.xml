@@ -16,38 +16,38 @@
         tools:layout="@layout/activity_login" />
     <fragment
         android:id="@+id/servicesViewFragment"
-        android:name="com.example.eveant.ServicesViewFragment"
+        android:name="com.example.eveant.CategoryManagement"
         android:label="ServicesViewFragment"/>
     <fragment
         android:id="@+id/serviceCreateFragment1"
-        android:name="com.example.eveant.serviceCreate.ServiceCreateFragment1"
+        android:name="com.example.eveant.service.serviceCreate.ServiceCreateFragment1"
         android:label="ServiceCreateFragment1" />
     <fragment
         android:id="@+id/serviceCreateFragment2"
-        android:name="com.example.eveant.serviceCreate.ServiceCreateFragment2"
+        android:name="com.example.eveant.service.serviceCreate.ServiceCreateFragment2"
         android:label="ServiceCreateFragment2" />
     <fragment
         android:id="@+id/serviceCreateFragment3"
-        android:name="com.example.eveant.serviceCreate.ServiceCreateFragment3"
+        android:name="com.example.eveant.service.serviceCreate.ServiceCreateFragment3"
         android:label="ServiceCreateFragment3" />
     <action
         android:id="@+id/actionCreateFragment_toViewServices"
         app:destination="@+id/servicesViewFragment" />
     <fragment
         android:id="@+id/serviceEditFragment"
-        android:name="com.example.eveant.serviceEdit.ServiceEditFragment"
+        android:name="com.example.eveant.service.serviceEdit.ServiceEditFragment"
         android:label="ServiceEditFragment" />
     <fragment
         android:id="@+id/serviceEditFragment1"
-        android:name="com.example.eveant.serviceEdit.ServiceEditFragment1"
+        android:name="com.example.eveant.service.serviceEdit.ServiceEditFragment1"
         android:label="ServiceEditFragment1" />
     <fragment
         android:id="@+id/serviceEditFragment2"
-        android:name="com.example.eveant.serviceEdit.ServiceEditFragment2"
+        android:name="com.example.eveant.service.serviceEdit.ServiceEditFragment2"
         android:label="ServiceEditFragment2" />
     <fragment
         android:id="@+id/serviceEditFragment3"
-        android:name="com.example.eveant.serviceEdit.ServiceEditFragment3"
+        android:name="com.example.eveant.service.serviceEdit.ServiceEditFragment3"
         android:label="ServiceEditFragment3" />
     <fragment
         android:id="@+id/accountFragment1"
@@ -66,6 +66,6 @@
     </fragment>
     <fragment
         android:id="@+id/serviceDetailsFragment"
-        android:name="com.example.eveant.ServiceDetails"
+        android:name="com.example.eveant.service.serviceDetails.ServiceDetails"
         android:label="Service Details"/>
 </navigation>

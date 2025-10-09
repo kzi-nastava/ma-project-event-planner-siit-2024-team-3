@@ -1,9 +1,6 @@
 package com.example.eveant.user.registration;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,19 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.eveant.MainActivity;
 import com.example.eveant.R;
-import com.example.eveant.user.UserClientUtils;
-import com.example.eveant.user.UserService;
-import com.example.eveant.user.model.Address;
-import com.example.eveant.user.model.Profile;
-import com.example.eveant.user.model.User;
-import com.example.eveant.user.model.UserProfileRequest;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class OrganizerProviderFragment extends Fragment {
 

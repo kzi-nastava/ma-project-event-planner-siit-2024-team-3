@@ -1,4 +1,4 @@
-package com.example.eveant.user.model;
+package com.example.eveant.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

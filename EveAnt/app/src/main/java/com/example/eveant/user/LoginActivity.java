@@ -14,25 +14,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.auth0.android.jwt.JWT;
 import com.example.eveant.R;
 import com.example.eveant.MainActivity;
-import com.example.eveant.user.model.LoginRequest;
-import com.example.eveant.user.model.User;
+import com.example.eveant.model.LoginRequest;
 import com.example.eveant.user.registration.RegistrationActivity;
 
 import java.util.Map;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
+    private UserService userService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
-
+        userService = UserClientUtils.getClient()
+                .create(UserService.class);
         Button loginButton = findViewById(R.id.login);
         Button navigateRegistrationButton = findViewById(R.id.goToRegister);
 
@@ -51,8 +51,6 @@ public class LoginActivity extends AppCompatActivity {
                 String password = ((EditText) findViewById(R.id.password)).getText().toString();
 
                 LoginRequest loginRequest = new LoginRequest(username, password);
-
-                UserService userService = UserClientUtils.getClient().create(UserService.class);
 
                 Call<Map<String, String>> call = userService.login(loginRequest);
                 call.enqueue(new Callback<Map<String, String>>(){
