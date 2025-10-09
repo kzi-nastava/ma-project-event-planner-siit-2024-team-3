@@ -72,7 +72,28 @@ public class ChooseEventTypeFragment extends Fragment {
         btnBack.setOnClickListener(view -> requireActivity().onBackPressed());
         btnNext.setOnClickListener(view -> {
             if (selected == null) return;
-            // TODO: navigate to Step 2 and pass selected.name or id
+            // inside ChooseEventTypeFragment, in btnNext.setOnClickListener(...)
+            Fragment next = new BasicInformationFragment();
+
+// (optional) pass data
+            Bundle args = new Bundle();
+            args.putParcelable("eventType", selected);
+            next.setArguments(args);
+
+// do the transition
+            requireActivity()
+                    .getSupportFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(
+                            android.R.anim.slide_in_left,   // enter
+                            android.R.anim.fade_out,        // exit
+                            android.R.anim.fade_in,         // popEnter
+                            android.R.anim.slide_out_right  // popExit
+                    )
+                    .replace(R.id.fragmentContainer, next) // container in your activity XML
+                    .addToBackStack("BasicEventInfo")      // enables back button
+                    .commit();
+
             Toast.makeText(requireContext(),
                     "Next → " + selected.getName() + " (id=" + selected.getId() + ")",
                     Toast.LENGTH_SHORT).show();

@@ -62,19 +62,7 @@ public class PersonalInfoFragment extends Fragment {
         daySpinner.setAdapter(dayAdapter);
 
 // Populate Month Spinner
-        Map<String, String> monthMap = new HashMap<>();
-        monthMap.put("January", "01");
-        monthMap.put("February", "02");
-        monthMap.put("March", "03");
-        monthMap.put("April", "04");
-        monthMap.put("May", "05");
-        monthMap.put("June", "06");
-        monthMap.put("July", "07");
-        monthMap.put("August", "08");
-        monthMap.put("September", "09");
-        monthMap.put("October", "10");
-        monthMap.put("November", "11");
-        monthMap.put("December", "12");
+        Map<String, String> monthMap = getStringStringMap();
         List<String> monthNames = new ArrayList<>(monthMap.keySet());
 
         ArrayAdapter<String> monthAdapter = new ArrayAdapter<>(requireContext(), R.layout.spinner_color, monthNames);
@@ -190,6 +178,25 @@ public class PersonalInfoFragment extends Fragment {
 
         return view;
     }
+
+    @NonNull
+    private static Map<String, String> getStringStringMap() {
+        Map<String, String> monthMap = new HashMap<>();
+        monthMap.put("January", "01");
+        monthMap.put("February", "02");
+        monthMap.put("March", "03");
+        monthMap.put("April", "04");
+        monthMap.put("May", "05");
+        monthMap.put("June", "06");
+        monthMap.put("July", "07");
+        monthMap.put("August", "08");
+        monthMap.put("September", "09");
+        monthMap.put("October", "10");
+        monthMap.put("November", "11");
+        monthMap.put("December", "12");
+        return monthMap;
+    }
+
     private void showError(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }

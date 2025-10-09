@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.eveant.event.EventService;
 import com.example.eveant.eventType.EventTypeService;
 import com.example.eveant.service.ServiceService;
+import com.example.eveant.user.UserService;
 
 import java.util.concurrent.TimeUnit;
 
@@ -41,4 +42,5 @@ public class RetrofitClient {
    public static CategoryService categoryService =retrofit.create(CategoryService.class);
    public static EventTypeService eventTypeService = retrofit.create(EventTypeService.class);
    public static EventService eventService = retrofit.create(EventService.class);
+   public static UserService userService = retrofit.create(UserService.class);
 }

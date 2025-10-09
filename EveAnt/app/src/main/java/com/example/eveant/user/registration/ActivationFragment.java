@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.eveant.MainActivity;
 import com.example.eveant.R;
-import com.example.eveant.user.UserClientUtils;
+import com.example.eveant.RetrofitClient;
 import com.example.eveant.user.UserService;
 import com.example.eveant.user.model.Address;
 import com.example.eveant.user.model.Company;
@@ -38,7 +38,6 @@ public class ActivationFragment extends Fragment {
 
     private Handler handler;
     private static final String TAG = "Activation fragment";
-    private UserService userService;
     private String email;
     private final long checkInterval = 5000; // Check every 5 seconds
 
@@ -106,8 +105,7 @@ public class ActivationFragment extends Fragment {
         UserProfileRequest userProfileRequest = new UserProfileRequest();
         userProfileRequest.setCreateProfileDTO(profile);
         userProfileRequest.setCreateUserDTO(user);
-        userService = UserClientUtils.getClient().create(UserService.class);
-        Call<ResponseBody> call = userService.registerUser(userProfileRequest);
+        Call<ResponseBody> call = RetrofitClient.userService.registerUser(userProfileRequest);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -148,7 +146,7 @@ public class ActivationFragment extends Fragment {
     }
 
     private void sendActivation(){
-        userService.sendActivationEmail(email.trim()).enqueue(new Callback<Map<String, String>>() {
+        RetrofitClient.userService.sendActivationEmail(email.trim()).enqueue(new Callback<Map<String, String>>() {
             @Override
             public void onResponse(@NonNull Call<Map<String, String>> call, @NonNull Response<Map<String, String>> response) {
                 if (response.isSuccessful()) {
@@ -179,7 +177,7 @@ public class ActivationFragment extends Fragment {
     }
 
     private void checkActivationStatus() {
-        userService.checkActivationStatus(email).enqueue(new Callback<Boolean>() {
+        RetrofitClient.userService.checkActivationStatus(email).enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(@NonNull Call<Boolean> call, @NonNull Response<Boolean> response) {
                 if (response.isSuccessful() && Boolean.TRUE.equals(response.body())) {

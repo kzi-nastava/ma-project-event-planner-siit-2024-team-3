@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.auth0.android.jwt.JWT;
 import com.example.eveant.R;
 import com.example.eveant.MainActivity;
+import com.example.eveant.RetrofitClient;
 import com.example.eveant.user.model.LoginRequest;
 import com.example.eveant.user.registration.RegistrationActivity;
 
@@ -25,14 +26,11 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private UserService userService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
-        userService = UserClientUtils.getClient()
-                .create(UserService.class);
         Button loginButton = findViewById(R.id.login);
         Button navigateRegistrationButton = findViewById(R.id.goToRegister);
 
@@ -52,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 LoginRequest loginRequest = new LoginRequest(username, password);
 
-                Call<Map<String, String>> call = userService.login(loginRequest);
+                Call<Map<String, String>> call = RetrofitClient.userService.login(loginRequest);
                 call.enqueue(new Callback<Map<String, String>>(){
                     @Override
                     public void onResponse(Call<Map<String, String>> call, Response<Map<String, String>> response) {

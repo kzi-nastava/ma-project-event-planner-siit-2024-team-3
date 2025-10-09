@@ -21,6 +21,7 @@ import com.example.eveant.user.model.Organizer;
 import com.example.eveant.user.model.Profile;
 import com.example.eveant.user.model.Provider;
 import com.example.eveant.user.model.User;
+import com.example.eveant.user.security.AuthManager;
 
 import org.json.JSONObject;
 
@@ -48,41 +49,16 @@ public class AccountFragment extends Fragment {
         binding = FragmentAccountBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // Initialize user and profile
         user = new User();
         user.setAddress(new Address());
         profile = new Profile();
 
-        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("UserSession", MODE_PRIVATE);
-        token = sharedPreferences.getString("token", "");
-
-        userService = UserClientUtils.getClient()
-                .create(UserService.class);
-
-
-        fetchUserData(token);
-
+        AuthManager auth = AuthManager.getInstance(requireContext());
+        fetchProfile(auth.getEmail());
+        fetchUserDetails(auth.getEmail());
         return root;
     }
 
-    private void fetchUserData(String token) {
-        String email = "";
-        try {
-            String[] parts = token.split("\\.");
-            if (parts.length == 3) {
-                String payload = new String(Base64.decode(parts[1], Base64.URL_SAFE), StandardCharsets.UTF_8);
-                JSONObject jsonObject = new JSONObject(payload);
-                email = jsonObject.optString("sub");
-                role = jsonObject.optString("role");
-                Log.e("AccountFragment", "This is email:" + email + ", role: " + role);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        fetchProfile(email);
-        fetchUserDetails(email);
-    }
 
     private void fetchProfile(String email) {
         Call<Profile> profileCall = userService.getProfile(email);
