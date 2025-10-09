@@ -1,9 +1,9 @@
 package com.example.eveant.event;
 
-import java.time.LocalDate;
+import com.example.eveant.event.createEvent.BasicInformationFragment;
+
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;

@@ -30,4 +30,20 @@ public class Event {
         public String getName() {
                 return name;
         }
+
+        public EventType getEventType() {
+                return eventType;
+        }
+
+        public Address getAddress() {
+                return address;
+        }
+
+        public String getDate() {
+                return date;
+        }
+
+        public List<String> getPhotos() {
+                return photos;
+        }
 }

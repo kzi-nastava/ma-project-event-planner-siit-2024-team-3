@@ -1,4 +1,4 @@
-package com.example.eveant.event;
+package com.example.eveant.event.createEvent;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -20,7 +20,6 @@ import androidx.fragment.app.Fragment;
 import com.example.eveant.R;
 import com.example.eveant.RetrofitClient;
 import com.example.eveant.eventType.EventType;
-import com.example.eveant.eventType.EventTypeService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +27,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class ChooseEventTypeFragment extends Fragment {
 

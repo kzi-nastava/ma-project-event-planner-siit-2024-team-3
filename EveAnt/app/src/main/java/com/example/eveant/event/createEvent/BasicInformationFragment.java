@@ -1,4 +1,4 @@
-package com.example.eveant.event;
+package com.example.eveant.event.createEvent;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -7,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -22,21 +21,17 @@ import androidx.fragment.app.Fragment;
 
 import com.example.eveant.R;
 import com.example.eveant.RetrofitClient;
+import com.example.eveant.event.Event;
 import com.example.eveant.eventType.EventType;
 import com.example.eveant.user.model.Address;
 import com.example.eveant.user.security.AuthManager;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.Executors;
-
-import okhttp3.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Step 2: Basic event information

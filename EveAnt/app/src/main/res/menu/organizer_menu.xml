@@ -9,7 +9,7 @@
         android:icon="@drawable/bottom_nav_ic_add_service"
         android:title="Add event" />
     <item
-        android:id="@+id/servicesViewFragment"
+        android:id="@+id/myEventsFragment"
         android:icon="@drawable/bottom_nav_ic_calendar"
         android:title="My events" />
     <item
