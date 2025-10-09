@@ -19,11 +19,11 @@ import com.example.eveant.MainActivity;
 import com.example.eveant.R;
 import com.example.eveant.user.UserClientUtils;
 import com.example.eveant.user.UserService;
-import com.example.eveant.model.Address;
-import com.example.eveant.model.Company;
-import com.example.eveant.model.Profile;
-import com.example.eveant.model.User;
-import com.example.eveant.model.UserProfileRequest;
+import com.example.eveant.user.model.Address;
+import com.example.eveant.user.model.Company;
+import com.example.eveant.user.model.Profile;
+import com.example.eveant.user.model.User;
+import com.example.eveant.user.model.UserProfileRequest;
 
 import java.util.Map;
 

@@ -1,19 +1,19 @@
 package com.example.eveant.user;
 
-import com.example.eveant.model.LoginRequest;
-import com.example.eveant.model.Organizer;
-import com.example.eveant.model.Profile;
-import com.example.eveant.model.Provider;
-import com.example.eveant.model.User;
-import com.example.eveant.model.UserProfileRequest;
+import com.example.eveant.user.model.LoginRequest;
+import com.example.eveant.user.model.Organizer;
+import com.example.eveant.user.model.Profile;
+import com.example.eveant.user.model.Provider;
+import com.example.eveant.user.model.User;
+import com.example.eveant.user.model.UserProfileRequest;
 
 import java.util.Map;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -67,4 +67,6 @@ public interface UserService {
     @Headers("Content-Type: text/plain")
     Call<Map<String, String>> sendActivationEmail(@Body String email);
 
+    @DELETE("api/users/deactivate")
+    Call<Map<String, String>> deactivateAccount(@Query("email") String email);
 }

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- Row container -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:gravity="center_vertical">
+
+            <!-- Edit button -->
+            <ImageButton
+                android:id="@+id/btnEdit"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_edit_blue"
+                android:contentDescription="@string/edit" />
+
+            <!-- Event type title -->
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="260dp"
+                android:layout_height="wrap_content"
+                android:textColor="#1b1b1b"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <!-- Event type description -->
+            <TextView
+                android:id="@+id/tvSubtitle"
+                android:layout_width="380dp"
+                android:layout_height="wrap_content"
+                android:textColor="#424242"
+                android:lineSpacingExtra="2dp" />
+
+            <!-- Suggested categories container -->
+            <LinearLayout
+                android:id="@+id/llSuggestedContainer"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <!-- Activation switch container -->
+            <LinearLayout
+                android:id="@+id/activationContainer"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="16dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:gravity="center_vertical">
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/swActive"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Inactive"
+                    android:textColor="@color/black" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Divider -->
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:background="#EDEFFE" />
+    </LinearLayout>
+</layout>

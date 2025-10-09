@@ -2,8 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#f0f3ff"
-    tools:context=".user.account.AccountFragment1">
+    android:background="#f0f3ff">
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"

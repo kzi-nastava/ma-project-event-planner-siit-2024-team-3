@@ -1,4 +1,4 @@
-package com.example.eveant.model;
+package com.example.eveant.user.model;
 
 public enum Gender {
     MALE,
