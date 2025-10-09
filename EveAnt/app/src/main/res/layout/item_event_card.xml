@@ -5,7 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="6dp"
     android:foreground="?attr/selectableItemBackground"
-    app:cardCornerRadius="16dp"
+    app:cardCornerRadius="30dp"
+    android:background="@color/white"
     app:cardUseCompatPadding="true"
     app:cardElevation="4dp">
 
@@ -27,6 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:background="@color/white"
             android:padding="12dp">
 
             <TextView
@@ -73,13 +75,11 @@
                     android:textColor="#444444"/>
             </LinearLayout>
 
-            <!-- Date & time row -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingTop="4dp">
-
                 <ImageView
                     android:layout_width="18dp"
                     android:layout_height="18dp"
@@ -91,11 +91,15 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="6dp"
                     android:text="2025-07-22"/>
-
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="4dp">
                 <ImageView
                     android:layout_width="18dp"
                     android:layout_height="18dp"
-                    android:layout_marginLeft="12dp"
                     android:src="@drawable/ic_calendar"/>
 
                 <TextView
@@ -122,7 +126,7 @@
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_edit"
+                android:src="@drawable/ic_edit_blue"
                 android:contentDescription="Edit"/>
 
             <ImageButton
@@ -130,7 +134,7 @@
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_delete"
+                android:src="@drawable/ic_delete_blue"
                 android:contentDescription="Delete"/>
         </LinearLayout>
 
