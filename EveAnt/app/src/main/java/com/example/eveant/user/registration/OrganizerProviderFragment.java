@@ -67,10 +67,6 @@ public class OrganizerProviderFragment extends Fragment {
                     transaction.addToBackStack(null);
                     transaction.commit();
 
-                    if (requireActivity() instanceof RegistrationActivity) {
-                        ((RegistrationActivity) requireActivity()).updateProgress(5);
-                    }
-
                 } else {
                     bundle.putString("role", "PROVIDER");
 
@@ -82,9 +78,9 @@ public class OrganizerProviderFragment extends Fragment {
                     transaction.addToBackStack(null);
                     transaction.commit();
 
-                    if (requireActivity() instanceof RegistrationActivity) {
-                        ((RegistrationActivity) requireActivity()).updateProgress(5);
-                    }
+                }
+                if (requireActivity() instanceof RegistrationActivity) {
+                    ((RegistrationActivity) requireActivity()).updateProgress(5);
                 }
             });
         }

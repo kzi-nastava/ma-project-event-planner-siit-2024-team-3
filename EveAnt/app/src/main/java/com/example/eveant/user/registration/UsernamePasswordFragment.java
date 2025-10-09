@@ -1,7 +1,6 @@
 package com.example.eveant.user.registration;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
@@ -16,9 +15,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.eveant.RetrofitClient;
 import com.example.eveant.user.LoginActivity;
 import com.example.eveant.R;
-import com.example.eveant.user.UserClientUtils;
 import com.example.eveant.user.UserService;
 
 import retrofit2.Call;
@@ -111,8 +110,7 @@ public class UsernamePasswordFragment extends Fragment {
         });
     }
     private void checkEmailAvailability(String email) {
-        UserService userService = UserClientUtils.getClient().create(UserService.class);
-        Call<Boolean> call = userService.checkEmailExists(email);
+        Call<Boolean> call = RetrofitClient.userService.checkEmailExists(email);
 
         call.enqueue(new Callback<Boolean>() {
             @Override
@@ -141,8 +139,7 @@ public class UsernamePasswordFragment extends Fragment {
     }
 
     private void checkUsernameAvailability(String checkUsername) {
-        UserService userService = UserClientUtils.getClient().create(UserService.class);
-        Call<Boolean> call = userService.checkUsernameExists(checkUsername);
+        Call<Boolean> call = RetrofitClient.userService.checkUsernameExists(checkUsername);
 
         call.enqueue(new Callback<Boolean>() {
             @Override

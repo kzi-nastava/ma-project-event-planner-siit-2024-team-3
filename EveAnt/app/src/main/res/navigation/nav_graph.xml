@@ -67,4 +67,12 @@
         android:id="@+id/eventTypeFragment"
         android:name="com.example.eveant.eventType.EventTypeFragment"
         android:label="Event Type"/>
+    <fragment
+        android:id="@+id/chooseEventTypeFragment"
+        android:name="com.example.eveant.event.createEvent.ChooseEventTypeFragment"
+        android:label="Choose Event type"/>
+    <fragment
+        android:id="@+id/myEventsFragment"
+        android:name="com.example.eveant.event.myEvents.MyEventsFragment"
+        android:label="My Events"/>
 </navigation>

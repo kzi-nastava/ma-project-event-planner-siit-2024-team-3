@@ -1,5 +1,7 @@
 package com.example.eveant.user.model;
 
+import com.example.eveant.event.Event;
+
 import java.util.List;
 
 public class Profile {

@@ -1,0 +1,201 @@
+package com.example.eveant.event.myEvents;
+
+import android.app.DatePickerDialog;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.*;
+import android.widget.*;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.eveant.R;
+import com.example.eveant.RetrofitClient;
+import com.example.eveant.event.Event;
+import com.example.eveant.eventType.EventType;
+import com.example.eveant.eventType.EventTypeService;
+import com.example.eveant.user.security.AuthManager;
+
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class MyEventsFragment extends Fragment {
+
+    private TextView tvDateFilter;
+    private Spinner spEventType;
+    private Button btnApply, btnClear;
+    private RecyclerView rvEvents;
+    private ProgressBar progress;
+    private TextView tvEmpty;
+
+    private MyEventsAdapter adapter;
+    private final List<Event> allEvents = new ArrayList<>();
+    private final List<EventType> allTypes = new ArrayList<>();
+
+    private Integer selectedTypeId = null;
+    private String selectedDateIso = null; // yyyy-MM-dd
+
+    @Nullable @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_my_events, container, false);
+    }
+
+    @Override public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(v, savedInstanceState);
+
+        tvDateFilter = v.findViewById(R.id.tvDateFilter);
+        spEventType   = v.findViewById(R.id.spEventType);
+        btnApply      = v.findViewById(R.id.btnApply);
+        btnClear      = v.findViewById(R.id.btnClear);
+        rvEvents      = v.findViewById(R.id.rvEvents);
+        progress      = v.findViewById(R.id.progress);
+        tvEmpty       = v.findViewById(R.id.tvEmpty);
+
+        // Grid like web: 2 cards per row (phones portrait)
+        rvEvents.setLayoutManager(new GridLayoutManager(requireContext(), 2));
+        adapter = new MyEventsAdapter(new MyEventsAdapter.Listener() {
+            @Override public void onEdit(Event e) {
+                // TODO: open edit screen
+                Toast.makeText(requireContext(), "Edit " + e.getName(), Toast.LENGTH_SHORT).show();
+            }
+            @Override public void onDelete(Event e) {
+                // TODO: confirm & call delete endpoint
+                Toast.makeText(requireContext(), "Delete " + e.getName(), Toast.LENGTH_SHORT).show();
+            }
+            @Override public void onOpen(Event e) {
+                // TODO: open details
+            }
+        });
+        rvEvents.setAdapter(adapter);
+
+        tvDateFilter.setOnClickListener(v1 -> openDatePicker());
+        btnApply.setOnClickListener(v12 -> applyFilters());
+        btnClear.setOnClickListener(v13 -> clearFilters());
+
+        fetchEventTypes();  // fills spinner
+        loadEvents();       // loads user's events
+    }
+
+    private void openDatePicker() {
+        final Calendar c = Calendar.getInstance();
+        DatePickerDialog dlg = new DatePickerDialog(requireContext(),
+                (view, y, m, d) -> {
+                    // show as mm/dd/yyyy, keep ISO internally
+                    tvDateFilter.setText(String.format(Locale.US, "%02d/%02d/%04d", m + 1, d, y));
+                    selectedDateIso = String.format(Locale.US, "%04d-%02d-%02d", y, m + 1, d);
+                },
+                c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+        dlg.show();
+    }
+
+    private void applyFilters() {
+        filterAndShow();
+    }
+
+    private void clearFilters() {
+        selectedDateIso = null;
+        tvDateFilter.setText("mm/dd/yyyy");
+        spEventType.setSelection(0);
+        selectedTypeId = null;
+        filterAndShow();
+    }
+
+    private void filterAndShow() {
+        List<Event> filtered = new ArrayList<>();
+        for (Event e : allEvents) {
+            boolean ok = true;
+
+            if (selectedTypeId != null) {
+                Integer tId = (e.getEventType() != null) ? e.getEventType().getId() : null;
+                ok &= (tId != null && tId.equals(selectedTypeId));
+            }
+            if (selectedDateIso != null) {
+                // compare by yyyy-MM-dd prefix
+                String iso = safe(e.getDate()); // assumes ISO "yyyy-MM-ddTHH:mm:ss" or "yyyy-MM-dd"
+                ok &= iso.startsWith(selectedDateIso);
+            }
+            if (ok) filtered.add(e);
+        }
+        adapter.submit(filtered);
+        tvEmpty.setVisibility(filtered.isEmpty() ? View.VISIBLE : View.GONE);
+    }
+
+    private void fetchEventTypes() {
+        // Populate spinner: "All event types" + types from backend
+        final List<String> names = new ArrayList<>();
+        names.add("All event types");
+
+        EventTypeService svc = RetrofitClient.eventTypeService;
+        svc.getAllActivated().enqueue(new Callback<List<EventType>>() {
+            @Override public void onResponse(Call<List<EventType>> call, Response<List<EventType>> resp) {
+                if (!resp.isSuccessful() || resp.body() == null) {
+                    bindSpinner(names);
+                    return;
+                }
+                allTypes.clear();
+                allTypes.addAll(resp.body());
+                for (EventType t : allTypes) names.add(nonNull(t.getName()));
+                bindSpinner(names);
+            }
+            @Override public void onFailure(Call<List<EventType>> call, Throwable t) {
+                bindSpinner(names);
+            }
+        });
+    }
+
+    private void bindSpinner(List<String> names) {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
+                android.R.layout.simple_spinner_dropdown_item, names);
+        spEventType.setAdapter(adapter);
+        spEventType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    selectedTypeId = null;
+                } else {
+                    EventType t = allTypes.get(position - 1);
+                    selectedTypeId = t.getId();
+                }
+            }
+            @Override public void onNothingSelected(AdapterView<?> parent) { }
+        });
+    }
+
+    private void loadEvents() {
+        showLoading(true);
+        AuthManager auth = AuthManager.getInstance(requireContext());
+        final String organizerEmail = auth.getEmail();
+        RetrofitClient.eventService.getAllByOrganizer(organizerEmail).enqueue(new Callback<List<Event>>() {
+            @Override public void onResponse(Call<List<Event>> call, Response<List<Event>> resp) {
+                showLoading(false);
+                if (!resp.isSuccessful() || resp.body() == null) {
+                    allEvents.clear();
+                    adapter.submit(allEvents);
+                    tvEmpty.setVisibility(View.VISIBLE);
+                    return;
+                }
+                allEvents.clear();
+                allEvents.addAll(resp.body());
+                filterAndShow();
+            }
+            @Override public void onFailure(Call<List<Event>> call, Throwable t) {
+                showLoading(false);
+                allEvents.clear();
+                adapter.submit(allEvents);
+                tvEmpty.setVisibility(View.VISIBLE);
+            }
+        });
+    }
+
+    private void showLoading(boolean show) {
+        progress.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    private static String safe(String s) { return s == null ? "" : s; }
+    private static String nonNull(String s) { return s == null ? "" : s; }
+}
