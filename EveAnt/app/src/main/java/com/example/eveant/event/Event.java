@@ -7,10 +7,6 @@ import com.example.eveant.user.model.Organizer;
 import java.time.LocalDateTime;
 import java.util.List;
 
-enum EventStatus {
-        DELETED, PUBLIC, PRIVATE
-}
-
 public class Event {
         public int id;
         public String name;
