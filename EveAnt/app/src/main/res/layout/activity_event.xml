@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="10dp">
+
+    <FrameLayout
+        android:id="@+id/sheet"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Fragment container -->
+        <FrameLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="120dp" />
+
+        <!-- Stepper (1..4) -->
+        <LinearLayout
+            android:id="@+id/stepsRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:gravity="center_vertical"
+            android:paddingBottom="80dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/ellipse_1"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:text="1"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:background="@drawable/rounded_corners_8599e0"/>
+
+            <View
+                android:id="@+id/line_1"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_weight="1"
+                android:background="@drawable/line_black" />
+
+            <TextView
+                android:id="@+id/ellipse_2"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:text="2"
+                android:gravity="center"
+                android:textColor="@color/black" />
+
+            <View
+                android:id="@+id/line_2"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_weight="1"
+                android:background="@drawable/line_black" />
+
+            <TextView
+                android:id="@+id/ellipse_3"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:text="3"
+                android:gravity="center"
+                android:textColor="@color/black" />
+
+            <View
+                android:id="@+id/line_3"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_weight="1"
+                android:background="@drawable/line_black" />
+
+            <TextView
+                android:id="@+id/ellipse_4"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:text="4"
+                android:gravity="center"
+                android:textColor="@color/black" />
+        </LinearLayout>
+
+        <!-- Back / Next -->
+        <LinearLayout
+            android:id="@+id/progress_registration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:paddingBottom="16dp">
+
+            <Button
+                android:id="@+id/goToBack"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/rounded_corners_e8e8e8"
+                android:backgroundTint="@null"
+                android:fontFamily="@font/poppins_bold"
+                android:padding="10dp"
+                android:text="@string/action_back"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/goToNext"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/rounded_corners_8599e0"
+                android:fontFamily="@font/poppins_bold"
+                android:padding="10dp"
+                android:text="@string/action_next"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

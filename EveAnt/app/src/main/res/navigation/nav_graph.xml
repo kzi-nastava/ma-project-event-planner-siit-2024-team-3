@@ -14,6 +14,11 @@
         android:name="com.example.eveant.user.LoginActivity"
         android:label="activity_login"
         tools:layout="@layout/activity_login" />
+    <activity
+        android:id="@+id/createEvent"
+        android:name="com.example.eveant.event.EventActivity"
+        android:label="activity_event"
+        tools:layout="@layout/activity_event" />
     <fragment
         android:id="@+id/servicesViewFragment"
         android:name="com.example.eveant.CategoryManagement"

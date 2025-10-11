@@ -63,7 +63,7 @@
     <string name="action_next">Next</string>
 
     <string name="action_back">Back</string>
-
+    <string name="action_finish">Finish</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="prompt_visible">Visible</string>
     <string name="prompt_hidden">Hidden</string>

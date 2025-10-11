@@ -19,6 +19,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="12dp"
+            android:background="#f0f3ff"
             android:gravity="center_vertical">
 
             <TextView
@@ -53,6 +54,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:text="Apply"
+                android:textColor="@color/white"
+                android:background="@drawable/rounded_corners_8599e0"
                 android:textStyle="bold"/>
 
             <View
@@ -63,19 +66,22 @@
                 android:id="@+id/btnClear"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
+                android:background="@drawable/rounded_corners_f0f3ff"
+                android:textColor="@color/purple"
                 android:text="Clear"/>
         </LinearLayout>
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="8dp"/>
+            android:layout_height="8dp"
+            android:background="#f0f3ff"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvEvents"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:padding="12dp"
-            android:background="@color/white"
+            android:padding="5dp"
+            android:background="#f0f3ff"
             android:layout_marginBottom="50dp"
             android:layout_weight="1"
             android:clipToPadding="false"

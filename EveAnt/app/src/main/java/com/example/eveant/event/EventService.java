@@ -56,5 +56,5 @@ public interface EventService {
     Call<Event> updateEvent(@Path("id") int id, @Body Event body);
 
     @DELETE("/api/events/{id}")
-    Call<ResponseBody> deleteEvent(@Path("id") int id);
+    Call<Void> deleteEvent(@Path("id") int id);
 }

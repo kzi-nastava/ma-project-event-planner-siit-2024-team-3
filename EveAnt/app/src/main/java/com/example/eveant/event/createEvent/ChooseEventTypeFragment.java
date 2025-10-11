@@ -1,12 +1,10 @@
 package com.example.eveant.event.createEvent;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -16,9 +14,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.eveant.R;
 import com.example.eveant.RetrofitClient;
+import com.example.eveant.event.EventActivity;
+import com.example.eveant.event.EventCreationViewModel;
 import com.example.eveant.eventType.EventType;
 
 import java.util.ArrayList;
@@ -32,12 +33,11 @@ public class ChooseEventTypeFragment extends Fragment {
 
     private RadioGroup rgEventTypes;
     private TextView tvTitle, tvSubtitle, tvError;
-    private TextView step1, step2, step3, step4, step5;
-    private Button btnBack, btnNext;
     private ProgressBar progress;
 
     private List<EventType> types = new ArrayList<>();
     private EventType selected;
+    private EventCreationViewModel vm;
 
     public ChooseEventTypeFragment() {}
 
@@ -50,52 +50,14 @@ public class ChooseEventTypeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
+
         rgEventTypes = v.findViewById(R.id.rgEventTypes);
         tvTitle = v.findViewById(R.id.tvTitle);
         tvSubtitle = v.findViewById(R.id.tvSubtitle);
         tvError = v.findViewById(R.id.tvError);
-        step1 = v.findViewById(R.id.step1);
-        step2 = v.findViewById(R.id.step2);
-        step3 = v.findViewById(R.id.step3);
-        step4 = v.findViewById(R.id.step4);
-        step5 = v.findViewById(R.id.step5);
-        btnBack = v.findViewById(R.id.btnBack);
-        btnNext = v.findViewById(R.id.btnNext);
         progress = v.findViewById(R.id.progress);
 
-        forceBlack(step1, step2, step3, step4, step5, tvTitle, tvSubtitle, tvError);
-
-        highlightStep(1);
-
-        btnBack.setOnClickListener(view -> requireActivity().onBackPressed());
-        btnNext.setOnClickListener(view -> {
-            if (selected == null) return;
-            // inside ChooseEventTypeFragment, in btnNext.setOnClickListener(...)
-            Fragment next = new BasicInformationFragment();
-
-// (optional) pass data
-            Bundle args = new Bundle();
-            args.putParcelable("eventType", selected);
-            next.setArguments(args);
-
-// do the transition
-            requireActivity()
-                    .getSupportFragmentManager()
-                    .beginTransaction()
-                    .setCustomAnimations(
-                            android.R.anim.slide_in_left,   // enter
-                            android.R.anim.fade_out,        // exit
-                            android.R.anim.fade_in,         // popEnter
-                            android.R.anim.slide_out_right  // popExit
-                    )
-                    .replace(R.id.fragmentContainer, next) // container in your activity XML
-                    .addToBackStack("BasicEventInfo")      // enables back button
-                    .commit();
-
-            Toast.makeText(requireContext(),
-                    "Next → " + selected.getName() + " (id=" + selected.getId() + ")",
-                    Toast.LENGTH_SHORT).show();
-        });
+        vm = new ViewModelProvider(requireActivity()).get(EventCreationViewModel.class);
 
         fetchEventTypes();
     }
@@ -104,7 +66,6 @@ public class ChooseEventTypeFragment extends Fragment {
         showLoading(true);
         tvError.setVisibility(View.GONE);
 
-        // choose the endpoint you want; activated is typical for UX
         RetrofitClient.eventTypeService.getAllActivated().enqueue(new Callback<List<EventType>>() {
             @Override public void onResponse(Call<List<EventType>> call, Response<List<EventType>> resp) {
                 showLoading(false);
@@ -124,7 +85,6 @@ public class ChooseEventTypeFragment extends Fragment {
 
     private void populateEventTypeRadios(List<EventType> data) {
         rgEventTypes.removeAllViews();
-        btnNext.setEnabled(false);
         selected = null;
 
         if (data == null || data.isEmpty()) {
@@ -135,7 +95,7 @@ public class ChooseEventTypeFragment extends Fragment {
         for (EventType et : data) {
             RadioButton rb = new RadioButton(requireContext());
             rb.setText(!TextUtils.isEmpty(et.getName()) ? et.getName() : ("EventType " + et.getId()));
-            rb.setTextColor(0xFF000000); // black text
+            rb.setTextColor(0xFF000000);
             rb.setPadding(dp(12), dp(8), dp(12), dp(8));
             rb.setTag(et);
             rgEventTypes.addView(rb);
@@ -145,30 +105,29 @@ public class ChooseEventTypeFragment extends Fragment {
             RadioButton rb = group.findViewById(checkedId);
             if (rb != null && rb.getTag() instanceof EventType) {
                 selected = (EventType) rb.getTag();
-                btnNext.setEnabled(true);
+                vm.setSelectedType(selected);
+
+                Toast.makeText(requireContext(),
+                        "Selected: " + selected.getName(),
+                        Toast.LENGTH_SHORT).show();
+
+                // Auto-advance to next step (Activity owns navigation)
+                if (requireActivity() instanceof EventActivity) {
+                    ((EventActivity) requireActivity()).goNext();
+                }
             }
         });
     }
 
-    private void highlightStep(int stepIndex) {
-        // bold the active step, normal the others
-        TextView[] arr = new TextView[]{step1, step2, step3, step4, step5};
-        for (int i = 0; i < arr.length; i++) {
-            arr[i].setTypeface(null, (i + 1 == stepIndex) ? Typeface.BOLD : Typeface.NORMAL);
-        }
-    }
-
     private void showLoading(boolean show) {
-        progress.setVisibility(show ? View.VISIBLE : View.GONE);
+        if (progress != null) progress.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     private void showError(String msg) {
-        tvError.setText(msg);
-        tvError.setVisibility(View.VISIBLE);
-    }
-
-    private void forceBlack(TextView... tviews) {
-        for (TextView t : tviews) if (t != null) t.setTextColor(0xFF000000);
+        if (tvError != null) {
+            tvError.setText(msg);
+            tvError.setVisibility(View.VISIBLE);
+        }
     }
 
     private int dp(int v) {
