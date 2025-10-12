@@ -12,7 +12,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 public class EventType implements Parcelable {
-    private Integer id;                 // <-- will NOT be written/read from Parcel
+    private Integer id;
     private String name;
     private String description;
 

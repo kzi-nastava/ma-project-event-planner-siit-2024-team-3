@@ -20,9 +20,9 @@
         android:label="activity_event"
         tools:layout="@layout/activity_event" />
     <fragment
-        android:id="@+id/servicesViewFragment"
+        android:id="@+id/categoryManagement"
         android:name="com.example.eveant.CategoryManagement"
-        android:label="ServicesViewFragment"/>
+        android:label="Category Management"/>
     <fragment
         android:id="@+id/serviceCreateFragment1"
         android:name="com.example.eveant.service.serviceCreate.ServiceCreateFragment1"

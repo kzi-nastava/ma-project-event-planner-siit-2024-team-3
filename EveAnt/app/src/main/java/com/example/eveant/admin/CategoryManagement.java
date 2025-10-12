@@ -26,14 +26,14 @@ public class CategoryManagement extends Fragment {
 
 
 
-        // Add dugme - otvara novu aktivnost
-        ImageButton addCategoryButton = view.findViewById(R.id.addCategoryButton);
-        addCategoryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-                public void onClick(View v) {showCategoryDialog();
-            }
-
-        });
+//        // Add dugme - otvara novu aktivnost
+//        ImageButton addCategoryButton = view.findViewById(R.id.addCategoryButton);
+//        addCategoryButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//                public void onClick(View v) {showCategoryDialog();
+//            }
+//
+//        });
 
         View fabAddCategory = view.findViewById(R.id.fabAddCategory);
         fabAddCategory.setOnClickListener(new View.OnClickListener() {
@@ -44,21 +44,21 @@ public class CategoryManagement extends Fragment {
         });
 
         // Delete dugme - prikazuje dijalog
-        ImageButton deleteButtonCategory = view.findViewById(R.id.deleteButtonCategory);
-        deleteButtonCategory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDeleteDialog();
-                // Edit dugme - otvara novu aktivnost
-                ImageButton editButtoncategory = view.findViewById(R.id.editButtoncategory);
-                editButtoncategory.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {showCategoryDialog();
-                    }
-                });
-
-            }
-        });
+//        ImageButton deleteButtonCategory = view.findViewById(R.id.deleteButtonCategory);
+//        deleteButtonCategory.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                showDeleteDialog();
+//                // Edit dugme - otvara novu aktivnost
+//                ImageButton editButtoncategory = view.findViewById(R.id.editButtoncategory);
+//                editButtoncategory.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {showCategoryDialog();
+//                    }
+//                });
+//
+//            }
+//        });
         return view;
     }
 

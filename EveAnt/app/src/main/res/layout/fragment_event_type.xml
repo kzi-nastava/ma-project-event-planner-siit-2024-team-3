@@ -1,135 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#f0f3ff"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="#f0f3ff">
 
         <include
             layout="@layout/fragment_back"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <!-- Card container -->
-        <LinearLayout
-            android:id="@+id/card"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_weight="1"
-            android:background="@drawable/bg_card_white_20"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_weight="1">
 
-            <!-- Card header row -->
-            <RelativeLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvEventTypes"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp">
-
-                <TextView
-                    android:id="@+id/tvCardTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_centerVertical="true"
-                    android:text="Event type"
-                    android:textColor="#000000"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <Button
-                    android:id="@+id/btnCreateEventType"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_alignParentEnd="true"
-                    android:background="@drawable/bg_primary_pill"
-                    android:paddingLeft="18dp"
-                    android:paddingRight="18dp"
-                    android:text="+ Create event type"
-                    android:textAllCaps="false"
-                    android:textColor="@android:color/white" />
-            </RelativeLayout>
-
-            <!-- Table (HorizontalScrollView in case of small screens) -->
-            <HorizontalScrollView
-                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:fillViewport="true"
-                android:scrollbars="horizontal">
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="88dp"
+                android:overScrollMode="never" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <!-- Table header -->
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingTop="8dp"
-                        android:paddingBottom="8dp">
-
-                        <TextView
-                            android:layout_width="60dp"
-                            android:layout_height="wrap_content"
-                            android:text=""
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/colName"
-                            android:layout_width="260dp"
-                            android:layout_height="wrap_content"
-                            android:text="Name"
-                            android:textColor="#000000"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/colDescription"
-                            android:layout_width="380dp"
-                            android:layout_height="wrap_content"
-                            android:text="Description"
-                            android:textColor="#000000"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/colSuggested"
-                            android:layout_width="300dp"
-                            android:layout_height="wrap_content"
-                            android:text="Suggested Categories"
-                            android:textColor="#000000"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/colActivation"
-                            android:layout_width="300dp"
-                            android:layout_height="wrap_content"
-                            android:text="Activation"
-                            android:textColor="#000000"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="wrap_content"
-                        android:layout_height="1dp"
-                        android:background="#E4E7F8" />
-
-                    <!-- Rows -->
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvEventTypes"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:overScrollMode="never"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="8dp" />
-                </LinearLayout>
-            </HorizontalScrollView>
-        </LinearLayout>
+            <!-- Non-Material floating button: simple ImageButton with a pill bg -->
+            <ImageButton
+                android:id="@+id/ibCreate"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_gravity="bottom|end"
+                android:layout_marginBottom="60dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/ic_add_rounded_big"
+                android:contentDescription="create"
+                android:padding="12dp"
+                android:src="@drawable/ic_add"
+                app:tint="@android:color/white" />
+        </FrameLayout>
     </LinearLayout>
 </layout>
