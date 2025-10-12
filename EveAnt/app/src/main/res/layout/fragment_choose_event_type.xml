@@ -38,6 +38,7 @@
                     android:text="What kind of event do you want to organize?"
                     android:textSize="18sp"
                     android:textStyle="bold"
+                    android:fontFamily="@font/poppins_bold"
                     android:padding="16dp"
                     android:textColor="#000000"
                     android:paddingBottom="6dp" />
@@ -48,6 +49,7 @@
                     android:layout_height="wrap_content"
                     android:text="Select an event type"
                     android:textSize="14sp"
+                    android:fontFamily="@font/poppins_regular"
                     android:textColor="#000000"
                     android:paddingBottom="12dp" />
 
@@ -65,15 +67,17 @@
                     android:layout_height="wrap_content"
                     android:textColor="#000000"
                     android:text=""
+                    android:fontFamily="@font/poppins_bold"
                     android:visibility="gone"
                     android:paddingBottom="8dp" />
 
                 <!-- Dynamic event types -->
-                <RadioGroup
-                    android:id="@+id/rgEventTypes"
+                <LinearLayout
+                    android:id="@+id/llEventTypes"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical" />
+                    android:orientation="vertical"/>
+
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

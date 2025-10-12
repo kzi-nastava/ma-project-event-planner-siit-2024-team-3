@@ -17,6 +17,7 @@ import com.example.eveant.R;
 import com.example.eveant.event.createEvent.BasicInformationFragment;
 import com.example.eveant.event.createEvent.ChooseEventTypeFragment;
 import com.example.eveant.event.agenda.AgendaFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class EventActivity extends AppCompatActivity {
 
@@ -39,7 +40,10 @@ public class EventActivity extends AppCompatActivity {
 
         btnBack.setOnClickListener(v -> goPrev());
         btnNext.setOnClickListener(v -> goNext());
-
+        BottomNavigationView bnv = findViewById(R.id.bottom_navigation);
+        if (bnv != null) {
+            bnv.getMenu().findItem(R.id.createEvent).setChecked(true);
+        }
         if (savedInstanceState == null) {
             showStep(Step.CHOOSE_TYPE, false);
         } else {

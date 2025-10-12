@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -59,8 +60,9 @@ public class BasicInformationFragment extends Fragment {
     private EditText etCountry, etCity, etStreet, etHouseNo, etZip;
     private RadioGroup rgPrivacy;
     private RadioButton rbPrivate, rbPublic;
-    private LinearLayout cardPhotos;
     private ProgressBar progress;
+    private LinearLayout cardPhotos, addPhotosPlaceholder, photoStrip;
+    private View photoScroll;
 
     // Data
     private final List<Uri> selectedPhotos = new ArrayList<>();
@@ -71,16 +73,66 @@ public class BasicInformationFragment extends Fragment {
     private final ActivityResultLauncher<String[]> photoPicker =
             registerForActivityResult(new ActivityResultContracts.OpenMultipleDocuments(), uris -> {
                 if (uris == null || uris.isEmpty()) return;
+
                 for (Uri u : uris) {
                     try {
                         requireContext().getContentResolver()
                                 .takePersistableUriPermission(u, Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     } catch (Exception ignored) {}
                 }
+
                 selectedPhotos.clear();
                 selectedPhotos.addAll(uris);
+                renderSelectedPhotos();  // <--- show them
                 Toast.makeText(requireContext(), selectedPhotos.size() + " photo(s) added", Toast.LENGTH_SHORT).show();
             });
+
+    private int dp(int v) {
+        return (int) (v * getResources().getDisplayMetrics().density + 0.5f);
+    }
+    private void renderSelectedPhotos() {
+        if (!isAdded()) return;
+
+        // Show strip, hide placeholder if we have images; otherwise the opposite
+        boolean has = !selectedPhotos.isEmpty();
+        addPhotosPlaceholder.setVisibility(has ? View.GONE : View.VISIBLE);
+        photoScroll.setVisibility(has ? View.VISIBLE : View.GONE);
+
+        photoStrip.removeAllViews();
+
+        if (!has) return;
+
+        float density = getResources().getDisplayMetrics().density;
+        final int size = (int) (80 * density + 0.5f);
+        final int margin = (int) (8 * density + 0.5f);
+
+        for (int i = 0; i < selectedPhotos.size(); i++) {
+            Uri uri = selectedPhotos.get(i);
+
+            ImageView iv = new ImageView(requireContext());
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(size, size);
+            lp.rightMargin = margin;
+            iv.setLayoutParams(lp);
+            iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            iv.setBackgroundResource(R.drawable.rounded_corners_f0f3ff);
+
+            iv.setPadding(dp(2), dp(2), dp(2), dp(2));
+
+            // Easiest preview: setImageURI (works with SAF Uris)
+            iv.setImageURI(uri);
+
+            // Optional: tap to remove a photo
+            final int index = i;
+            iv.setOnLongClickListener(v -> {
+                selectedPhotos.remove(index);
+                renderSelectedPhotos();
+                return true;
+            });
+
+            photoStrip.addView(iv);
+        }
+    }
+
 
     public BasicInformationFragment() {}
 
@@ -119,8 +171,14 @@ public class BasicInformationFragment extends Fragment {
         // Pickers
         tvDate.setOnClickListener(view -> openDatePicker());
         tvTime.setOnClickListener(view -> openTimePicker());
-        cardPhotos.setOnClickListener(view -> photoPicker.launch(new String[]{"image/*"}));
-    }
+        addPhotosPlaceholder = v.findViewById(R.id.addPhotosPlaceholder);
+        photoScroll = v.findViewById(R.id.photoScroll);
+        photoStrip = v.findViewById(R.id.photoStrip);
+
+// Open picker when tapping either placeholder or the whole card
+        View.OnClickListener openPicker = vv -> photoPicker.launch(new String[]{"image/*"});
+        cardPhotos.setOnClickListener(openPicker);
+        addPhotosPlaceholder.setOnClickListener(openPicker);    }
 
     /** Called by EventActivity when user taps Next. */
     public void handleNext() {
