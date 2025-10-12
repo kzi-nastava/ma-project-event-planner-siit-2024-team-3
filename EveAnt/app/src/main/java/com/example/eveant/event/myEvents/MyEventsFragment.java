@@ -69,7 +69,13 @@ public class MyEventsFragment extends Fragment {
             @Override public void onEdit(Event e)  { showUpdateDialog(e); }
             @Override public void onDelete(Event e){ confirmDeleteDialog(e); }
             @Override public void onOpen(Event e) {
-                // TODO: open details
+                Fragment details = com.example.eveant.event.eventDetails.EventDetailsFragment.newInstance(e.getId());
+                requireActivity().getSupportFragmentManager()
+                        .beginTransaction()
+                        .setReorderingAllowed(true)
+                        .replace(R.id.nav_host_fragment, details)
+                        .addToBackStack("event_details")
+                        .commit();
             }
         });
         rvEvents.setAdapter(adapter);

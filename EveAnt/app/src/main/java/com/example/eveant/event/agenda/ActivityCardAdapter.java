@@ -4,6 +4,7 @@ import android.view.*;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.eveant.R;
 import com.example.eveant.event.agenda.Activity;
@@ -17,15 +18,21 @@ public class ActivityCardAdapter extends RecyclerView.Adapter<ActivityCardAdapte
     }
 
     private final List<Activity> data;
+    @Nullable
     private final Listener listener;
+    private final boolean readOnly;
 
     public ActivityCardAdapter(List<Activity> data, Listener l) {
         this.data = data; this.listener = l;
+        this.readOnly = false;
     }
 
     @NonNull @Override public Holder onCreateViewHolder(@NonNull ViewGroup p, int vtype) {
         View v = LayoutInflater.from(p.getContext()).inflate(R.layout.item_activity_card, p, false);
         return new Holder(v);
+    }
+    public ActivityCardAdapter(List<Activity> data) {
+        this.data = data; this.listener = null; this.readOnly = true;
     }
 
     @Override public void onBindViewHolder(@NonNull Holder h, int pos) {
