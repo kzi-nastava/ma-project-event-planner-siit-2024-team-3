@@ -3,18 +3,19 @@ package com.example.eveant.user.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class User implements Parcelable {
+public class UserDTO implements Parcelable {
     private String firstName;
     private String lastName;
     private String dateOfBirth;
     private Address address;
     private String phoneNumber;
     private String gender;
+    private String role;
     private Company company;
     // Constructors
-    public User() {}
+    public UserDTO() {}
 
-    protected User(Parcel in) {
+    protected UserDTO(Parcel in) {
         firstName = in.readString();
         lastName = in.readString();
         dateOfBirth = in.readString();
@@ -32,6 +33,7 @@ public class User implements Parcelable {
         dest.writeParcelable(address, flags);
         dest.writeString(phoneNumber);
         dest.writeString(gender);
+        dest.writeString(role);
         dest.writeParcelable(company, flags);
     }
 
@@ -40,15 +42,15 @@ public class User implements Parcelable {
         return 0;
     }
 
-    public static final Creator<User> CREATOR = new Creator<User>() {
+    public static final Creator<UserDTO> CREATOR = new Creator<UserDTO>() {
         @Override
-        public User createFromParcel(Parcel in) {
-            return new User(in);
+        public UserDTO createFromParcel(Parcel in) {
+            return new UserDTO(in);
         }
 
         @Override
-        public User[] newArray(int size) {
-            return new User[size];
+        public UserDTO[] newArray(int size) {
+            return new UserDTO[size];
         }
     };
     // Getters and Setters
@@ -108,5 +110,7 @@ public class User implements Parcelable {
         this.company = company;
     }
 
+    public String getRole(){ return role;}
+    public void setRole(String role){ this.role = role;}
 }
 

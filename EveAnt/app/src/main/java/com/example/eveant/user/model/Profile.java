@@ -8,6 +8,7 @@ public class Profile {
     private Integer id;
     private String username;
     private String email;
+
     private boolean isActivated;
     private String profilePhoto;
     private String suspendedUntil; // Use String for simplicity; parse to Date if needed
@@ -45,3 +46,6 @@ public class Profile {
     public List<Profile> getBlockedProfiles() { return blockedProfiles; }
     public void setBlockedProfiles(List<Profile> blockedProfiles) { this.blockedProfiles = blockedProfiles; }
 }
+
+
+

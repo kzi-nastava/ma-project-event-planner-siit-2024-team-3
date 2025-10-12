@@ -4,8 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class UserProfileRequest implements Parcelable{
-    private User createUserDTO;
-    private Profile createProfileDTO;
+    private UserDTO createUserDTO;
+    private ProfileDTO createProfileDTO;
 
     protected UserProfileRequest(Parcel in) {
         createUserDTO = in.readParcelable(User.class.getClassLoader());
@@ -37,19 +37,19 @@ public class UserProfileRequest implements Parcelable{
     };
 
     // Getters and Setters
-    public User getCreateUserDTO() {
+    public UserDTO getCreateUserDTO() {
         return createUserDTO;
     }
 
-    public void setCreateUserDTO(User createUserDTO) {
+    public void setCreateUserDTO(UserDTO createUserDTO) {
         this.createUserDTO = createUserDTO;
     }
 
-    public Profile getCreateProfileDTO() {
+    public ProfileDTO getCreateProfileDTO() {
         return createProfileDTO;
     }
 
-    public void setCreateProfileDTO(Profile createProfileDTO) {
+    public void setCreateProfileDTO(ProfileDTO createProfileDTO) {
         this.createProfileDTO = createProfileDTO;
     }
 }
