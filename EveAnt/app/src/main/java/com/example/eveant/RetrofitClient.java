@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.eveant.event.EventService;
 import com.example.eveant.eventType.EventTypeService;
+import com.example.eveant.invitation.InvitationService;
 import com.example.eveant.notification.NotificationService;
 import com.example.eveant.service.ServiceService;
 import com.example.eveant.user.UserService;
@@ -23,8 +24,6 @@ public class RetrofitClient {
            .addConverterFactory(GsonConverterFactory.create())
            .client(test())
            .build();
-   public static NotificationService notificationService = retrofit.create(NotificationService.class);
-
    public static OkHttpClient test(){
       Log.d("RetrofitClient", "Base URL: " + SERVICE_API_PATH);
       HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
@@ -39,6 +38,8 @@ public class RetrofitClient {
       return client;
    }
 
+   public static NotificationService notificationService = retrofit.create(NotificationService.class);
+   public static InvitationService invitationService = retrofit.create(InvitationService.class);
    public static ServiceService serviceService =retrofit.create(ServiceService.class);
    public static CategoryService categoryService =retrofit.create(CategoryService.class);
    public static EventTypeService eventTypeService = retrofit.create(EventTypeService.class);
