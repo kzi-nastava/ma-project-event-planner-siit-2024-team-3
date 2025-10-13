@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Checked -->
+    <item android:state_checked="true">
+        <shape android:shape="rectangle">
+            <size android:height="30dp" android:width="70dp"/>   <!-- track thickness -->
+            <corners android:radius="50dp"/>
+            <solid android:color="#c9d3f3"/> <!-- on color -->
+            <padding android:left="0dp" android:right="0dp" android:top="6dp" android:bottom="6dp"/>
+        </shape>
+    </item>
+
+    <!-- Unchecked -->
+    <item>
+        <shape android:shape="rectangle">
+            <size android:height="30dp" android:width="70dp"/>   <!-- same thickness -->
+            <corners android:radius="50dp"/>
+            <solid android:color="#bebebe"/> <!-- off color -->
+            <padding android:left="0dp" android:right="0dp" android:top="6dp" android:bottom="6dp"/>
+        </shape>
+    </item>
+</selector>

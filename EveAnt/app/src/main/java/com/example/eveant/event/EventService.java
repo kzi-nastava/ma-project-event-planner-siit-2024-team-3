@@ -53,8 +53,8 @@ public interface EventService {
     Call<Event> createEvent(@Body BasicInformationFragment.CreateEventRequest body);
 
     @PUT("/api/events/{id}")
-    Call<Event> updateEvent(@Path("id") int id, @Body Event body);
+    Call<Event> updateEvent(@Path("id") int id, @Body EventUpdateDTO body);
 
     @DELETE("/api/events/{id}")
-    Call<ResponseBody> deleteEvent(@Path("id") int id);
+    Call<Void> deleteEvent(@Path("id") int id);
 }

@@ -22,7 +22,9 @@ import com.example.eveant.user.UserService;
 import com.example.eveant.user.model.Address;
 import com.example.eveant.user.model.Company;
 import com.example.eveant.user.model.Profile;
+import com.example.eveant.user.model.ProfileDTO;
 import com.example.eveant.user.model.User;
+import com.example.eveant.user.model.UserDTO;
 import com.example.eveant.user.model.UserProfileRequest;
 
 import java.util.Map;
@@ -61,11 +63,11 @@ public class ActivationFragment extends Fragment {
 
         Bundle bundle = getArguments() != null ? getArguments() : new Bundle();
 
-        Profile profile = new Profile();
+        ProfileDTO profile = new ProfileDTO();
 
         profile.setUsername(bundle.getString("username"));
         profile.setEmail(bundle.getString("email"));
-//        profile.setPassword(bundle.getString("password"));
+        profile.setPassword(bundle.getString("password"));
         email = bundle.getString("email");
         Address address = new Address();
 
@@ -75,7 +77,7 @@ public class ActivationFragment extends Fragment {
         address.setPostalNumber(bundle.getString("postalNumber"));
         address.setHouseNumber(bundle.getString("houseNumber"));
 
-        User user = new User();
+        UserDTO user = new UserDTO();
 
         user.setAddress(address);
         user.setFirstName(bundle.getString("firstName"));
@@ -83,8 +85,9 @@ public class ActivationFragment extends Fragment {
         user.setGender(bundle.getString("gender"));
         user.setPhoneNumber(bundle.getString("phoneNumber"));
         user.setDateOfBirth(bundle.getString("birthday"));
-        String role = bundle.getString("role");
-        if (role.equals("PROVIDER")){
+
+        user.setRole(bundle.getString("role"));
+        if (user.getRole().equals("PROVIDER")){
             Company company = new Company();
             company.setCompanyName(bundle.getString("companyName"));
             company.setEmail(bundle.getString("companyEmail"));

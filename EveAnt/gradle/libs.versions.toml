@@ -16,6 +16,7 @@ okhttp-logging-interceptor = "4.10.0"
 navigationFragment = "2.8.4"
 navigationUi = "2.8.4"
 jwtdecode = "2.0.0"
+playServicesMaps = "19.2.0"
 
 
 [libraries]
@@ -36,6 +37,7 @@ retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = 
 retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit" }
 okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp-logging-interceptor" }
 jwtdecode = { group = "com.auth0.android", name = "jwtdecode", version.ref = "jwtdecode" }
+play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

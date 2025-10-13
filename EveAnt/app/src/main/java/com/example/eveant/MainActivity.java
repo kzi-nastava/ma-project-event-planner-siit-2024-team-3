@@ -11,6 +11,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.eveant.service.model.Service;
+import com.example.eveant.user.security.AuthManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -59,9 +60,8 @@ public class MainActivity extends AppCompatActivity {
 
         /*-----------------------------------------------------------*/
 
-        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
-        String role = sharedPreferences.getString("role", "USER");
-
+        AuthManager auth = AuthManager.getInstance(this);
+        final String role = auth.getRole();
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();

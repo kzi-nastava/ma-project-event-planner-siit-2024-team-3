@@ -1,7 +1,5 @@
 package com.example.eveant.event;
 
-public enum EventStatus{
-    DELETED,
-    PUBLIC,
-    PRIVATE
+public enum EventStatus {
+        DELETED, PUBLIC, PRIVATE
 }

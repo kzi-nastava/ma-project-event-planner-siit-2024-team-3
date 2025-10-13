@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="12dp"
-    tools:context=".event.BasicEventInfoFragment">
+    android:padding="12dp">
 
     <!-- Card/backdrop to match Step 1 -->
     <LinearLayout
@@ -12,66 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginBottom="50dp"
         android:padding="16dp"
         android:background="@drawable/rounded_corners_white">
 
-        <!-- Steps row (same as Step 1) -->
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fillViewport="true"
-            android:scrollbars="none">
-
-            <LinearLayout
-                android:id="@+id/llSteps"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:baselineAligned="false">
-
-                <TextView
-                    android:id="@+id/step1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1. Select type"
-                    android:textStyle="normal"
-                    android:textColor="#000000"
-                    android:paddingRight="12dp" />
-
-                <TextView
-                    android:id="@+id/step2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2. Basic info"
-                    android:textStyle="bold"
-                    android:textColor="#000000"
-                    android:paddingRight="12dp" />
-
-                <TextView
-                    android:id="@+id/step3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="3. Budget and buy"
-                    android:textColor="#000000"
-                    android:paddingRight="12dp" />
-
-                <TextView
-                    android:id="@+id/step4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="4. Agenda"
-                    android:textColor="#000000"
-                    android:paddingRight="12dp" />
-
-                <TextView
-                    android:id="@+id/step5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="5. Invitations"
-                    android:textColor="#000000" />
-            </LinearLayout>
-        </HorizontalScrollView>
 
         <View
             android:layout_width="match_parent"
@@ -96,18 +38,11 @@
                     android:layout_height="wrap_content"
                     android:text="Basic event information"
                     android:textSize="18sp"
+                    android:fontFamily="@font/poppins_bold"
                     android:textStyle="bold"
                     android:textColor="#000000"
                     android:paddingBottom="6dp" />
 
-                <TextView
-                    android:id="@+id/tvSubtitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Fill out core details and privacy"
-                    android:textSize="14sp"
-                    android:textColor="#000000"
-                    android:paddingBottom="12dp" />
 
                 <!-- GRID: two cards, stacked for mobile but visually like web -->
                 <!-- Event information card -->
@@ -125,6 +60,7 @@
                         android:layout_height="wrap_content"
                         android:text="Event information"
                         android:textStyle="bold"
+                        android:fontFamily="@font/poppins_regular"
                         android:textColor="#000000"
                         android:paddingBottom="8dp"/>
 
@@ -135,6 +71,7 @@
                         android:background="@drawable/rounded_corners_f0f3ff"
                         android:hint="Name"
                         android:padding="12dp"
+                        android:fontFamily="@font/poppins_regular"
                         android:maxLines="1"
                         android:inputType="textCapSentences|textPersonName"
                         android:textColor="#000000"
@@ -148,6 +85,8 @@
                         android:background="@drawable/rounded_corners_f0f3ff"
                         android:hint="Description"
                         android:padding="12dp"
+                        android:fontFamily="@font/poppins_regular"
+
                         android:gravity="top|start"
                         android:inputType="textMultiLine"
                         android:textColor="#000000"
@@ -163,6 +102,8 @@
                         android:hint="Max attendees"
                         android:padding="12dp"
                         android:inputType="number"
+                        android:fontFamily="@font/poppins_regular"
+
                         android:textColor="#000000"
                         android:textColorHint="#88000000"
                         android:text="0"/>
@@ -183,6 +124,8 @@
                         android:layout_height="wrap_content"
                         android:text="Event details"
                         android:textStyle="bold"
+                        android:fontFamily="@font/poppins_regular"
+
                         android:textColor="#000000"
                         android:paddingBottom="8dp"/>
 
@@ -193,6 +136,8 @@
                         android:background="@drawable/rounded_corners_f0f3ff"
                         android:hint="Enter country"
                         android:padding="12dp"
+                        android:fontFamily="@font/poppins_regular"
+
                         android:inputType="textCapWords"
                         android:textColor="#000000"
                         android:textColorHint="#88000000"/>
@@ -205,6 +150,8 @@
                         android:background="@drawable/rounded_corners_f0f3ff"
                         android:hint="Enter city"
                         android:padding="12dp"
+                        android:fontFamily="@font/poppins_regular"
+
                         android:inputType="textCapWords"
                         android:textColor="#000000"
                         android:textColorHint="#88000000"/>
@@ -214,6 +161,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
                         android:layout_marginTop="10dp"
+                        android:fontFamily="@font/poppins_regular"
+
                         android:background="@drawable/rounded_corners_f0f3ff"
                         android:hint="Enter street"
                         android:padding="12dp"
@@ -232,8 +181,10 @@
                             android:layout_width="0dp"
                             android:layout_height="48dp"
                             android:layout_weight="1"
+                            android:fontFamily="@font/poppins_regular"
+
                             android:background="@drawable/rounded_corners_f0f3ff"
-                            android:hint="Enter house/ number"
+                            android:hint="House number"
                             android:padding="12dp"
                             android:inputType="text|number"
                             android:textColor="#000000"
@@ -247,6 +198,7 @@
                             android:id="@+id/etZip"
                             android:layout_width="0dp"
                             android:layout_height="48dp"
+                            android:fontFamily="@font/poppins_regular"
                             android:layout_weight="1"
                             android:background="@drawable/rounded_corners_f0f3ff"
                             android:hint="ZIP"
@@ -269,6 +221,8 @@
                             android:layout_weight="1"
                             android:gravity="center_vertical"
                             android:paddingLeft="12dp"
+                            android:fontFamily="@font/poppins_regular"
+
                             android:background="@drawable/rounded_corners_f0f3ff"
                             android:text="mm/dd/yyyy"
                             android:textColor="#88000000"/>
@@ -284,6 +238,7 @@
                             android:layout_weight="1"
                             android:gravity="center_vertical"
                             android:paddingLeft="12dp"
+                            android:fontFamily="@font/poppins_regular"
                             android:background="@drawable/rounded_corners_f0f3ff"
                             android:text="--:--"
                             android:textColor="#88000000"/>
@@ -305,8 +260,10 @@
                         android:layout_height="wrap_content"
                         android:text="Privacy settings"
                         android:textStyle="bold"
+                        android:fontFamily="@font/poppins_regular"
                         android:textColor="#000000"
                         android:paddingBottom="8dp"/>
+
 
                     <RadioGroup
                         android:id="@+id/rgPrivacy"
@@ -320,6 +277,7 @@
                             android:layout_height="44dp"
                             android:layout_weight="1"
                             android:text="Private"
+                            android:fontFamily="@font/poppins_regular"
                             android:checked="true"
                             android:textColor="#000000" />
 
@@ -328,6 +286,7 @@
                             android:layout_width="0dp"
                             android:layout_height="44dp"
                             android:layout_weight="1"
+                            android:fontFamily="@font/poppins_regular"
                             android:text="Public"
                             android:textColor="#000000" />
                     </RadioGroup>
@@ -337,26 +296,54 @@
                 <LinearLayout
                     android:id="@+id/cardPhotos"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:gravity="center"
                     android:padding="14dp"
                     android:background="@drawable/rounded_corners_image_blue">
 
-                    <ImageView
-                        android:layout_width="36dp"
-                        android:layout_height="36dp"
-                        android:src="@drawable/ic_add_foreground"
-                        android:contentDescription="@string/app_name"/>
+                    <!-- Placeholder (tap to pick) -->
+                    <LinearLayout
+                        android:id="@+id/addPhotosPlaceholder"
+                        android:layout_width="match_parent"
+                        android:layout_height="120dp"
+                        android:gravity="center"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/tvAddPhotos"
-                        android:layout_width="wrap_content"
+                        <ImageView
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:src="@drawable/ic_add_foreground"
+                            android:contentDescription="@string/app_name"/>
+
+                        <TextView
+                            android:id="@+id/tvAddPhotos"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="6dp"
+                            android:fontFamily="@font/poppins_regular"
+                            android:text="Add photos"
+                            android:textColor="@color/white" />
+                    </LinearLayout>
+
+                    <!-- Thumbnails (hidden until we have images) -->
+                    <HorizontalScrollView
+                        android:id="@+id/photoScroll"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingTop="6dp"
-                        android:text="Add photos"
-                        android:textColor="#000000" />
+                        android:fillViewport="false"
+                        android:overScrollMode="never"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:id="@+id/photoStrip"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:paddingTop="8dp"
+                            android:paddingBottom="4dp"/>
+                    </HorizontalScrollView>
                 </LinearLayout>
+
 
                 <TextView
                     android:id="@+id/tvError"
@@ -364,43 +351,12 @@
                     android:layout_height="wrap_content"
                     android:textColor="#B00020"
                     android:visibility="gone"
+                    android:fontFamily="@font/poppins_regular"
                     android:paddingTop="8dp"
                     tools:text="Please fill in required fields."/>
 
             </LinearLayout>
         </ScrollView>
 
-        <!-- Buttons row (same as Step 1) -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:paddingTop="8dp">
-
-            <Button
-                android:id="@+id/btnBack"
-                android:layout_width="0dp"
-                android:layout_height="44dp"
-                android:layout_weight="1"
-                android:text="BACK"
-                android:textAllCaps="true"
-                android:textStyle="bold"
-                android:textColor="#000000" />
-
-            <View
-                android:layout_width="12dp"
-                android:layout_height="1dp" />
-
-            <Button
-                android:id="@+id/btnNext"
-                android:layout_width="0dp"
-                android:layout_height="44dp"
-                android:layout_weight="1"
-                android:text="NEXT"
-                android:textAllCaps="true"
-                android:textStyle="bold"
-                android:textColor="#000000" />
-        </LinearLayout>
     </LinearLayout>
 </FrameLayout>

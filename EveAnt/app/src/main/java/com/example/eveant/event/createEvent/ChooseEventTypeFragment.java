@@ -7,18 +7,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.eveant.R;
 import com.example.eveant.RetrofitClient;
+import com.example.eveant.event.EventCreationViewModel;
 import com.example.eveant.eventType.EventType;
 
 import java.util.ArrayList;
@@ -30,14 +31,17 @@ import retrofit2.Response;
 
 public class ChooseEventTypeFragment extends Fragment {
 
-    private RadioGroup rgEventTypes;
-    private TextView tvTitle, tvSubtitle, tvError;
-    private TextView step1, step2, step3, step4, step5;
-    private Button btnBack, btnNext;
+    private LinearLayout llEventTypes;
+    private TextView tvError;
     private ProgressBar progress;
 
-    private List<EventType> types = new ArrayList<>();
-    private EventType selected;
+    private final List<EventType> types = new ArrayList<>();
+    private final List<Button> typeButtons = new ArrayList<>();
+    private Button btnAll;             // the *real* ALL from your backend
+    private EventType allType;         // ref to the server “ALL” object
+    private EventType selected;        // currently selected type
+
+    private EventCreationViewModel vm;
 
     public ChooseEventTypeFragment() {}
 
@@ -50,53 +54,11 @@ public class ChooseEventTypeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
-        rgEventTypes = v.findViewById(R.id.rgEventTypes);
-        tvTitle = v.findViewById(R.id.tvTitle);
-        tvSubtitle = v.findViewById(R.id.tvSubtitle);
+        llEventTypes = v.findViewById(R.id.llEventTypes);
         tvError = v.findViewById(R.id.tvError);
-        step1 = v.findViewById(R.id.step1);
-        step2 = v.findViewById(R.id.step2);
-        step3 = v.findViewById(R.id.step3);
-        step4 = v.findViewById(R.id.step4);
-        step5 = v.findViewById(R.id.step5);
-        btnBack = v.findViewById(R.id.btnBack);
-        btnNext = v.findViewById(R.id.btnNext);
         progress = v.findViewById(R.id.progress);
 
-        forceBlack(step1, step2, step3, step4, step5, tvTitle, tvSubtitle, tvError);
-
-        highlightStep(1);
-
-        btnBack.setOnClickListener(view -> requireActivity().onBackPressed());
-        btnNext.setOnClickListener(view -> {
-            if (selected == null) return;
-            // inside ChooseEventTypeFragment, in btnNext.setOnClickListener(...)
-            Fragment next = new BasicInformationFragment();
-
-// (optional) pass data
-            Bundle args = new Bundle();
-            args.putParcelable("eventType", selected);
-            next.setArguments(args);
-
-// do the transition
-            requireActivity()
-                    .getSupportFragmentManager()
-                    .beginTransaction()
-                    .setCustomAnimations(
-                            android.R.anim.slide_in_left,   // enter
-                            android.R.anim.fade_out,        // exit
-                            android.R.anim.fade_in,         // popEnter
-                            android.R.anim.slide_out_right  // popExit
-                    )
-                    .replace(R.id.fragmentContainer, next) // container in your activity XML
-                    .addToBackStack("BasicEventInfo")      // enables back button
-                    .commit();
-
-            Toast.makeText(requireContext(),
-                    "Next → " + selected.getName() + " (id=" + selected.getId() + ")",
-                    Toast.LENGTH_SHORT).show();
-        });
-
+        vm = new ViewModelProvider(requireActivity()).get(EventCreationViewModel.class);
         fetchEventTypes();
     }
 
@@ -104,7 +66,6 @@ public class ChooseEventTypeFragment extends Fragment {
         showLoading(true);
         tvError.setVisibility(View.GONE);
 
-        // choose the endpoint you want; activated is typical for UX
         RetrofitClient.eventTypeService.getAllActivated().enqueue(new Callback<List<EventType>>() {
             @Override public void onResponse(Call<List<EventType>> call, Response<List<EventType>> resp) {
                 showLoading(false);
@@ -112,8 +73,10 @@ public class ChooseEventTypeFragment extends Fragment {
                     showError("Failed to load event types (" + resp.code() + ")");
                     return;
                 }
-                types = resp.body();
-                populateEventTypeRadios(types);
+                types.clear();
+                types.addAll(resp.body());
+                orderAllFirst(types);
+                renderButtons(types);
             }
             @Override public void onFailure(Call<List<EventType>> call, Throwable t) {
                 showLoading(false);
@@ -122,10 +85,33 @@ public class ChooseEventTypeFragment extends Fragment {
         });
     }
 
-    private void populateEventTypeRadios(List<EventType> data) {
-        rgEventTypes.removeAllViews();
-        btnNext.setEnabled(false);
+    /** Put your real ALL event type at index 0 if present. */
+    private void orderAllFirst(List<EventType> list) {
+        int idx = -1;
+        for (int i = 0; i < list.size(); i++) {
+            if (isAllType(list.get(i))) { idx = i; break; }
+        }
+        if (idx > 0) {
+            EventType et = list.remove(idx);
+            list.add(0, et);
+        }
+    }
+
+    /** Heuristic to detect your existing ALL: adjust if you have a dedicated flag. */
+    private boolean isAllType(EventType et) {
+        if (et == null) return false;
+        // Prefer explicit flag if you have one:
+        // return Boolean.TRUE.equals(et.getVirtual()) || Boolean.TRUE.equals(et.getAll());
+        String n = et.getName();
+        return n != null && n.trim().equalsIgnoreCase("ALL");
+    }
+
+    private void renderButtons(List<EventType> data) {
+        llEventTypes.removeAllViews();
+        typeButtons.clear();
         selected = null;
+        btnAll = null;
+        allType = null;
 
         if (data == null || data.isEmpty()) {
             showError("No event types available.");
@@ -133,42 +119,83 @@ public class ChooseEventTypeFragment extends Fragment {
         }
 
         for (EventType et : data) {
-            RadioButton rb = new RadioButton(requireContext());
-            rb.setText(!TextUtils.isEmpty(et.getName()) ? et.getName() : ("EventType " + et.getId()));
-            rb.setTextColor(0xFF000000); // black text
-            rb.setPadding(dp(12), dp(8), dp(12), dp(8));
-            rb.setTag(et);
-            rgEventTypes.addView(rb);
-        }
+            String label = !TextUtils.isEmpty(et.getName()) ? et.getName() : ("EventType " + et.getId());
+            Button b = createChoiceButton(label);
+            b.setTag(et);
 
-        rgEventTypes.setOnCheckedChangeListener((group, checkedId) -> {
-            RadioButton rb = group.findViewById(checkedId);
-            if (rb != null && rb.getTag() instanceof EventType) {
-                selected = (EventType) rb.getTag();
-                btnNext.setEnabled(true);
+            if (isAllType(et)) {
+                btnAll = b;
+                allType = et;
+                b.setOnClickListener(v -> {
+                    // visually: ALL + every other pill selected
+                    setAllVisualSelected(true);
+                    selected = allType;
+                    vm.setSelectedType(allType); // use your real ALL object
+                    Toast.makeText(requireContext(), "Selected: " + label, Toast.LENGTH_SHORT).show();
+                    // NO auto-advance here
+                });
+            } else {
+                b.setOnClickListener(v -> {
+                    setAllVisualSelected(false);   // ALL off; others off
+                    setOnlyThisSelected(b);        // this one on
+                    selected = (EventType) b.getTag();
+                    vm.setSelectedType(selected);
+                    Toast.makeText(requireContext(), "Selected: " + label, Toast.LENGTH_SHORT).show();
+                    // NO auto-advance here
+                });
             }
-        });
+
+            llEventTypes.addView(b);
+            typeButtons.add(b);
+        }
     }
 
-    private void highlightStep(int stepIndex) {
-        // bold the active step, normal the others
-        TextView[] arr = new TextView[]{step1, step2, step3, step4, step5};
-        for (int i = 0; i < arr.length; i++) {
-            arr[i].setTypeface(null, (i + 1 == stepIndex) ? Typeface.BOLD : Typeface.NORMAL);
-        }
+    /** Create a pill button that uses our selector drawable. */
+    private Button createChoiceButton(String text) {
+        Button btn = new Button(requireContext(), null, androidx.appcompat.R.attr.buttonStyle);
+        btn.setText(text);
+        btn.setAllCaps(false);
+        btn.setTypeface(Typeface.DEFAULT_BOLD);
+        btn.setBackgroundResource(R.drawable.bg_event_type_choice);
+        btn.setTextColor(0xFF8599E0); // default; flips to white when selected
+        btn.setPadding(dp(12), dp(8), dp(12), dp(8));
+
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        lp.topMargin = dp(8);
+        btn.setLayoutParams(lp);
+        btn.setSelected(false);
+        return btn;
+    }
+
+    /** Only this button selected (ALL unselected). */
+    private void setOnlyThisSelected(Button target) {
+        if (btnAll != null) mark(btnAll, false);
+        for (Button b : typeButtons) mark(b, b == target);
+    }
+
+    /** When ALL is pressed: ALL + every pill looks selected; otherwise everything off. */
+    private void setAllVisualSelected(boolean sel) {
+        if (btnAll != null) mark(btnAll, sel);
+        for (Button b : typeButtons) mark(b, sel);
+    }
+
+    private void mark(Button b, boolean sel) {
+        b.setSelected(sel); // drives bg_choice_button
+        b.setTextColor(sel ? 0xFFFFFFFF : 0xFF8599E0);
     }
 
     private void showLoading(boolean show) {
-        progress.setVisibility(show ? View.VISIBLE : View.GONE);
+        if (progress != null) progress.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
     private void showError(String msg) {
-        tvError.setText(msg);
-        tvError.setVisibility(View.VISIBLE);
-    }
-
-    private void forceBlack(TextView... tviews) {
-        for (TextView t : tviews) if (t != null) t.setTextColor(0xFF000000);
+        if (tvError != null) {
+            tvError.setText(msg);
+            tvError.setVisibility(View.VISIBLE);
+        }
     }
 
     private int dp(int v) {

@@ -2,9 +2,13 @@ package com.example.eveant.event.myEvents;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.util.Base64;
 import android.view.*;
 import android.widget.*;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,8 +19,12 @@ import com.example.eveant.event.Event;
 import com.example.eveant.eventType.EventType;
 import com.example.eveant.user.model.Address;
 
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
 
 public class MyEventsAdapter extends RecyclerView.Adapter<MyEventsAdapter.VH> {
 
@@ -24,6 +32,7 @@ public class MyEventsAdapter extends RecyclerView.Adapter<MyEventsAdapter.VH> {
         void onEdit(Event e);
         void onDelete(Event e);
         void onOpen(Event e);
+        void onAgenda(Event e);
     }
 
     private final Listener listener;
@@ -77,6 +86,12 @@ public class MyEventsAdapter extends RecyclerView.Adapter<MyEventsAdapter.VH> {
             date = dt.substring(0, tPos);
             if (dt.length() >= tPos + 6) time = dt.substring(tPos + 1, Math.min(dt.length(), tPos + 6));
         }
+        String raw = e.getDate();
+        String datePart = extractDate(raw);  // "yyyy-MM-dd" or "—"
+        String timePart = extractTime(raw);  // "HH:mm" or "—"
+
+        h.tvDate.setText(datePart);
+        h.tvTime.setText(timePart);
         h.tvDate.setText(date);
         h.tvTime.setText(time);
 
@@ -99,6 +114,50 @@ public class MyEventsAdapter extends RecyclerView.Adapter<MyEventsAdapter.VH> {
         h.itemView.setOnClickListener(v -> listener.onOpen(e));
         h.btnEdit.setOnClickListener(v -> listener.onEdit(e));
         h.btnDelete.setOnClickListener(v -> listener.onDelete(e));
+        h.btnAgenda.setOnClickListener(v -> listener.onAgenda(e));
+    }
+
+    // Accepts many formats: 2025-07-22T19:00:00, 2025-07-22 19:00,
+// 2025-07-22T19:00:00Z, 2025-07-22T19:00:00.000+01:00, etc.
+    private static final Pattern DATE_RE  = Pattern.compile("(\\d{4}-\\d{2}-\\d{2})");
+    private static final Pattern TIME_RE  = Pattern.compile("(\\d{2}:\\d{2})");
+
+    private String extractDate(String s) {
+        if (s == null || s.isEmpty()) return "—";
+        // First try java.time (API 26+)
+        if (Build.VERSION.SDK_INT >= 26) {
+            try {
+                // Try Offset first (handles Z and +hh:mm)
+                OffsetDateTime odt = OffsetDateTime.parse(s, DateTimeFormatter.ISO_DATE_TIME);
+                return odt.toLocalDate().toString(); // yyyy-MM-dd
+            } catch (Exception ignored) {
+                try {
+                    LocalDateTime ldt = LocalDateTime.parse(s, DateTimeFormatter.ISO_DATE_TIME);
+                    return ldt.toLocalDate().toString();
+                } catch (Exception ignored2) { /* fall through */ }
+            }
+        }
+        // Regex fallback
+        Matcher m = DATE_RE.matcher(s);
+        return m.find() ? m.group(1) : "—";
+    }
+
+    private String extractTime(String s) {
+        if (s == null || s.isEmpty()) return "—";
+        if (Build.VERSION.SDK_INT >= 26) {
+            try {
+                OffsetDateTime odt = OffsetDateTime.parse(s, DateTimeFormatter.ISO_DATE_TIME);
+                return odt.toLocalTime().toString().substring(0, 5); // HH:mm
+            } catch (Exception ignored) {
+                try {
+                    LocalDateTime ldt = LocalDateTime.parse(s, DateTimeFormatter.ISO_DATE_TIME);
+                    return ldt.toLocalTime().toString().substring(0, 5);
+                } catch (Exception ignored2) { /* fall through */ }
+            }
+        }
+        // Regex fallback: first HH:mm appearance
+        Matcher m = TIME_RE.matcher(s);
+        return m.find() ? m.group(1) : "—";
     }
 
     @Override public int getItemCount() { return items.size(); }
@@ -106,7 +165,7 @@ public class MyEventsAdapter extends RecyclerView.Adapter<MyEventsAdapter.VH> {
     static class VH extends RecyclerView.ViewHolder {
         ImageView imgCover;
         TextView tvType, tvTitle, tvLocation, tvDate, tvTime;
-        ImageButton btnEdit, btnDelete;
+        ImageButton btnEdit, btnDelete, btnAgenda;
 
         VH(@NonNull View v) {
             super(v);
@@ -118,6 +177,7 @@ public class MyEventsAdapter extends RecyclerView.Adapter<MyEventsAdapter.VH> {
             tvTime    = v.findViewById(R.id.tvTime);
             btnEdit   = v.findViewById(R.id.btnEdit);
             btnDelete = v.findViewById(R.id.btnDelete);
+            btnAgenda = v.findViewById(R.id.btnAgenda);
         }
     }
 
