@@ -1,4 +1,4 @@
-package com.example.eveant.event;
+package com.example.eveant.event.invitations;
 
 import android.os.Bundle;
 

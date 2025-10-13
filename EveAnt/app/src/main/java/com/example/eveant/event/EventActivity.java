@@ -1,6 +1,5 @@
 package com.example.eveant.event;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -14,11 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.eveant.MainActivity;
 import com.example.eveant.R;
 import com.example.eveant.event.createEvent.BasicInformationFragment;
 import com.example.eveant.event.createEvent.ChooseEventTypeFragment;
-import com.example.eveant.event.agenda.AgendaFragment;
+import com.example.eveant.event.invitations.InvitationListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class EventActivity extends AppCompatActivity {
@@ -129,7 +127,7 @@ public class EventActivity extends AppCompatActivity {
 
             case INVITATIONS:
             default:
-                fragment = new com.example.eveant.event.InvitationListFragment();
+                fragment = new InvitationListFragment();
                 break;
         }
 
