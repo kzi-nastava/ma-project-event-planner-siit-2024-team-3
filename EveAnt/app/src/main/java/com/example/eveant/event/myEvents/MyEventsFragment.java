@@ -19,10 +19,14 @@ import com.example.eveant.R;
 import com.example.eveant.RetrofitClient;
 import com.example.eveant.event.Event;
 import com.example.eveant.event.EventStatus;
+import com.example.eveant.event.EventUpdateDTO;
+import com.example.eveant.event.agenda.Activity;
 import com.example.eveant.eventType.EventType;
 import com.example.eveant.eventType.EventTypeService;
+import com.example.eveant.user.model.Address;
 import com.example.eveant.user.security.AuthManager;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -77,6 +81,7 @@ public class MyEventsFragment extends Fragment {
                         .addToBackStack("event_details")
                         .commit();
             }
+            @Override public void onAgenda(Event e){ showAgendaDialog(e.getId()); }
         });
         rvEvents.setAdapter(adapter);
 
@@ -87,6 +92,11 @@ public class MyEventsFragment extends Fragment {
         fetchEventTypes();  // fills spinner
         loadEvents();       // loads user's events
     }
+    private void showAgendaDialog(int eventId) {
+        AgendaDialogFragment.newInstance(eventId).show(
+                getParentFragmentManager(), "agenda_dialog");
+    }
+
 
     private void openDatePicker() {
         final Calendar c = Calendar.getInstance();
@@ -205,39 +215,64 @@ public class MyEventsFragment extends Fragment {
     private static String safe(String s) { return s == null ? "" : s; }
     private static String nonNull(String s) { return s == null ? "" : s; }
 
-    private void confirmDeleteDialog(Event e) {
-        new androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                .setTitle("Delete event?")
-                .setMessage("This action cannot be undone.")
-                .setPositiveButton("Delete", (d, w) -> doDelete(e))
-                .setNegativeButton("Cancel", null)
-                .show();
-    }
+    private void confirmDeleteDialog(Event a) {
+        // 1) Inflate your custom layout
+        View view = LayoutInflater.from(requireContext())
+                .inflate(R.layout.delete_dialog_box, null, false);
 
-    private void doDelete(Event e) {
-        showLoading(true);
-        RetrofitClient.eventService.deleteEvent(e.getId()).enqueue(new retrofit2.Callback<Void>() {
-            @Override public void onResponse(retrofit2.Call<Void> call, retrofit2.Response<Void> resp) {
-                showLoading(false);
-                if (!resp.isSuccessful()) {
-                    Toast.makeText(requireContext(), "Delete failed: " + resp.code(), Toast.LENGTH_SHORT).show();
-                    return;
+        // 2) Build a dialog WITHOUT default buttons
+        AlertDialog dlg = new AlertDialog.Builder(requireContext())
+                .setView(view)
+                .setCancelable(true)
+                .create();
+
+        // Optional: let your rounded background show edge-to-edge
+        if (dlg.getWindow() != null) {
+            dlg.getWindow().setBackgroundDrawable(
+                    new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT)
+            );
+        }
+
+        // 3) Hook up your custom views
+        TextView tvMsg   = view.findViewById(R.id.dialog_message);
+        Button btnYes    = view.findViewById(R.id.button_yes);
+        Button btnNo     = view.findViewById(R.id.button_no);
+
+        // Optional: dynamic message
+        tvMsg.setText("Are you sure you want to delete \"" + a.name + "\"?");
+
+        // 4) Button actions
+        btnNo.setOnClickListener(v -> dlg.dismiss());
+
+        btnYes.setOnClickListener(v -> {
+            // prevent double taps while the call is in flight
+            btnYes.setEnabled(false);
+            RetrofitClient.eventService.deleteEvent(a.id).enqueue(new retrofit2.Callback<Void>() {
+                @Override public void onResponse(retrofit2.Call<Void> c, retrofit2.Response<Void> r) {
+                    if (!isAdded()) return;
+                    btnYes.setEnabled(true);
+                    if (r.isSuccessful()) {
+                        toast("Deleted");
+                        dlg.dismiss();
+                        loadEvents();
+                    } else {
+                        toast("Delete failed: " + r.code());
+                    }
                 }
-                // remove locally
-                int idx = -1;
-                for (int i = 0; i < allEvents.size(); i++) if (allEvents.get(i).getId() == e.getId()) { idx = i; break; }
-                if (idx >= 0) {
-                    allEvents.remove(idx);
-                    adapter.submit(new ArrayList<>(allEvents));
+                @Override public void onFailure(retrofit2.Call<Void> c, Throwable t) {
+                    if (!isAdded()) return;
+                    btnYes.setEnabled(true);
+                    toast("Error: " + t.getMessage());
                 }
-                Toast.makeText(requireContext(), "Event deleted", Toast.LENGTH_SHORT).show();
-            }
-            @Override public void onFailure(retrofit2.Call<Void> call, Throwable t) {
-                showLoading(false);
-                Toast.makeText(requireContext(), "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
+            });
         });
+
+        // 5) Show it
+        dlg.show();
     }
+    private void toast(String s) { Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show(); }
+
+
 
     private void showUpdateDialog(Event e) {
         View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_event_update, null, false);
@@ -250,6 +285,11 @@ public class MyEventsFragment extends Fragment {
         RadioButton rbPriv= dialogView.findViewById(R.id.rbPrivate);
         RadioButton rbPubl= dialogView.findViewById(R.id.rbPublic);
 
+        EditText etCountry   = dialogView.findViewById(R.id.etCountry);
+        EditText etCity      = dialogView.findViewById(R.id.etCity);
+        EditText etStreet    = dialogView.findViewById(R.id.etStreet);
+        EditText etHouseNo   = dialogView.findViewById(R.id.etHouseNo);
+        EditText etZip       = dialogView.findViewById(R.id.etZip);
         // prefill
         etName.setText(e.getName());
         etDesc.setText(e.getDescription());
@@ -259,12 +299,19 @@ public class MyEventsFragment extends Fragment {
         tvTime.setText(dt[1].isEmpty() ? "--:--" : dt[1]);
         if ("PUBLIC".equalsIgnoreCase(e.getStatus().toString())) rbPubl.setChecked(true); else rbPriv.setChecked(true);
 
+        // Address
+        if (e.getAddress() != null) {
+            etCountry.setText(safe(e.getAddress().getCountry()));
+            etCity.setText(safe(e.getAddress().getCity()));
+            etStreet.setText(safe(e.getAddress().getStreet()));
+            etHouseNo.setText(safe(e.getAddress().getHouseNumber()));
+            etZip.setText(safe(e.getAddress().getPostalNumber())); // or getZip() depending on your model
+        }
         // pickers
         tvDate.setOnClickListener(v -> openDatePickerInto(tvDate));
         tvTime.setOnClickListener(v -> openTimePickerInto(tvTime));
 
         androidx.appcompat.app.AlertDialog dlg = new androidx.appcompat.app.AlertDialog.Builder(requireContext())
-                .setTitle("Update event")
                 .setView(dialogView)
                 .setPositiveButton("Save", null)
                 .setNegativeButton("Cancel", null)
@@ -294,12 +341,22 @@ public class MyEventsFragment extends Fragment {
                 String dateIso;
                 try { dateIso = toIso(tvDate.getText().toString(), tvTime.getText().toString()); }
                 catch (Exception ex) { Toast.makeText(requireContext(), "Invalid date/time", Toast.LENGTH_SHORT).show(); return; }
+                Address addr = new Address(
+                        safe(etCountry.getText().toString()),
+                        safe(etCity.getText().toString()),
+                        safe(etStreet.getText().toString()),
+                        safe(etHouseNo.getText().toString()),
+                        safe(etZip.getText().toString())
+                );
 
-                Event body = new Event();
+                EventUpdateDTO body = new EventUpdateDTO();
                 body.name = name;
                 body.description = etDesc.getText().toString().trim();
                 body.status = rbPubl.isChecked() ? EventStatus.PUBLIC : EventStatus.PRIVATE;
                 body.date = dateIso;
+                body.address = addr;
+                body.eventType = e.getEventType();
+                body.photos = e.getPhotos();
                 try { body.maxAttendance = Integer.parseInt(etMax.getText().toString().trim()); } catch (Exception ignored) {}
                 if (e.getEventType() != null && e.getEventType().getId() != null) body.eventType = e.getEventType();
 
@@ -369,5 +426,9 @@ public class MyEventsFragment extends Fragment {
         Date d = in.parse(ymd + " " + hm);
         return out.format(d);
     }
+
+
+
+
 
 }

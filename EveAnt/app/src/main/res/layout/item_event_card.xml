@@ -90,6 +90,7 @@
                     android:id="@+id/tvDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:paddingLeft="6dp"
                     android:text="2025-07-22"/>
             </LinearLayout>
@@ -108,6 +109,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingLeft="6dp"
+                    android:textColor="@color/black"
                     android:text="19:00"/>
             </LinearLayout>
         </LinearLayout>
@@ -121,6 +123,14 @@
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
             android:background="#F8F8FF">
+
+            <ImageButton
+                android:id="@+id/btnAgenda"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_calendar_press"
+                android:contentDescription="Agenda"/>
 
             <ImageButton
                 android:id="@+id/btnEdit"

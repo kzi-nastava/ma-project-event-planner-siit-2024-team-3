@@ -1,36 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@drawable/rounded_corners_white"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_corners_white">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:hint="Update event"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/black"
+            android:inputType="textCapSentences" />
 
+        <!-- Name / Description / Max attendees (existing) -->
         <EditText
             android:id="@+id/etName"
             android:layout_width="match_parent"
             android:layout_height="48dp"
+            android:layout_marginTop="12dp"
             android:hint="Name"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins_regular"
             android:background="@drawable/input_backgrounf"
             android:padding="12dp"
             android:textColor="@color/black"
-            android:inputType="textCapSentences"/>
+            android:inputType="textCapSentences" />
 
         <EditText
             android:id="@+id/etDescription"
             android:layout_width="match_parent"
             android:layout_height="100dp"
+            android:textSize="14sp"
             android:layout_marginTop="10dp"
+            android:fontFamily="@font/poppins_regular"
+
             android:hint="Description"
             android:background="@drawable/input_backgrounf"
             android:gravity="top|start"
             android:textColor="@color/black"
             android:padding="12dp"
-            android:inputType="textMultiLine"/>
+            android:inputType="textMultiLine" />
 
         <EditText
             android:id="@+id/etMax"
@@ -39,10 +54,13 @@
             android:layout_marginTop="10dp"
             android:hint="Max attendees"
             android:textColor="@color/black"
+            android:fontFamily="@font/poppins_regular"
+            android:textSize="14sp"
             android:background="@drawable/input_backgrounf"
             android:padding="12dp"
-            android:inputType="number"/>
+            android:inputType="number" />
 
+        <!-- Date & Time (existing) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -54,16 +72,16 @@
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
-
                 android:gravity="center_vertical"
                 android:paddingLeft="12dp"
+                android:fontFamily="@font/poppins_regular"
                 android:background="@drawable/input_backgrounf"
                 android:text="yyyy-MM-dd"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black" />
 
             <View
                 android:layout_width="10dp"
-                android:layout_height="1dp"/>
+                android:layout_height="1dp" />
 
             <TextView
                 android:id="@+id/tvTime"
@@ -72,11 +90,13 @@
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:paddingLeft="12dp"
+                android:fontFamily="@font/poppins_regular"
                 android:background="@drawable/input_backgrounf"
                 android:text="--:--"
-                android:textColor="@color/black"/>
+                android:textColor="@color/black" />
         </LinearLayout>
 
+        <!-- Privacy (existing) -->
         <RadioGroup
             android:id="@+id/rgPrivacy"
             android:layout_width="match_parent"
@@ -88,19 +108,144 @@
                 android:id="@+id/rbPrivate"
                 android:layout_width="0dp"
                 android:layout_height="44dp"
+                android:fontFamily="@font/poppins_regular"
                 android:layout_weight="1"
                 android:textColor="@color/black"
                 android:text="Private"
-                android:checked="true"/>
+                android:checked="true" />
 
             <RadioButton
                 android:id="@+id/rbPublic"
                 android:layout_width="0dp"
-                android:textColor="@color/black"
+                android:fontFamily="@font/poppins_regular"
                 android:layout_height="44dp"
                 android:layout_weight="1"
-                android:text="Public"/>
+                android:textColor="@color/black"
+                android:text="Public" />
         </RadioGroup>
+
+        <!-- Address -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Address"
+            android:fontFamily="@font/poppins_regular"
+            android:textColor="@color/black"
+            android:paddingTop="12dp"
+            android:paddingBottom="6dp" />
+
+        <EditText
+            android:id="@+id/etCountry"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:hint="Country"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins_regular"
+            android:textColor="@color/black"
+            android:background="@drawable/input_backgrounf"
+            android:padding="12dp"
+            android:inputType="textCapWords" />
+
+        <EditText
+            android:id="@+id/etCity"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp"
+            android:hint="City"
+            android:textSize="14sp"
+            android:fontFamily="@font/poppins_regular"
+            android:textColor="@color/black"
+            android:background="@drawable/input_backgrounf"
+            android:padding="12dp"
+            android:inputType="textCapWords" />
+
+        <EditText
+            android:id="@+id/etStreet"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp"
+            android:hint="Street"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/poppins_regular"
+            android:background="@drawable/input_backgrounf"
+            android:padding="12dp"
+            android:inputType="textCapWords" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/etHouseNo"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:fontFamily="@font/poppins_regular"
+                android:layout_weight="1"
+                android:hint="House no."
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:background="@drawable/input_backgrounf"
+                android:padding="12dp"
+                android:inputType="text|number" />
+
+            <View
+                android:layout_width="10dp"
+                android:layout_height="1dp" />
+
+            <EditText
+                android:id="@+id/etZip"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:fontFamily="@font/poppins_regular"
+                android:layout_weight="1"
+                android:hint="ZIP"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:background="@drawable/input_backgrounf"
+                android:padding="12dp"
+                android:inputType="number" />
+        </LinearLayout>
+
+        <!-- Photos -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Photos"
+            android:fontFamily="@font/poppins_regular"
+            android:textColor="@color/black"
+            android:paddingTop="12dp"
+            android:paddingBottom="6dp" />
+
+        <LinearLayout
+            android:id="@+id/photosRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Thumbnails will be added here dynamically -->
+            <ImageView
+                android:id="@+id/btnAddPhoto"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:scaleType="centerInside"
+                android:padding="12dp"
+                android:background="@drawable/input_backgrounf"
+                android:src="@drawable/ic_add_foreground"
+                android:contentDescription="@string/app_name" />
+        </LinearLayout>
+
+        <!-- Optional: error text placeholder -->
+        <TextView
+            android:id="@+id/tvError"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#B00020"
+            android:fontFamily="@font/poppins_regular"
+            android:visibility="gone"
+            android:paddingTop="12dp" />
 
     </LinearLayout>
 </ScrollView>
