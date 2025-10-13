@@ -63,7 +63,7 @@ public class MyEventsFragment extends Fragment {
         tvEmpty       = v.findViewById(R.id.tvEmpty);
 
         // Grid like web: 2 cards per row (phones portrait)
-        rvEvents.setLayoutManager(new GridLayoutManager(requireContext(), 2));
+        rvEvents.setLayoutManager(new GridLayoutManager(requireContext(), 1));
         adapter = new MyEventsAdapter(new MyEventsAdapter.Listener() {
 
             @Override public void onEdit(Event e)  { showUpdateDialog(e); }

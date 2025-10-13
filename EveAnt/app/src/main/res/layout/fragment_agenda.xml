@@ -8,8 +8,10 @@
     <TextView
         android:id="@+id/tvHeader"
         android:text="Agenda timeline"
+        android:fontFamily="@font/poppins_bold"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -19,6 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:textColor="@color/black"
         android:overScrollMode="never"
         android:fillViewport="true">
 
@@ -26,6 +29,7 @@
             android:id="@+id/rowContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColor="@color/black"
             android:orientation="horizontal">
 
             <!-- Vertical hours column -->
@@ -34,6 +38,7 @@
                 android:layout_width="56dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:textColor="@color/black"
                 android:paddingTop="8dp"
                 android:paddingBottom="8dp" />
 
@@ -43,7 +48,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="#FFFFFFFF" />
+
+                android:background="@color/white" />
         </LinearLayout>
     </ScrollView>
 
@@ -56,7 +62,16 @@
         <Button
             android:id="@+id/btnAddActivity"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:text="Add activity" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
+            android:backgroundTint="@null"
+            android:background="@drawable/rounded_corners_8599e0"
+            android:fontFamily="@font/poppins_bold"
+            android:padding="10dp"
+            android:text="Add activity"
+            android:textColor="@color/white"
+            android:textSize="15sp"/>
     </LinearLayout>
 </LinearLayout>

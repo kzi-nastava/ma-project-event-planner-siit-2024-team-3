@@ -1,5 +1,6 @@
 package com.example.eveant.event;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.eveant.MainActivity;
 import com.example.eveant.R;
 import com.example.eveant.event.createEvent.BasicInformationFragment;
 import com.example.eveant.event.createEvent.ChooseEventTypeFragment;

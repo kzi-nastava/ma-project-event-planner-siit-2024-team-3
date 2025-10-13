@@ -9,6 +9,8 @@
         <EditText
             android:id="@+id/etName"
             android:hint="Name"
+            android:textColor="@color/purple"
+            android:textColorHint="@color/purple"
             android:layout_width="match_parent" android:layout_height="wrap_content" />
 
         <LinearLayout
@@ -18,11 +20,13 @@
             <TextView
                 android:id="@+id/tvStart"
                 android:text="--:--"
+                android:textColor="@color/white"
                 android:layout_width="0dp" android:layout_height="48dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:paddingStart="12dp"
-                android:background="@drawable/rounded_corners_f0f3ff"/>
+
+                android:background="@drawable/rounded_corners_8599e0"/>
             <TextView
                 android:id="@+id/tvEnd"
                 android:text="--:--"
@@ -30,30 +34,39 @@
                 android:layout_weight="1" android:layout_marginStart="8dp"
                 android:gravity="center_vertical"
                 android:paddingStart="12dp"
-                android:background="@drawable/rounded_corners_f0f3ff"/>
+                android:textColor="@color/white"
+                android:background="@drawable/rounded_corners_8599e0"/>
         </LinearLayout>
 
         <EditText
             android:id="@+id/etDesc"
             android:hint="Description"
             android:minLines="3"
+            android:textColor="@color/purple"
+            android:textColorHint="@color/purple"
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:layout_marginTop="8dp"/>
 
         <EditText
             android:id="@+id/etStreet"
             android:hint="Street"
+            android:textColorHint="@color/purple"
+            android:textColor="@color/purple"
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:layout_marginTop="8dp"/>
 
         <EditText
             android:id="@+id/etHouse"
             android:hint="House number"
+            android:textColorHint="@color/purple"
+            android:textColor="@color/purple"
             android:layout_width="match_parent" android:layout_height="wrap_content"/>
 
         <EditText
             android:id="@+id/etCity"
             android:hint="City"
+            android:textColorHint="@color/purple"
+            android:textColor="@color/purple"
             android:layout_width="match_parent" android:layout_height="wrap_content"/>
 
         <LinearLayout
@@ -64,6 +77,8 @@
         <Button
             android:id="@+id/btnSubmit"
             android:text="Add activity"
+            android:background="@drawable/rounded_corners_8599e0"
+            android:textColor="@color/white"
             android:layout_width="match_parent" android:layout_height="48dp"
             android:layout_marginTop="12dp"/>
     </LinearLayout>

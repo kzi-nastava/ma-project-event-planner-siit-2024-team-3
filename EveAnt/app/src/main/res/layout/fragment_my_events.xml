@@ -44,7 +44,7 @@
                 android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
-                android:background="@drawable/input_backgrounf"
+                android:background="@drawable/bg_primary_pill"
                 android:spinnerMode="dropdown"/>
 
             <View
@@ -56,6 +56,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:text="Apply"
+                android:layout_marginBottom="8dp"
                 android:textColor="@color/white"
                 android:background="@drawable/rounded_corners_8599e0"
                 android:textStyle="bold"/>
@@ -68,7 +69,8 @@
                 android:id="@+id/btnClear"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:background="@drawable/rounded_corners_f0f3ff"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/rounded_corners_white"
                 android:textColor="@color/purple"
                 android:text="Clear"/>
         </LinearLayout>

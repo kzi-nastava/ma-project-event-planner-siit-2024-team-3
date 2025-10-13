@@ -10,6 +10,7 @@ import android.view.*;
 import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -128,6 +129,9 @@ public class AgendaFragment extends Fragment {
         for (int hour = DAY_START_HOUR; hour <= DAY_END_HOUR; hour++) {
             TextView tv = new TextView(getContext());
             tv.setText(String.format(Locale.getDefault(), "%02d:00", hour));
+            tv.setTextColor(Color.BLACK);                 // readable on black
+            tv.setPadding(dp(8), 0, dp(8), 0);
+
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     hour == DAY_START_HOUR ? ViewGroup.LayoutParams.WRAP_CONTENT : PX_PER_MIN * 60
@@ -141,7 +145,24 @@ public class AgendaFragment extends Fragment {
         clp.height = canvasHeight;
         timelineCanvas.setLayoutParams(clp);
         timelineCanvas.requestLayout();
+
+        // (Optional) faint hour separator lines across the canvas
+        timelineCanvas.post(() -> {
+            timelineCanvas.removeViewsInLayout(0, timelineCanvas.getChildCount());
+            for (int hour = DAY_START_HOUR; hour <= DAY_END_HOUR; hour++) {
+                View line = new View(getContext());
+                FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+                        FrameLayout.LayoutParams.MATCH_PARENT, dp(1));
+                lp.topMargin = (hour - DAY_START_HOUR) * 60 * PX_PER_MIN;
+                line.setLayoutParams(lp);
+                line.setBackgroundColor(0x33FFFFFF); // 20% white
+                timelineCanvas.addView(line);
+            }
+            // activities are added later by drawTimelineVertical()
+            drawTimelineVertical();
+        });
     }
+
 
     private void drawTimelineVertical() {
         timelineCanvas.removeAllViews();
@@ -190,21 +211,61 @@ public class AgendaFragment extends Fragment {
     }
 
     private void confirmDelete(Activity a) {
-        new AlertDialog.Builder(getContext())
-                .setTitle("Delete activity")
-                .setMessage("Are you sure?")
-                .setPositiveButton("Delete", (d, w) -> {
-                    RetrofitClient.activityService.delete(a.id).enqueue(new Callback<Void>() {
-                        @Override public void onResponse(Call<Void> c, Response<Void> r) {
-                            if (r.isSuccessful()) { toast("Deleted"); fetch(); }
-                            else toast("Delete failed: " + r.code());
-                        }
-                        @Override public void onFailure(Call<Void> c, Throwable t) { toast("Error: " + t.getMessage()); }
-                    });
-                })
-                .setNegativeButton("Cancel", null)
-                .show();
+        // 1) Inflate your custom layout
+        View view = LayoutInflater.from(requireContext())
+                .inflate(R.layout.delete_dialog_box, null, false);
+
+        // 2) Build a dialog WITHOUT default buttons
+        AlertDialog dlg = new AlertDialog.Builder(requireContext())
+                .setView(view)
+                .setCancelable(true)
+                .create();
+
+        // Optional: let your rounded background show edge-to-edge
+        if (dlg.getWindow() != null) {
+            dlg.getWindow().setBackgroundDrawable(
+                    new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT)
+            );
+        }
+
+        // 3) Hook up your custom views
+        TextView tvMsg   = view.findViewById(R.id.dialog_message);
+        Button btnYes    = view.findViewById(R.id.button_yes);
+        Button btnNo     = view.findViewById(R.id.button_no);
+
+        // Optional: dynamic message
+        tvMsg.setText("Are you sure you want to delete \"" + a.name + "\"?");
+
+        // 4) Button actions
+        btnNo.setOnClickListener(v -> dlg.dismiss());
+
+        btnYes.setOnClickListener(v -> {
+            // prevent double taps while the call is in flight
+            btnYes.setEnabled(false);
+            RetrofitClient.activityService.delete(a.id).enqueue(new retrofit2.Callback<Void>() {
+                @Override public void onResponse(retrofit2.Call<Void> c, retrofit2.Response<Void> r) {
+                    if (!isAdded()) return;
+                    btnYes.setEnabled(true);
+                    if (r.isSuccessful()) {
+                        toast("Deleted");
+                        dlg.dismiss();
+                        fetch(); // refresh timeline
+                    } else {
+                        toast("Delete failed: " + r.code());
+                    }
+                }
+                @Override public void onFailure(retrofit2.Call<Void> c, Throwable t) {
+                    if (!isAdded()) return;
+                    btnYes.setEnabled(true);
+                    toast("Error: " + t.getMessage());
+                }
+            });
+        });
+
+        // 5) Show it
+        dlg.show();
     }
+
 
     // --- Dialog & helpers ---
 
@@ -252,6 +313,20 @@ public class AgendaFragment extends Fragment {
                 .setView(view)
                 .setNegativeButton("Cancel", null)
                 .create();
+
+        if (dlg.getWindow() != null) {
+            dlg.getWindow().setBackgroundDrawable(
+                    ContextCompat.getDrawable(requireContext(), R.drawable.bg_card_white_20));
+        }
+
+// Purple buttons
+        dlg.setOnShowListener(d -> {
+            int purple = ContextCompat.getColor(requireContext(), R.color.purple);
+            Button pos = dlg.getButton(AlertDialog.BUTTON_POSITIVE);
+            Button neg = dlg.getButton(AlertDialog.BUTTON_NEGATIVE);
+            if (pos != null) pos.setTextColor(purple);
+            if (neg != null) neg.setTextColor(purple);
+        });
 
         btnSubmit.setOnClickListener(v -> {
             String name = String.valueOf(etName.getText()).trim();
