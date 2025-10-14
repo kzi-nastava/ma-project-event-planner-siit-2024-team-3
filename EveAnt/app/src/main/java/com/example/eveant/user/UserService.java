@@ -1,5 +1,6 @@
 package com.example.eveant.user;
 
+import com.example.eveant.ProfilePictureComponent;
 import com.example.eveant.user.model.LoginRequest;
 import com.example.eveant.user.model.Organizer;
 import com.example.eveant.user.model.Profile;
@@ -69,4 +70,20 @@ public interface UserService {
 
     @DELETE("api/users/deactivate")
     Call<Map<String, String>> deactivateAccount(@Query("email") String email);
+
+
+    @GET("api/users/{currentEmail}/blocked/{targetEmail}")
+    Call<Boolean> isUserBlocked(@Path("currentEmail") String currentEmail,
+                                @Path("targetEmail") String targetEmail);
+
+    @POST("api/users/{currentEmail}/block/{targetEmail}")
+    Call<Void> blockUser(@Path("currentEmail") String currentEmail,
+                         @Path("targetEmail") String targetEmail);
+
+    @DELETE("api/users/{currentEmail}/block/{targetEmail}")
+    Call<Void> unblockUser(@Path("currentEmail") String currentEmail,
+                           @Path("targetEmail") String targetEmail);
+
+    @POST("api/reports")
+    Call<Void> submitReport(@Body ProfilePictureComponent.ReportRequest reportRequest);
 }

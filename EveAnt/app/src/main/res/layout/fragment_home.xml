@@ -1,78 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="60dp"
+    tools:context=".HomeFragment"
     android:background="#F0F3FF">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/main"
+    <!-- Main Home Content -->
+    <ScrollView
+        android:id="@+id/home_scrollview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:context=".HomeFragment">
+        android:layout_height="match_parent"
+        android:paddingBottom="60dp">
 
-        <!-- Search box background -->
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/home_search_rectangle_layout"
-            android:orientation="horizontal"
-            android:layout_height="400dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/main"
             android:layout_width="match_parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:layout_height="wrap_content">
 
+            <!-- Banner -->
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/home_search_rectangle_layout"
+                android:layout_width="0dp"
+                android:layout_height="400dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:orientation="horizontal" />
 
-        <!-- Search box -->
-
-        <RelativeLayout
-            android:id="@+id/search_box_rectangle_layout"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="13dp"
-            android:layout_marginEnd="13dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/search_box_rectangle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            >
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="0dp"
-                android:layout_marginBottom="0dp"
-                android:src="@drawable/search_icon" />
-
-            <EditText
-                android:id="@+id/search_"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="40dp"
-                android:background="@color/white"
-                android:fontFamily="@font/poppins_medium"
-                android:hint="@string/search"
-                android:gravity="center_vertical"
-                android:textColorHint="@color/black"
-                android:textAppearance="@style/search_string"
-                android:paddingTop="6dp"
-                android:layout_gravity="center_vertical"
-                />
-
+            <!-- Search bar -->
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:id="@+id/search_box_rectangle_layout"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="13dp"
+                android:layout_marginEnd="13dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/search_box_rectangle"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:src="@drawable/search_icon" />
+
+                <EditText
+                    android:id="@+id/search_home"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="50dp"
+                    android:background="@color/white"
+                    android:fontFamily="@font/poppins_medium"
+                    android:hint="@string/search"
+                    android:textColorHint="@color/black"
+                    android:gravity="center_vertical"
+                    android:textAppearance="@style/search_string" />
 
                 <RelativeLayout
                     android:id="@+id/filter_button"
@@ -87,236 +77,219 @@
                         android:layout_width="20dp"
                         android:layout_height="20dp"
                         android:layout_centerInParent="true"
-                        android:scaleType="fitCenter"
                         android:src="@drawable/filter_icon" />
                 </RelativeLayout>
             </RelativeLayout>
 
-        </RelativeLayout>
-
-        <!-- Top 5 events -->
-
-        <RelativeLayout
-            android:id="@+id/top_services_layout"
-            android:layout_width="0dp"
-            android:layout_height="325dp"
-            android:background="@drawable/rounded_corners_white"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginStart="15dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/home_search_rectangle_layout">
-
-            <TextView
-                android:id="@+id/popular_services"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="20dp"
-                android:layout_alignParentTop="true"
+            <!-- Top Services -->
+            <RelativeLayout
+                android:id="@+id/top_services_layout"
+                android:layout_width="0dp"
+                android:layout_height="325dp"
+                android:background="@drawable/rounded_corners_white"
                 android:layout_marginTop="15dp"
-                android:text="@string/popular_services"
-                android:fontFamily="@font/poppins_regular"
-                android:textAppearance="@style/popular_services"
-                android:gravity="top"
-                android:textStyle="bold" />
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp"
+                app:layout_constraintTop_toBottomOf="@id/home_search_rectangle_layout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="none"
-                android:layout_marginTop="60dp">
-
-                <LinearLayout
+                <TextView
+                    android:id="@+id/popular_services"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp">
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/popular_services"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textAppearance="@style/popular_services"
+                    android:textStyle="bold" />
 
-                    <!-- First Group -->
-                    <RelativeLayout
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="60dp"
+                    android:scrollbars="none">
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="14dp">
+                        android:orientation="horizontal"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp">
 
-                        <ImageView
-                            android:id="@+id/photographer1"
-                            android:layout_width="180dp"
-                            android:layout_height="257dp"
-                            android:adjustViewBounds="true"
-                            android:src="@drawable/photographer" />
-
-                        <!-- Blurry Background and Text at the Bottom -->
+                        <!-- Service 1 -->
                         <RelativeLayout
-                            android:layout_width="180dp"
-                            android:layout_height="57dp"
-                            android:layout_alignBottom="@id/photographer1"
-                            android:background="@drawable/blurry_round_rectangle">
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="14dp">
 
-                            <TextView
-                                android:id="@+id/photographText1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/photographText"
-                                android:fontFamily="@font/poppins_regular"
-                                android:textAppearance="@style/photographText"
-                                android:layout_centerInParent="true"
-                                android:gravity="center" />
+                            <ImageView
+                                android:id="@+id/photographer1"
+                                android:layout_width="180dp"
+                                android:layout_height="257dp"
+                                android:src="@drawable/photographer"
+                                android:adjustViewBounds="true" />
+
+                            <RelativeLayout
+                                android:layout_width="180dp"
+                                android:layout_height="57dp"
+                                android:layout_alignBottom="@id/photographer1"
+                                android:background="@drawable/blurry_round_rectangle">
+
+                                <TextView
+                                    android:id="@+id/photographText1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/photographText"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:textAppearance="@style/photographText"
+                                    android:layout_centerInParent="true" />
+                            </RelativeLayout>
                         </RelativeLayout>
-                    </RelativeLayout>
 
-                    <!-- Second Group -->
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp">
-
-                        <ImageView
-                            android:id="@+id/decoration1"
-                            android:layout_width="180dp"
-                            android:layout_height="257dp"
-                            android:adjustViewBounds="true"
-                            android:src="@drawable/decoration" />
-
-                        <!-- Blurry Background and Text at the Bottom -->
+                        <!-- Service 2 -->
                         <RelativeLayout
-                            android:layout_width="180dp"
-                            android:layout_height="57dp"
-                            android:layout_alignBottom="@id/decoration1"
-                            android:background="@drawable/blurry_round_rectangle">
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="16dp">
 
-                            <TextView
-                                android:id="@+id/decorationText1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/decorationText"
-                                android:fontFamily="@font/poppins_regular"
-                                android:textAppearance="@style/decorationText"
-                                android:layout_centerInParent="true"
-                                android:gravity="center" />
+                            <ImageView
+                                android:id="@+id/decoration1"
+                                android:layout_width="180dp"
+                                android:layout_height="257dp"
+                                android:src="@drawable/decoration"
+                                android:adjustViewBounds="true" />
+
+                            <RelativeLayout
+                                android:layout_width="180dp"
+                                android:layout_height="57dp"
+                                android:layout_alignBottom="@id/decoration1"
+                                android:background="@drawable/blurry_round_rectangle">
+
+                                <TextView
+                                    android:id="@+id/decorationText1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/decorationText"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:textAppearance="@style/decorationText"
+                                    android:layout_centerInParent="true" />
+                            </RelativeLayout>
                         </RelativeLayout>
-                    </RelativeLayout>
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </RelativeLayout>
 
-                </LinearLayout>
-            </HorizontalScrollView>
-
-        </RelativeLayout>
-
-        <!-- Top 5 offers -->
-
-        <RelativeLayout
-            android:id="@+id/top_offers_layout"
-            android:layout_width="0dp"
-            android:layout_height="325dp"
-            android:background="@drawable/rounded_corners_white"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginStart="15dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/top_services_layout">
-
-            <TextView
-                android:id="@+id/popular_products"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="20dp"
-                android:layout_alignParentTop="true"
+            <!-- Top Offers -->
+            <RelativeLayout
+                android:id="@+id/top_offers_layout"
+                android:layout_width="0dp"
+                android:layout_height="325dp"
+                android:background="@drawable/rounded_corners_white"
                 android:layout_marginTop="15dp"
-                android:text="@string/popular_products"
-                android:fontFamily="@font/poppins_regular"
-                android:textAppearance="@style/popular_products"
-                android:gravity="top"
-                android:textStyle="bold" />
+                android:layout_marginEnd="15dp"
+                android:layout_marginStart="15dp"
+                app:layout_constraintTop_toBottomOf="@id/top_services_layout"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scrollbars="none"
-                android:layout_marginTop="60dp"
-                >
-
-                <LinearLayout
+                <TextView
+                    android:id="@+id/popular_products"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingStart="20dp"
-                    android:paddingEnd="20dp">
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="15dp"
+                    android:text="@string/popular_products"
+                    android:fontFamily="@font/poppins_regular"
+                    android:textAppearance="@style/popular_products"
+                    android:textStyle="bold" />
 
-                    <!-- First Group -->
-                    <RelativeLayout
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="60dp"
+                    android:scrollbars="none">
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="14dp">
+                        android:orientation="horizontal"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="20dp">
 
-                        <ImageView
-                            android:id="@+id/photographer"
-                            android:layout_width="180dp"
-                            android:layout_height="257dp"
-                            android:adjustViewBounds="true"
-                            android:src="@drawable/photographer" />
-
-                        <!-- Blurry Background and Text at the Bottom -->
+                        <!-- Offer 1 -->
                         <RelativeLayout
-                            android:layout_width="180dp"
-                            android:layout_height="57dp"
-                            android:layout_alignBottom="@id/photographer"
-                            android:background="@drawable/blurry_round_rectangle">
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="14dp">
 
-                            <TextView
-                                android:id="@+id/photographText"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/photographText"
-                                android:fontFamily="@font/poppins_regular"
-                                android:textAppearance="@style/photographText"
-                                android:layout_centerInParent="true"
-                                android:gravity="center" />
+                            <ImageView
+                                android:id="@+id/photographer"
+                                android:layout_width="180dp"
+                                android:layout_height="257dp"
+                                android:src="@drawable/photographer"
+                                android:adjustViewBounds="true" />
+
+                            <RelativeLayout
+                                android:layout_width="180dp"
+                                android:layout_height="57dp"
+                                android:layout_alignBottom="@id/photographer"
+                                android:background="@drawable/blurry_round_rectangle">
+
+                                <TextView
+                                    android:id="@+id/photographText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/photographText"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:textAppearance="@style/photographText"
+                                    android:layout_centerInParent="true" />
+                            </RelativeLayout>
                         </RelativeLayout>
-                    </RelativeLayout>
 
-                    <!-- Second Group -->
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="16dp">
-
-                        <ImageView
-                            android:id="@+id/decoration"
-                            android:layout_width="180dp"
-                            android:layout_height="257dp"
-                            android:adjustViewBounds="true"
-                            android:src="@drawable/decoration" />
-
-                        <!-- Blurry Background and Text at the Bottom -->
+                        <!-- Offer 2 -->
                         <RelativeLayout
-                            android:layout_width="180dp"
-                            android:layout_height="57dp"
-                            android:layout_alignBottom="@id/decoration"
-                            android:background="@drawable/blurry_round_rectangle">
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="16dp">
 
-                            <TextView
-                                android:id="@+id/decorationText"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/decorationText"
-                                android:fontFamily="@font/poppins_regular"
-                                android:textAppearance="@style/decorationText"
-                                android:layout_centerInParent="true"
-                                android:gravity="center" />
+                            <ImageView
+                                android:id="@+id/decoration"
+                                android:layout_width="180dp"
+                                android:layout_height="257dp"
+                                android:src="@drawable/decoration"
+                                android:adjustViewBounds="true" />
+
+                            <RelativeLayout
+                                android:layout_width="180dp"
+                                android:layout_height="57dp"
+                                android:layout_alignBottom="@id/decoration"
+                                android:background="@drawable/blurry_round_rectangle">
+
+                                <TextView
+                                    android:id="@+id/decorationText"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="@string/decorationText"
+                                    android:fontFamily="@font/poppins_regular"
+                                    android:textAppearance="@style/decorationText"
+                                    android:layout_centerInParent="true" />
+                            </RelativeLayout>
                         </RelativeLayout>
-                    </RelativeLayout>
+                    </LinearLayout>
+                </HorizontalScrollView>
+            </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
-                </LinearLayout>
+    <!-- Search Results Overlay Container -->
+    <FrameLayout
+        android:id="@+id/search_results_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="90dp"
+        android:visibility="gone"
+        android:background="@color/white" />
 
-            </HorizontalScrollView>
-
-
-        </RelativeLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+</FrameLayout>
