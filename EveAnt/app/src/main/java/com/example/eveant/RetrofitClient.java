@@ -6,6 +6,7 @@ import com.example.eveant.event.EventService;
 import com.example.eveant.event.agenda.ActivityService;
 import com.example.eveant.event.invitations.InvitationService;
 import com.example.eveant.eventType.EventTypeService;
+import com.example.eveant.priceList.OfferService;
 import com.example.eveant.service.ServiceService;
 import com.example.eveant.user.UserService;
 
@@ -47,4 +48,5 @@ public class RetrofitClient {
    public static UserService userService = retrofit.create(UserService.class);
    public static ActivityService activityService = retrofit.create(ActivityService.class);
    public static InvitationService invitationService = retrofit.create(InvitationService.class);
+   public static OfferService offerService=retrofit.create(OfferService.class);
 }

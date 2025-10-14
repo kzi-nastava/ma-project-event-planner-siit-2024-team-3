@@ -16,4 +16,8 @@
         android:id="@+id/accountFragment"
         android:icon="@drawable/bottom_nav_ic_profile"
         android:title="Profile" />
+    <item
+        android:id="@+id/priceListFragment"
+        android:icon="@drawable/ic_price"
+        android:title="Price list" />
 </menu>
