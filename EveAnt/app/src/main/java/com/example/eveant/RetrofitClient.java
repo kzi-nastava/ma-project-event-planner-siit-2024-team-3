@@ -3,6 +3,8 @@ package com.example.eveant;
 import android.util.Log;
 
 import com.example.eveant.event.EventService;
+import com.example.eveant.event.agenda.ActivityService;
+import com.example.eveant.event.invitations.InvitationService;
 import com.example.eveant.eventType.EventTypeService;
 import com.example.eveant.invitation.InvitationService;
 import com.example.eveant.notification.NotificationService;
@@ -45,4 +47,6 @@ public class RetrofitClient {
    public static EventTypeService eventTypeService = retrofit.create(EventTypeService.class);
    public static EventService eventService = retrofit.create(EventService.class);
    public static UserService userService = retrofit.create(UserService.class);
+   public static ActivityService activityService = retrofit.create(ActivityService.class);
+   public static InvitationService invitationService = retrofit.create(InvitationService.class);
 }

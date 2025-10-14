@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.eveant.RetrofitClient;
 import com.example.eveant.databinding.FragmentAccountBinding;
 import com.example.eveant.user.model.Address;
 import com.example.eveant.user.model.Organizer;
@@ -32,7 +33,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AccountFragment extends Fragment {
-    private UserService userService;
     private User user;
     private Profile profile;
     private String token;
@@ -54,6 +54,7 @@ public class AccountFragment extends Fragment {
         profile = new Profile();
 
         AuthManager auth = AuthManager.getInstance(requireContext());
+        role = auth.getRole();
         fetchProfile(auth.getEmail());
         fetchUserDetails(auth.getEmail());
         return root;
@@ -61,7 +62,7 @@ public class AccountFragment extends Fragment {
 
 
     private void fetchProfile(String email) {
-        Call<Profile> profileCall = userService.getProfile(email);
+        Call<Profile> profileCall = RetrofitClient.userService.getProfile(email);
         profileCall.enqueue(new Callback<Profile>() {
             @Override
             public void onResponse(Call<Profile> call, Response<Profile> response) {
@@ -85,7 +86,7 @@ public class AccountFragment extends Fragment {
     }
 
     private void fetchUserDetails(String email) {
-        Call<User> call = userService.getUserByEmail(email);
+        Call<User> call = RetrofitClient.userService.getUserByEmail(email);
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -214,7 +215,7 @@ public class AccountFragment extends Fragment {
 
         if (user instanceof Provider) {
             Provider provider = (Provider) user;
-            Call<Provider> call = userService.updateProvider( provider, email);
+            Call<Provider> call = RetrofitClient.userService.updateProvider( provider, email);
             call.enqueue(new Callback<Provider>() {
                 @Override
                 public void onResponse(Call<Provider> call, Response<Provider> response) {
@@ -232,7 +233,7 @@ public class AccountFragment extends Fragment {
             });
         } else if (user instanceof Organizer) {
             Organizer organizer = (Organizer) user;
-            Call<Organizer> call = userService.updateOrganizer(organizer, email);
+            Call<Organizer> call = RetrofitClient.userService.updateOrganizer(organizer, email);
             call.enqueue(new Callback<Organizer>() {
                 @Override
                 public void onResponse(Call<Organizer> call, Response<Organizer> response) {
@@ -255,7 +256,7 @@ public class AccountFragment extends Fragment {
 
     private void updateProfile() {
 
-        Call<Profile> updateProfileCall = userService.updateProfile( profile, profile.getEmail());
+        Call<Profile> updateProfileCall = RetrofitClient.userService.updateProfile( profile, profile.getEmail());
         updateProfileCall.enqueue(new Callback<Profile>() {
             @Override
             public void onResponse(Call<Profile> call, Response<Profile> response) {
@@ -296,7 +297,7 @@ public class AccountFragment extends Fragment {
     private void callDeactivate() {
         binding.btnDeactivateAccount.setEnabled(false);
 
-        userService.deactivateAccount(profile.getEmail())
+        RetrofitClient.userService.deactivateAccount(profile.getEmail())
                 .enqueue(new retrofit2.Callback<java.util.Map<String, String>>() {
                     @Override
                     public void onResponse(Call<java.util.Map<String, String>> call,

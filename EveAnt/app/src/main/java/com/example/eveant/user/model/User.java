@@ -107,5 +107,6 @@ public class User implements Parcelable {
     public void setCompany (Company company){
         this.company = company;
     }
+
 }
 

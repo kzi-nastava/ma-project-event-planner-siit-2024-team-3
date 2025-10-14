@@ -19,7 +19,8 @@ public class Event {
         public Integer maxAttendance;
         public List<String> photos;
 
-        public Event(String organizer, String name, String description, EventStatus status,
+        public Event(){};
+    public Event(String organizer, String name, String description, EventStatus status,
                      LocalDateTime date, int maxAttendance, Address address, List<String> photos, EventType eventType) {
     }
 
@@ -42,4 +43,20 @@ public class Event {
         public List<String> getPhotos() {
                 return photos;
         }
+
+    public int getId() {
+            return id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Integer getMaxAttendance() {
+        return maxAttendance;
+    }
+
+    public EventStatus getStatus() {
+        return status;
+    }
 }
