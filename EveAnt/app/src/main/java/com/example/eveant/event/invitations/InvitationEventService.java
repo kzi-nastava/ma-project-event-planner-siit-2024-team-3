@@ -1,13 +1,13 @@
 package com.example.eveant.event.invitations;
 
-// com.example.eveant.invitation.InvitationService.java
+// com.example.eveant.invitation.InvitationEventService.java
 
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.*;
 
-public interface InvitationService {
+public interface InvitationEventService {
 
     // GET /api/events/{eventId}/invitations
     @GET("/api/events/{eventId}/invitations")

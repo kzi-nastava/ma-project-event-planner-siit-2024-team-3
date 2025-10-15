@@ -241,7 +241,7 @@ public class EventDetailsFragment extends Fragment {
                 .getInstance(requireContext())
                 .getEmail();
 
-        RetrofitClient.invitationService.getInvitations(eventId).enqueue(new retrofit2.Callback<java.util.List<Invitation>>() {
+        RetrofitClient.invitationEventService.getInvitations(eventId).enqueue(new retrofit2.Callback<java.util.List<Invitation>>() {
             @Override public void onResponse(retrofit2.Call<java.util.List<Invitation>> c,
                                              retrofit2.Response<java.util.List<Invitation>> r) {
                 if (!isAdded()) return;
@@ -291,7 +291,7 @@ public class EventDetailsFragment extends Fragment {
                 .getInstance(requireContext())
                 .getEmail();
 
-        RetrofitClient.invitationService
+        RetrofitClient.invitationEventService
                 .sendInvitation(eventId, new InviteRequest(email, "", eventId))
                 .enqueue(new retrofit2.Callback<Void>() {
                     @Override public void onResponse(retrofit2.Call<Void> c, retrofit2.Response<Void> r) {
@@ -319,7 +319,7 @@ public class EventDetailsFragment extends Fragment {
                 .getInstance(requireContext())
                 .getEmail();
 
-        RetrofitClient.invitationService
+        RetrofitClient.invitationEventService
                 .declineInvitation(eventId, java.net.URLEncoder.encode(email))
                 .enqueue(new retrofit2.Callback<Void>() {
                     @Override public void onResponse(retrofit2.Call<Void> c, retrofit2.Response<Void> r) {
