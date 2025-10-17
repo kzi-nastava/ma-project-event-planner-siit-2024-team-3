@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.eveant.RetrofitClient;
+import com.example.eveant.eventType.EventType;
 import com.example.eveant.service.model.Category;
 import com.example.eveant.service.model.Service;
 
@@ -26,7 +27,8 @@ public class ServiceCreateViewModel extends ViewModel {
         return service;
     }
 
-
+    private final MutableLiveData<List<EventType>> eventTypes = new MutableLiveData<>();
+    public LiveData<List<EventType>> getEventTypesLiveData() { return eventTypes; }
     public void updateService(Service updatedService) {
         service.setValue(updatedService);
         Log.d(TAG, "updateService: "+service.getValue());
@@ -53,5 +55,19 @@ public class ServiceCreateViewModel extends ViewModel {
         });
     }
 
+    public void fetchEventTypes() {
+        RetrofitClient.eventTypeService.getAllActivated().enqueue(new Callback<List<EventType>>() {
+            @Override
+            public void onResponse(Call<List<EventType>> call, Response<List<EventType>> response) {
+                if (response.isSuccessful()) {
+                    eventTypes.setValue(response.body());
+                }
+            }
+            @Override
+            public void onFailure(Call<List<EventType>> call, Throwable t) {
+                eventTypes.setValue(Collections.emptyList());
+            }
+        });
+    }
 
 }
