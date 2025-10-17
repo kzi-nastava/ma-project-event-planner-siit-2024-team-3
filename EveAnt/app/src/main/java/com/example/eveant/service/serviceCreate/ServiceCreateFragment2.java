@@ -69,13 +69,23 @@ public class ServiceCreateFragment2 extends Fragment {
         viewModel = new ViewModelProvider(requireActivity()).get(ServiceCreateViewModel.class);
 
         // Ako korisnik ide "nazad", popuni prethodno unete podatke (opciono)
+        boolean isEditMode = Boolean.TRUE.equals(viewModel.getEditMode().getValue());
         Service existingService = viewModel.getService().getValue();
+
         if (existingService != null) {
-            if (existingService.getDescription() != null) descriptionInput.setText(existingService.getDescription());
-            if (existingService.getSpecification() != null) specificationInput.setText(existingService.getSpecification());
-            if (existingService.getPhotos() != null) imageBase64List = new ArrayList<>(existingService.getPhotos());
-            refreshImagePreview();
+            //  Opis i specifikacija
+            if (existingService.getDescription() != null)
+                descriptionInput.setText(existingService.getDescription());
+            if (existingService.getSpecification() != null)
+                specificationInput.setText(existingService.getSpecification());
+
+            //  Slike
+            if (existingService.getPhotos() != null && !existingService.getPhotos().isEmpty()) {
+                imageBase64List = new ArrayList<>(existingService.getPhotos());
+                refreshImagePreview();
+            }
         }
+
 
         previousButton.setOnClickListener(v -> {
             NavController navController = ((MainActivity) getActivity()).getNavController();
@@ -93,25 +103,32 @@ public class ServiceCreateFragment2 extends Fragment {
         String description = descriptionInput.getText().toString().trim();
         String specification = specificationInput.getText().toString().trim();
 
-        // ✅ Validacija
+        //  Validacija
         if (TextUtils.isEmpty(description)) {
             Toast.makeText(getContext(), "Description is required", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Uzimamo Service iz ViewModel-a i ažuriramo ga
+        //  Uzmi već postojeći servis iz ViewModel-a
         Service service = viewModel.getService().getValue();
-        if (service == null) service = new Service();
+        if (service == null) {
+            service = new Service(); // fallback, ali ovo se skoro nikad ne desi
+        }
 
         service.setDescription(description);
         service.setSpecification(specification);
-        service.setPhotos(imageBase64List); // ovde se čuvaju slike
+
+        // Ako korisnik nije dodao/obrisao slike, zadrži stare
+        if (imageBase64List != null && !imageBase64List.isEmpty()) {
+            service.setPhotos(imageBase64List);
+        }
 
         viewModel.updateService(service);
 
         NavController navController = ((MainActivity) getActivity()).getNavController();
         navController.navigate(R.id.serviceCreateFragment3);
     }
+
 
     private void openImagePicker() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);

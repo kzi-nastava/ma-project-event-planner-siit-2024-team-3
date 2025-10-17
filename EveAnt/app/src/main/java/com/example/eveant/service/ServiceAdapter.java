@@ -94,10 +94,14 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
         });
 
         holder.editIcon.setOnClickListener(v -> {
-            ServiceCreateViewModel viewModel = new ViewModelProvider(fragment.requireActivity()).get(ServiceCreateViewModel.class);
+            ServiceCreateViewModel viewModel = new ViewModelProvider(fragment.requireActivity())
+                    .get(ServiceCreateViewModel.class);
+
             viewModel.updateService(service);
+            viewModel.setEditMode(true);
+
             NavController navController = NavHostFragment.findNavController(fragment);
-            navController.navigate(R.id.serviceEditFragment1);
+            navController.navigate(R.id.serviceCreateFragment1);
         });
 
         holder.deleteIcon.setOnClickListener(v -> deleteService(service, position));

@@ -26,6 +26,8 @@ public class ServiceCreateViewModel extends ViewModel {
     public LiveData<Service> getService() {
         return service;
     }
+    private final MutableLiveData<Boolean> isEditMode = new MutableLiveData<>(false);
+
 
     private final MutableLiveData<List<EventType>> eventTypes = new MutableLiveData<>();
     public LiveData<List<EventType>> getEventTypesLiveData() { return eventTypes; }
@@ -53,6 +55,14 @@ public class ServiceCreateViewModel extends ViewModel {
                 categories.setValue(Collections.emptyList());
             }
         });
+    }
+
+    public void setEditMode(boolean edit) {
+        isEditMode.setValue(edit);
+    }
+
+    public LiveData<Boolean> getEditMode() {
+        return isEditMode;
     }
 
     public void fetchEventTypes() {

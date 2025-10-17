@@ -126,56 +126,61 @@ public class ServiceCreateFragment1 extends Fragment {
         nextBtn.setOnClickListener(v -> handleNext());
 
         //Ako već postoji service u ViewModel-u (korisnik se vratio nazad), popuni polja
-        Service existing = viewModel.getService().getValue();;
-        if (existing != null && existing.getName() != null) {
-                nameInput.setText(existing.getName());
+        boolean isEditMode = Boolean.TRUE.equals(viewModel.getEditMode().getValue());
+        Service existing = viewModel.getService().getValue();
 
-            if (existing.getPrice() != null) {
-                priceInput.setText(String.valueOf(existing.getPrice()));
+        if (existing != null) {
+            // 🔹 Naziv, cena, popust
+            if (existing.getName() != null) nameInput.setText(existing.getName());
+            if (existing.getPrice() != null) priceInput.setText(String.valueOf(existing.getPrice()));
+            if (existing.getDiscount() != 0) discountInput.setText(String.valueOf(existing.getDiscount()));
+
+            // 🔹 Status i vidljivost
+            if (existing.getStatus() != null) {
+                if (existing.getStatus() == OfferStatus.AVAILABLE) availableBtn.setChecked(true);
+                else unavailableBtn.setChecked(true);
+            }
+            if (existing.getVisible() != null) {
+                if (existing.getVisible()) visibleBtn.setChecked(true);
+                else hiddenBtn.setChecked(true);
             }
 
-           /* if (existing.getDiscount() != null) {
-                discountInput.setText(String.valueOf(existing.getDiscount()));
-            }
-*/
-            // Category
+            // 🔹 Kategorija
             if (existing.getCategory() != null && existing.getCategory().getName() != null) {
                 String existingCategoryName = existing.getCategory().getName();
-                if (categorySpinner.getAdapter() != null) {
-                    ArrayAdapter<String> adapter = (ArrayAdapter<String>) categorySpinner.getAdapter();
-                    int pos = adapter.getPosition(existingCategoryName);
-                    if (pos >= 0) {
-                        categorySpinner.setSelection(pos);
-                    } else {
-                        // Ako kategorija nije u listi, verovatno je bila "nova kategorija"
-                        newCategoryCheckBox.setChecked(true);
-                        newCategoryInput.setText(existingCategoryName);
+
+                if (isEditMode) {
+                    // 👉 U edit modu: sakrij spinner i checkbox i prikaži readonly naziv kategorije
+                    newCategoryCheckBox.setVisibility(View.GONE);
+                    categorySpinner.setVisibility(View.GONE);
+                    newCategoryInput.setVisibility(View.GONE);
+
+                    TextView fixedCategory = new TextView(getContext());
+                    fixedCategory.setText(existingCategoryName);
+                    fixedCategory.setTextSize(16f);
+                    fixedCategory.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+                    ((ViewGroup) categorySpinner.getParent()).addView(fixedCategory);
+
+                } else {
+                    // 👉 Ako nije edit (znači samo vraćanje nazad) – selektuj je normalno
+                    if (categorySpinner.getAdapter() != null) {
+                        ArrayAdapter<String> adapter = (ArrayAdapter<String>) categorySpinner.getAdapter();
+                        int pos = adapter.getPosition(existingCategoryName);
+                        if (pos >= 0) {
+                            categorySpinner.setSelection(pos);
+                        } else {
+                            newCategoryCheckBox.setChecked(true);
+                            newCategoryInput.setText(existingCategoryName);
+                        }
                     }
                 }
             }
 
-            // Status
-            if (existing.getStatus() != null) {
-                if (existing.getStatus() == OfferStatus.AVAILABLE) {
-                    availableBtn.setChecked(true);
-                } else {
-                    unavailableBtn.setChecked(true);
-                }
-            }
-
-            // Visibility
-            if (existing.getVisible() != null) {
-                if (existing.getVisible()) {
-                    visibleBtn.setChecked(true);
-                } else {
-                    hiddenBtn.setChecked(true);
-                }
-            }
-
-            // Event types
+            // 🔹 Event tipovi
             if (existing.getEventTypes() != null && !existing.getEventTypes().isEmpty()) {
                 selectedEventTypes.clear();
                 selectedEventTypes.addAll(existing.getEventTypes());
+
                 StringBuilder sb = new StringBuilder();
                 for (EventType et : selectedEventTypes) {
                     sb.append(et.getName()).append("\n");
@@ -184,6 +189,7 @@ public class ServiceCreateFragment1 extends Fragment {
                 selectedEventsText.setVisibility(View.VISIBLE);
             }
         }
+
 
 
         return view;
