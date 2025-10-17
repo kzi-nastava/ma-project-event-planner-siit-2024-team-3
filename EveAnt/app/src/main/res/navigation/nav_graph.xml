@@ -39,6 +39,10 @@
         android:id="@+id/actionCreateFragment_toViewServices"
         app:destination="@+id/servicesViewFragment" />
     <fragment
+        android:id="@+id/servicesViewFragment"
+        android:name="com.example.eveant.service.ServicesViewFragment"
+        android:label="servicesViewFragment" />
+    <fragment
         android:id="@+id/serviceEditFragment"
         android:name="com.example.eveant.service.serviceEdit.ServiceEditFragment"
         android:label="ServiceEditFragment" />

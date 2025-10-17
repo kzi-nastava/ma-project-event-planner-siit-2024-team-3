@@ -219,7 +219,7 @@ public class ServiceCreateFragment3 extends Fragment {
                     if (response.isSuccessful()) {
                         Toast.makeText(getContext(), "Service created successfully!", Toast.LENGTH_SHORT).show();
                         NavController navController = ((MainActivity) getActivity()).getNavController();
-                        navController.navigate(R.id.actionCreateFragment_toViewServices);
+                        navController.navigate(R.id.servicesViewFragment);
                     } else {
                         Log.e("SaveService", "Failed. Code: " + response.code());
                         Toast.makeText(getContext(), "Failed to create service.", Toast.LENGTH_SHORT).show();

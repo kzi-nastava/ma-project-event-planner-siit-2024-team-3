@@ -13,14 +13,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.eveant.service.ServiceAdapter;
 import com.example.eveant.service.model.Category;
 import com.example.eveant.service.model.CategoryStatus;
-import com.example.eveant.service.model.Service;
 
 import java.util.ArrayList;
 

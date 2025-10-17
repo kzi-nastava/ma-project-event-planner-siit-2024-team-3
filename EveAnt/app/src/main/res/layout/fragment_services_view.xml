@@ -1,106 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#F0F3FF">
+        android:orientation="vertical">
 
-        <LinearLayout
+        <!-- Search bar -->
+        <RelativeLayout
+            android:id="@+id/home_search_rectangle_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="0dp">
-            <RelativeLayout
-                android:id="@+id/home_search_rectangle_layout"
-                android:layout_width="match_parent"
-                android:layout_height="130dp"
-                android:background="@drawable/service_search_rectangle"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="130dp"
+            android:background="@drawable/service_search_rectangle">
 
-                <TextView
-                    android:id="@+id/place"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginStart="20dp"
-                    android:fontFamily="@font/poppins_bold"
-                    android:text="My services"
-                    android:textSize="30sp"
-                    android:textAppearance="@style/place"
-                    android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/poppins_bold"
+                android:text="My services"
+                android:textSize="28sp"
+                android:textColor="@color/white" />
+
+            <RelativeLayout
+                android:id="@+id/search_box_rectangle_layout"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="13dp"
+                android:layout_marginEnd="13dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/search_box_rectangle">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="15dp"
+                    android:src="@drawable/search_icon" />
+
+                <EditText
+                    android:id="@+id/search_"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="50dp"
+                    android:hint="Search services"
+                    android:textColorHint="@color/gray"
+                    android:background="@android:color/transparent"
+                    android:paddingStart="8dp"
+                    android:textSize="16sp" />
 
                 <RelativeLayout
-                    android:id="@+id/search_box_rectangle_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginStart="13dp"
-                    android:layout_marginEnd="13dp"
-                    android:background="@drawable/search_box_rectangle"
-                    android:layout_marginBottom="10dp">
+                    android:id="@+id/filter_button"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:background="@drawable/round_grey_button">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentBottom="true"
-                        android:layout_marginStart="15dp"
-                        android:src="@drawable/search_icon" />
-
-                    <EditText
-                        android:id="@+id/search_"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="40dp"
-                        android:background="@color/white"
-                        android:fontFamily="@font/poppins_medium"
-                        android:hint="@string/search_service_string"
-                        android:gravity="center_vertical"
-                        android:textColorHint="@color/black"
-                        android:textAppearance="@style/search_string"
-                        android:layout_gravity="center_vertical" />
-
-                    <RelativeLayout
-                        android:id="@+id/filter_button"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="10dp"
-                        android:layout_centerVertical="true"
-                        android:background="@drawable/round_grey_button">
-
-
-                        <ImageView
-                            android:id="@+id/filter_icon"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:src="@drawable/filter_icon"
-                            android:scaleType="fitCenter"
-                            android:layout_centerInParent="true"/>
-
-                    </RelativeLayout>
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/filter_icon" />
                 </RelativeLayout>
-
             </RelativeLayout>
+        </RelativeLayout>
 
-            <androidx.recyclerview.widget.RecyclerView android:id="@+id/recycler_view_services"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="16dp"
-                android:clipToPadding="false"
-                tools:listitem="@layout/item_service"
-                xmlns:tools="http://schemas.android.com/tools" />
+        <!-- ⬇️ OVO JE GLAVNI DEO KOJI NEDOSTAJE -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_services"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="16dp"
+            android:clipToPadding="false"
+            tools:listitem="@layout/item_service" />
 
-        </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 </FrameLayout>
-
