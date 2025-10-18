@@ -1,6 +1,5 @@
 package com.example.eveant.chat;
 
-
 import java.util.Date;
 
 public class ChatMessage {
@@ -9,13 +8,14 @@ public class ChatMessage {
     private String content;
     private Date timestamp;
 
+    public ChatMessage() {}
+
     public ChatMessage(String senderUsername, String recipientUsername, String content, Date timestamp) {
         this.senderUsername = senderUsername;
         this.recipientUsername = recipientUsername;
         this.content = content;
         this.timestamp = timestamp;
     }
-
     public String getSenderUsername() {
         return senderUsername;
     }
@@ -31,5 +31,20 @@ public class ChatMessage {
     public Date getTimestamp() {
         return timestamp;
     }
-}
 
+    public void setSenderUsername(String senderUsername) {
+        this.senderUsername = senderUsername;
+    }
+
+    public void setRecipientUsername(String recipientUsername) {
+        this.recipientUsername = recipientUsername;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
+    }
+}

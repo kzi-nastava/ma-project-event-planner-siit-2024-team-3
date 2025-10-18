@@ -57,9 +57,7 @@ public class ChatWebSocketManager {
             switch (lifecycleEvent.getType()) {
                 case OPENED:
                     isConnected = true;
-                    Log.d("WS", "Connected as " + currentUsername);
-                    subscribeToMessages();
-                    startHeartbeat();
+                    Log.d("WS", " WebSocket OPENED as " + currentUsername);
                     break;
 
                 case ERROR:
@@ -69,26 +67,18 @@ public class ChatWebSocketManager {
 
                 case CLOSED:
                     isConnected = false;
-                    Log.d("WS", "WebSocket closed — trying to reconnect...");
+                    Log.d("WS", "WebSocket closed — reconnecting...");
                     reconnect();
                     break;
             }
-        }, throwable -> Log.e("WS", "Lifecycle error", throwable));
+        });
 
-        // Dodaj JWT token u connect headers
+        stompClient.connect(new ArrayList<StompHeader>() {{
+            add(new StompHeader("Authorization", "Bearer " + jwtToken));
+        }});
 
-        List<StompHeader> headers = new ArrayList<>();
-        headers.add(new StompHeader("Authorization", "Bearer " + jwtToken));
-
-        stompClient.connect(headers);
-    }
-
-    @SuppressLint("CheckResult")
-    private void subscribeToMessages() {
-        if (stompClient == null || !stompClient.isConnected()) return;
-
-        String topic = "/user/queue/messages";
-        stompClient.topic(topic).subscribe(event -> {
+        stompClient.topic("/user/" + currentUsername + "/queue/messages").subscribe(event -> {
+            Log.d("WS", "📨 Message event: " + event.getPayload());
             try {
                 JSONObject json = new JSONObject(event.getPayload());
                 ChatMessage message = new ChatMessage(
@@ -98,12 +88,38 @@ public class ChatWebSocketManager {
                         null
                 );
                 incomingMessage.postValue(message);
-                Log.d("WS", "Message received: " + message.getContent());
+                Log.d("WS", "Message received realtime: " + message.getContent());
             } catch (Exception e) {
                 Log.e("WS", "Failed to parse message", e);
             }
         }, throwable -> Log.e("WS", "Subscription error", throwable));
     }
+
+
+    @SuppressLint("CheckResult")
+    private void subscribeToMessages() {
+        if (stompClient == null || !stompClient.isConnected()) return;
+
+        String topic = "/user/" + currentUsername + "/queue/messages";
+        Log.d("WS", "📡 Subscribing to: " + topic);
+
+        stompClient.topic(topic).subscribe(event -> {
+            try {
+                JSONObject json = new JSONObject(event.getPayload());
+                ChatMessage message = new ChatMessage();
+                message.setSenderUsername(json.getString("senderUsername"));
+                message.setRecipientUsername(json.getString("recipientUsername"));
+                message.setContent(json.getString("content"));
+
+                incomingMessage.postValue(message);
+                Log.d("WS", " Message received: " + message.getContent());
+            } catch (Exception e) {
+                Log.e("WS", "Failed to parse incoming message", e);
+            }
+        }, throwable -> Log.e("WS", "Subscription error on " + topic, throwable));
+    }
+
+
 
     @SuppressLint("CheckResult")
     public void sendMessage(ChatMessage message) {

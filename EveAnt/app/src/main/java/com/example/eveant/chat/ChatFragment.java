@@ -19,6 +19,7 @@ import com.example.eveant.R;
 import com.example.eveant.RetrofitClient;
 import com.example.eveant.user.model.User;
 import com.example.eveant.user.security.AuthManager;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -90,20 +91,18 @@ public class ChatFragment extends Fragment {
     }
 
     private void observeIncomingMessages() {
-        ChatWebSocketManager.getInstance().incomingMessage.observe(getViewLifecycleOwner(), new Observer<ChatMessage>() {
-            @Override
-            public void onChanged(ChatMessage message) {
-                if (message == null) return;
+        ChatWebSocketManager.getInstance().incomingMessage.observe(getViewLifecycleOwner(), message -> {
+            if (message == null) return;
 
-                boolean isForThisChat =
-                        (message.getSenderUsername().equals(recipientUsername) && message.getRecipientUsername().equals(currentUser)) ||
-                                (message.getSenderUsername().equals(currentUser) && message.getRecipientUsername().equals(recipientUsername));
+            boolean isForThisChat =
+                    (message.getSenderUsername().equals(recipientUsername) && message.getRecipientUsername().equals(currentUser)) ||
+                            (message.getSenderUsername().equals(currentUser) && message.getRecipientUsername().equals(recipientUsername));
 
-                if (isForThisChat) {
-                    messages.add(message);
-                    adapter.notifyItemInserted(messages.size() - 1);
-                    messagesRecycler.scrollToPosition(messages.size() - 1);
-                }
+            if (isForThisChat) {
+                messages.add(message);
+                adapter.notifyItemInserted(messages.size() - 1);
+                messagesRecycler.scrollToPosition(messages.size() - 1);
+                Log.d("WS", "Real-time message displayed: " + message.getContent());
             }
         });
     }
@@ -114,16 +113,52 @@ public class ChatFragment extends Fragment {
             return;
         }
 
-        String chatId = currentUser + "_" + recipientUsername;
+        // 1️⃣ Prvi pokušaj: recipient_current
+        String chatId = recipientUsername + "_" + currentUser;
+        Log.d("Chat", "Trying chatId: " + chatId);
+
         RetrofitClient.chatApiService.getMessagesByChatId(chatId).enqueue(new Callback<List<ChatMessage>>() {
             @Override
             public void onResponse(Call<List<ChatMessage>> call, Response<List<ChatMessage>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    messages.clear();
-                    messages.addAll(response.body());
-                    adapter.notifyDataSetChanged();
-                    messagesRecycler.scrollToPosition(messages.size() - 1);
-                    Log.d("Chat", "Loaded " + messages.size() + " messages");
+                    List<ChatMessage> result = response.body();
+                    Log.d("REST", "Loaded messages (" + chatId + "): " + new Gson().toJson(result));
+
+                    if (!result.isEmpty()) {
+                        messages.clear();
+                        messages.addAll(result);
+                        adapter.notifyDataSetChanged();
+                        messagesRecycler.scrollToPosition(messages.size() - 1);
+                        Log.d("Chat", "Loaded " + messages.size() + " messages");
+                    } else {
+                        String reversedChatId = currentUser + "_" + recipientUsername;
+                        Log.d("Chat", "Empty result, retrying with reversed chatId: " + reversedChatId);
+
+                        RetrofitClient.chatApiService.getMessagesByChatId(reversedChatId).enqueue(new Callback<List<ChatMessage>>() {
+                            @Override
+                            public void onResponse(Call<List<ChatMessage>> call, Response<List<ChatMessage>> reversedResponse) {
+                                if (reversedResponse.isSuccessful() && reversedResponse.body() != null) {
+                                    List<ChatMessage> reversedResult = reversedResponse.body();
+                                    Log.d("REST", "Loaded messages (" + reversedChatId + "): " + new Gson().toJson(reversedResult));
+
+                                    messages.clear();
+                                    messages.addAll(reversedResult);
+                                    adapter.notifyDataSetChanged();
+                                    if (!messages.isEmpty()) {
+                                        messagesRecycler.scrollToPosition(messages.size() - 1);
+                                    }
+                                    Log.d("Chat", "Loaded " + messages.size() + " messages (reversed)");
+                                } else {
+                                    Log.e("Chat", "No messages found with reversed chatId either");
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<List<ChatMessage>> call, Throwable t) {
+                                Log.e("Chat", "Failed to load messages with reversed chatId", t);
+                            }
+                        });
+                    }
                 } else {
                     Log.e("Chat", "No messages received or failed");
                 }
@@ -135,6 +170,7 @@ public class ChatFragment extends Fragment {
             }
         });
     }
+
 
     private void sendMessage() {
         String text = inputMessage.getText().toString().trim();
