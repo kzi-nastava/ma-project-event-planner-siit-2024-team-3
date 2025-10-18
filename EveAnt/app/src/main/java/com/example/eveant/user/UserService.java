@@ -72,4 +72,14 @@ public interface UserService {
 
     @GET("/api/users/services/{serviceId}")
     Call<Provider> getProviderByServiceId(@Path("serviceId") Long serviceId);
+
+    @GET("users/favourites/offer/check/{username}/{offerId}")
+    Call<Boolean> isOfferInFavourites(@Path("username") String username, @Path("offerId") Long offerId);
+
+    @POST("users/favourites/offer/{username}/{offerId}")
+    Call<Void> addOfferToFavourites(@Path("username") String username, @Path("offerId") Long offerId);
+
+    @POST("users/favourites/offer/remove/{username}/{offerId}")
+    Call<Void> removeOfferFromFavourites(@Path("username") String username, @Path("offerId") Long offerId);
+
 }

@@ -8,38 +8,33 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF">
+        android:background="#FFFFFF"
+        android:fillViewport="true">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="0dp">
+            android:orientation="vertical">
 
+            <!-- Header -->
             <RelativeLayout
-                android:id="@+id/home_search_rectangle_layout"
                 android:layout_width="match_parent"
-                android:layout_height="78dp"
+                android:layout_height="70dp"
                 android:background="@drawable/service_search_rectangle"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:paddingStart="20dp"
+                android:gravity="center_vertical">
 
                 <TextView
                     android:id="@+id/place"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/poppins_bold"
-                    android:text="Service name"
-                    android:textAppearance="@style/place"
-                    android:textSize="25sp"
+                    android:text="Service details"
+                    android:textSize="22sp"
                     android:textStyle="bold" />
-
-
             </RelativeLayout>
+
+            <!-- Slike -->
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -51,57 +46,50 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <!-- Slika 1 -->
                     <ImageView
-                        android:layout_width="400dp"
-                        android:layout_height="250dp"
+                        android:layout_width="300dp"
+                        android:layout_height="200dp"
                         android:layout_marginEnd="8dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/pastry"
-                        android:background="@drawable/rounded_corners_white" />
+                        android:background="@drawable/rounded_corners_white"
+                        android:src="@drawable/pastry" />
 
-                    <!-- Slika 2 -->
                     <ImageView
-                        android:layout_width="400dp"
-                        android:layout_height="250dp"
+                        android:layout_width="300dp"
+                        android:layout_height="200dp"
                         android:layout_marginEnd="8dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/pastry"
-                        android:background="@drawable/rounded_corners_white" />
+                        android:background="@drawable/rounded_corners_white"
+                        android:src="@drawable/pastry" />
 
-                    <!-- Slika 3 -->
                     <ImageView
-                        android:layout_width="400dp"
-                        android:layout_height="250dp"
+                        android:layout_width="300dp"
+                        android:layout_height="200dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/pastry"
-                        android:background="@drawable/rounded_corners_white" />
-
+                        android:background="@drawable/rounded_corners_white"
+                        android:src="@drawable/pastry" />
                 </LinearLayout>
             </HorizontalScrollView>
+
+            <!-- Osnovni info -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center_vertical"
-                android:padding="8dp"
-                android:background="@color/white"
-                android:layout_margin="16dp">
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp">
 
-                <!-- Tekstualni sadržaj -->
                 <LinearLayout
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:background="@drawable/rounded_corners_white">
+                    android:orientation="vertical">
 
-                    <!-- Naziv i Kategorija -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:padding="8dp"
                         android:gravity="center_vertical">
 
                         <TextView
@@ -110,69 +98,48 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/poppins_bold"
                             android:text="Service Name"
-                            android:textColor="#000000"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:paddingRight="20dp" />
+                            android:textColor="#000"
+                            android:textSize="18sp" />
 
                         <TextView
                             android:id="@+id/serviceCategory"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="12dp"
                             android:text="Category"
-                            android:paddingRight="20dp"
                             android:textColor="@color/light_purple"
-                            android:textSize="14sp"
-                            android:fontFamily="@font/poppins_medium" />
+                            android:textSize="14sp" />
                     </LinearLayout>
 
-                    <!-- Dodatni sloj - dostupnost -->
-                    <FrameLayout
-                        android:layout_width="120dp"
+                    <!-- Event types chips -->
+                    <com.google.android.flexbox.FlexboxLayout
+                        android:id="@+id/eventTypesContainer"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/white">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="30dp"
-                            android:layout_gravity="bottom"
-                            android:background="@drawable/rounded_corners_image_blue"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal"
-                            android:paddingLeft="30dp"
-                            android:paddingRight="30dp">
-
-                            <TextView
-                                android:id="@+id/typeOfEvent"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="type"
-                                android:textColor="#FFFFFF"
-                                android:textSize="14sp"
-                                android:textStyle="bold" />
-
-                        </LinearLayout>
-                    </FrameLayout>
+                        android:layout_marginTop="8dp"
+                        android:paddingVertical="4dp"
+                        app:flexWrap="wrap"
+                        app:justifyContent="flex_start"
+                        app:alignItems="flex_start" />
                 </LinearLayout>
 
-                <!-- Slika pored -->
                 <ImageView
                     android:id="@+id/favourite"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:src="@drawable/favourite"
-                    android:layout_marginStart="16dp"
-                    android:contentDescription="Service Icon"
-                    android:clickable="true"
-                    android:onClick="onServiceImageClick" />
+                    android:contentDescription="Favorite"
+                    android:clickable="true" />
             </LinearLayout>
+
+            <!-- Opis -->
             <TextView
                 android:id="@+id/description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/description_service"
-                android:textColor="#000000"
                 android:textSize="14sp"
                 android:fontFamily="@font/poppins_regular" />
 
@@ -180,158 +147,127 @@
                 android:id="@+id/specification"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/specification_service"
-                android:textColor="#000000"
                 android:textSize="14sp"
                 android:fontFamily="@font/poppins_regular" />
 
-
-
+            <!-- Cena -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="16dp"
-                android:gravity="end"> <!-- Postavlja sve elemente na desnu stranu -->
+                android:gravity="end"
+                android:paddingEnd="20dp"
+                android:paddingVertical="12dp">
 
-                <!-- Cena sa popustom -->
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="90dp">
-                    <!-- Nova cena -->
+                    android:orientation="vertical"
+                    android:gravity="end">
+
                     <TextView
                         android:id="@+id/newPrice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="55dp"
-                        android:layout_marginRight="150dp"
-                        android:layout_gravity="end"
                         android:text="8$/hr"
                         android:textColor="@color/light_purple"
-                        android:textSize="25sp"
-                        android:fontFamily="@font/poppins_bold"
-                        android:layout_alignParentEnd="true"/>
-
-                    <LinearLayout
-                        android:id="@+id/oldPriceContainer"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:background="@drawable/rounded_corners_gray"
-                        android:padding="8dp"
-                        android:layout_marginTop="15dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginRight="10dp">
-
-                        <TextView
-                            android:id="@+id/oldPrice"
-                            android:layout_width="120dp"
-                            android:layout_height="100dp"
-                            android:text="10$/hr"
-                            android:textColor="#000000"
-                            android:textSize="25sp"
-                            android:fontFamily="@font/poppins_regular"
-                            android:gravity="center" />
-                    </LinearLayout>
+                        android:textSize="20sp"
+                        android:fontFamily="@font/poppins_bold" />
 
                     <TextView
-                        android:id="@+id/discountBadge"
-                        android:layout_width="60dp"
-                        android:layout_height="50dp"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentEnd="true"
-                        android:background="@drawable/rounded_rectangle_purple"
-                        android:padding="4dp"
-                        android:text="10%"
-                        android:textColor="@android:color/white"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/poppins_regular"
-                        android:gravity="center" />
+                        android:id="@+id/oldPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="10$/hr"
+                        android:textColor="#888"
+                        android:textSize="14sp"
+                        android:fontFamily="@font/poppins_regular" />
+                </LinearLayout>
 
-                    <!-- Kvadrat sa starom cenom -->
-
-
-                </RelativeLayout>
-
+                <TextView
+                    android:id="@+id/discountBadge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/rounded_rectangle_purple"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="4dp"
+                    android:text="10% OFF"
+                    android:textColor="@android:color/white"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/poppins_medium" />
             </LinearLayout>
-            <LinearLayout
+
+            <!-- Rezervacija -->
+            <Button
+                android:id="@+id/btn_reserve_service"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="16dp"
-                android:padding="16dp">
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/rounded_corners_8599e0"
+                android:text="Reserve Service"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:fontFamily="@font/poppins_medium" />
 
-                <!-- Dugme za rezervaciju -->
-                <Button
-                    android:id="@+id/btn_reserve_service"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/rounded_corners_8599e0"
-                    android:text="Reserve Service"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp"
-                    android:fontFamily="@font/poppins_medium"
-                    android:textStyle="bold" />
+            <TextView
+                android:id="@+id/service_unavailable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginHorizontal="16dp"
+                android:padding="12dp"
+                android:background="@drawable/broken_border"
+                android:text="Service currently unavailable"
+                android:textColor="#000"
+                android:textSize="15sp"
+                android:gravity="center"
+                android:visibility="gone" />
 
-                <!-- Tekst ako je nedostupno -->
-                <TextView
-                    android:id="@+id/service_unavailable"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:padding="16dp"
-                    android:background="@drawable/broken_border"
-                    android:text="Service currently unavailable"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    android:fontFamily="@font/poppins_medium"
-                    android:textStyle="bold"
-                    android:gravity="center"
-                    android:visibility="gone" />
-            </LinearLayout>
-
-
-            <!-- LinearLayout za dva siva dugmeta -->
+            <!-- Dugmad uvek vidljiva -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="8dp"
-                android:gravity="end"
-                android:paddingHorizontal="16dp">
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="32dp"
+                android:paddingHorizontal="16dp"
+                android:gravity="center">
 
-                <!-- Sivo dugme - Provider Info -->
-
-                <!-- Sivo dugme - Company Info -->
                 <Button
                     android:id="@+id/btn_provider_info"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
                     android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
                     android:background="@drawable/rounded_corners_e8e8e8"
-                    android:fontFamily="@font/poppins_medium"
                     android:text="Provider Info"
-                    android:textColor="@android:color/black"
-                    android:textSize="12sp" />
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@android:color/black" />
 
                 <Button
                     android:id="@+id/btn_company_info"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@drawable/rounded_corners_e8e8e8"
                     android:text="Company Info"
-                    android:textColor="@android:color/black"
-                    android:textSize="12sp"
-                    android:fontFamily="@font/poppins_medium" />
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@android:color/black" />
             </LinearLayout>
-
 
         </LinearLayout>
 
     </ScrollView>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="8dp"/>
 </FrameLayout>

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +25,8 @@ import com.example.eveant.service.ServiceCreateViewModel;
 import com.example.eveant.service.model.OfferStatus;
 import com.example.eveant.service.model.Service;
 import com.example.eveant.user.model.Provider;
+import com.example.eveant.user.security.AuthManager;
+import com.google.android.flexbox.FlexboxLayout;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,6 +36,7 @@ public class ServiceDetails extends Fragment {
 
     private boolean isFavourite = false;
     private Provider prov;
+    String username;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -41,6 +45,12 @@ public class ServiceDetails extends Fragment {
         View view = inflater.inflate(R.layout.fragment_service_details, container, false);
         ServiceCreateViewModel viewModel = new ViewModelProvider(requireActivity()).get(ServiceCreateViewModel.class);
         Service service = viewModel.getService().getValue();
+
+        AuthManager auth = AuthManager.getInstance(requireContext());
+        username = auth.getEmail(); // ili email ako backend tako očekuje
+        if(username==null){
+            username="provider";
+        }
 
         if (service == null) {
             Toast.makeText(getContext(), "Error: service data not found", Toast.LENGTH_SHORT).show();
@@ -64,9 +74,9 @@ public class ServiceDetails extends Fragment {
             }
         });
 
+        ImageView btnFavourite = view.findViewById(R.id.favourite);
 
         // UI elementi
-        ImageView btnFavourite = view.findViewById(R.id.favourite);
         Button btnReserve = view.findViewById(R.id.btn_reserve_service);
         TextView unavailableText = view.findViewById(R.id.service_unavailable);
         Button btnProviderInfo = view.findViewById(R.id.btn_provider_info);
@@ -79,6 +89,7 @@ public class ServiceDetails extends Fragment {
         TextView newPrice = view.findViewById(R.id.newPrice);
         TextView oldPrice = view.findViewById(R.id.oldPrice);
         TextView discountBadge = view.findViewById(R.id.discountBadge);
+        FlexboxLayout eventTypesContainer = view.findViewById(R.id.eventTypesContainer);
 
         /*ImageView image1 = view.findViewById(R.id.image1);
         ImageView image2 = view.findViewById(R.id.image2);
@@ -116,16 +127,98 @@ public class ServiceDetails extends Fragment {
                 btnReserve.setVisibility(View.VISIBLE);
                 unavailableText.setVisibility(View.GONE);
             }
-        }
 
+
+            if (service.getEventTypes() != null && !service.getEventTypes().isEmpty()) {
+                eventTypesContainer.removeAllViews();
+
+                for (Object eventObj : service.getEventTypes()) {
+                    com.example.eveant.eventType.EventType eventType = (com.example.eveant.eventType.EventType) eventObj;
+
+                    TextView chip = new TextView(getContext());
+                    chip.setText(eventType.getName());
+                    chip.setTextColor(getResources().getColor(android.R.color.white));
+                    chip.setTextSize(13);
+                    chip.setTypeface(chip.getTypeface(), android.graphics.Typeface.BOLD);
+                    chip.setBackgroundResource(R.drawable.bg_event_chip);
+
+                    FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(
+                            FlexboxLayout.LayoutParams.WRAP_CONTENT,
+                            FlexboxLayout.LayoutParams.WRAP_CONTENT
+                    );
+                    params.setMargins(8, 8, 8, 8);
+                    chip.setLayoutParams(params);
+
+                    eventTypesContainer.addView(chip);
+                }
+            } else {
+                Log.d("ServiceDetails", "No event types available for this service");
+            }
+        }
+        RetrofitClient.userService.isOfferInFavourites(username, service.getId().longValue())
+                .enqueue(new Callback<Boolean>() {
+                    @Override
+                    public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            isFavourite = response.body();
+                            btnFavourite.setImageResource(isFavourite ? R.drawable.favourite_add_icon : R.drawable.favourite);
+                        } else {
+                            Log.e("Favourite", "Failed to check favourites: " + response.code());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Boolean> call, Throwable t) {
+                        Log.e("Favourite", "Network error checking favourites", t);
+                    }
+                });
         // Favoriti
         btnFavourite.setOnClickListener(v -> {
-            isFavourite = !isFavourite;
-            btnFavourite.setImageResource(isFavourite ? R.drawable.favourite : R.drawable.favourite);
-            Toast.makeText(getActivity(),
-                    isFavourite ? "Added to favourites" : "Removed from favourites",
-                    Toast.LENGTH_SHORT).show();
-            // pozovi backend da doda/ukloni
+            if (!isFavourite) {
+                // ➕ Dodaj u omiljene
+                RetrofitClient.userService.addOfferToFavourites(username, service.getId().longValue())
+                        .enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if (response.isSuccessful()) {
+                                    isFavourite = true;
+                                    btnFavourite.setImageResource(R.drawable.favourite_add_icon);
+                                    Toast.makeText(getContext(), "Added to favourites", Toast.LENGTH_SHORT).show();
+                                } else if (response.code() == 409) {
+                                    Toast.makeText(getContext(), "Already in favourites", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getContext(), "Failed to add to favourites", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                Toast.makeText(getContext(), "Network error adding favourite", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            } else {
+                // Ukloni iz omiljenih
+                RetrofitClient.userService.removeOfferFromFavourites(username, service.getId().longValue())
+                        .enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if (response.isSuccessful()) {
+                                    isFavourite = false;
+                                    btnFavourite.setImageResource(R.drawable.favourite);
+                                    Toast.makeText(getContext(), "Removed from favourites", Toast.LENGTH_SHORT).show();
+                                } else if (response.code() == 409) {
+                                    Toast.makeText(getContext(), "Not in favourites", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getContext(), "Failed to remove from favourites", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                Toast.makeText(getContext(), "Network error removing favourite", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
         });
 
         // Rezervacija
@@ -151,6 +244,7 @@ public class ServiceDetails extends Fragment {
     }
 
     //  Popup za provider info + prijavu
+    @SuppressLint("SetTextI18n")
     private void showProviderInfoPopup(Provider provider) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_provider_info, null);
@@ -160,8 +254,8 @@ public class ServiceDetails extends Fragment {
         EditText reportReason = dialogView.findViewById(R.id.reportReason);
         Button btnSubmitReport = dialogView.findViewById(R.id.btnSubmitReport);
 
-        providerName.setText(provider.getFirstName()+" "+provider.getLastName());
-        providerInfo.setText(provider.getAddress().toString());
+        providerName.setText("Name: "+provider.getFirstName()+" "+provider.getLastName());
+        providerInfo.setText("Address: "+provider.getAddress().getStreet()+" "+provider.getAddress().getCity()+" "+ provider.getAddress().getCountry());
 
         btnSubmitReport.setOnClickListener(v -> {
             String reason = reportReason.getText().toString();
@@ -180,6 +274,7 @@ public class ServiceDetails extends Fragment {
 
 
     //  Popup za company info
+    @SuppressLint("SetTextI18n")
     private void showCompanyDialog(Service service) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_company_info, null);
@@ -188,9 +283,9 @@ public class ServiceDetails extends Fragment {
         TextView companyAddress = dialogView.findViewById(R.id.companyAddress);
         TextView companyPhone = dialogView.findViewById(R.id.companyPhone);
 
-        companyName.setText(prov.getCompany().getCompanyName());
-        companyAddress.setText(prov.getCompany().getAddress().toString());
-        companyPhone.setText(prov.getCompany().getContact());
+        companyName.setText("Name: "+prov.getCompany().getCompanyName());
+        companyAddress.setText("Addres: " + prov.getCompany().getAddress().getStreet()+" "+prov.getAddress().getCity());
+        companyPhone.setText("Contact: "+prov.getCompany().getContact());
 
         builder.setView(dialogView);
         builder.setPositiveButton("Close", (d, w) -> d.dismiss());

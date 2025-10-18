@@ -72,6 +72,7 @@ dependencies {
     annotationProcessor ("com.github.bumptech.glide:compiler:4.16.0")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("org.osmdroid:osmdroid-android:6.1.17")
+    implementation("com.google.android.flexbox:flexbox:3.0.0")
 
 
 }
