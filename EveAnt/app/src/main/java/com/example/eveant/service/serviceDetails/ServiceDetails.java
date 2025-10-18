@@ -66,7 +66,7 @@ public class ServiceDetails extends Fragment {
 
 
         // UI elementi
-        ImageButton btnFavourite = view.findViewById(R.id.favourite);
+        ImageView btnFavourite = view.findViewById(R.id.favourite);
         Button btnReserve = view.findViewById(R.id.btn_reserve_service);
         TextView unavailableText = view.findViewById(R.id.service_unavailable);
         Button btnProviderInfo = view.findViewById(R.id.btn_provider_info);
@@ -121,7 +121,7 @@ public class ServiceDetails extends Fragment {
         // Favoriti
         btnFavourite.setOnClickListener(v -> {
             isFavourite = !isFavourite;
-            btnFavourite.setImageResource(isFavourite ? R.drawable.star_filled : R.drawable.favourite);
+            btnFavourite.setImageResource(isFavourite ? R.drawable.favourite : R.drawable.favourite);
             Toast.makeText(getActivity(),
                     isFavourite ? "Added to favourites" : "Removed from favourites",
                     Toast.LENGTH_SHORT).show();

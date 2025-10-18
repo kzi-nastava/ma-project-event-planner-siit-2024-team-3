@@ -1,112 +1,142 @@
 package com.example.eveant.user.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+public class User {
+    private Integer id;
+    private Profile profile;
+    private String status;
 
-public class User implements Parcelable {
-    private String firstName;
-    private String lastName;
-    private String dateOfBirth;
-    private Address address;
-    private String phoneNumber;
-    private String gender;
-    private Company company;
-    // Constructors
-    public User() {}
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
 
-    protected User(Parcel in) {
-        firstName = in.readString();
-        lastName = in.readString();
-        dateOfBirth = in.readString();
-        address = in.readParcelable(Address.class.getClassLoader());
-        phoneNumber = in.readString();
-        gender = in.readString();
-        company = in.readParcelable(Company.class.getClassLoader());
-    }
+    public Profile getProfile() { return profile; }
+    public void setProfile(Profile profile) { this.profile = profile; }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(firstName);
-        dest.writeString(lastName);
-        dest.writeString(dateOfBirth);
-        dest.writeParcelable(address, flags);
-        dest.writeString(phoneNumber);
-        dest.writeString(gender);
-        dest.writeParcelable(company, flags);
-    }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    public static final Creator<User> CREATOR = new Creator<User>() {
-        @Override
-        public User createFromParcel(Parcel in) {
-            return new User(in);
-        }
-
-        @Override
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
-    // Getters and Setters
+    // PROXY: firstName
     public String getFirstName() {
-        return firstName;
+        if (this instanceof Provider) {
+            return ((Provider) this).getFirstName();
+        } else if (this instanceof Organizer) {
+            return ((Organizer) this).getFirstName();
+        }
+        return "";
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        if (this instanceof Provider) {
+            ((Provider) this).setFirstName(firstName);
+        } else if (this instanceof Organizer) {
+            ((Organizer) this).setFirstName(firstName);
+        }
     }
 
+    // PROXY: lastName
     public String getLastName() {
-        return lastName;
+        if (this instanceof Provider) {
+            return ((Provider) this).getLastName();
+        } else if (this instanceof Organizer) {
+            return ((Organizer) this).getLastName();
+        }
+        return "";
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        if (this instanceof Provider) {
+            ((Provider) this).setLastName(lastName);
+        } else if (this instanceof Organizer) {
+            ((Organizer) this).setLastName(lastName);
+        }
     }
 
+    // PROXY: dateOfBirth
     public String getDateOfBirth() {
-        return dateOfBirth;
+        if (this instanceof Provider) {
+            return ((Provider) this).getDateOfBirth();
+        } else if (this instanceof Organizer) {
+            return ((Organizer) this).getDateOfBirth();
+        }
+        return "";
     }
 
     public void setDateOfBirth(String dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+        if (this instanceof Provider) {
+            ((Provider) this).setDateOfBirth(dateOfBirth);
+        } else if (this instanceof Organizer) {
+            ((Organizer) this).setDateOfBirth(dateOfBirth);
+        }
     }
 
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
+    // PROXY: phoneNumber
     public String getPhoneNumber() {
-        return phoneNumber;
+        if (this instanceof Provider) {
+            return ((Provider) this).getPhoneNumber();
+        } else if (this instanceof Organizer) {
+            return ((Organizer) this).getPhoneNumber();
+        }
+        return "";
     }
 
     public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+        if (this instanceof Provider) {
+            ((Provider) this).setPhoneNumber(phoneNumber);
+        } else if (this instanceof Organizer) {
+            ((Organizer) this).setPhoneNumber(phoneNumber);
+        }
     }
 
-    public String getGender() {
-        return gender;
+    // PROXY: address
+    public Address getAddress() {
+        if (this instanceof Provider) {
+            return ((Provider) this).getAddress();
+        } else if (this instanceof Organizer) {
+            return ((Organizer) this).getAddress();
+        }
+        return new Address();
     }
 
+    public void setAddress(Address address) {
+        if (this instanceof Provider) {
+            ((Provider) this).setAddress(address);
+        } else if (this instanceof Organizer) {
+            ((Organizer) this).setAddress(address);
+        }
+    }
+
+    // PROXY: username (iz Profile)
+    public String getUsername() {
+        return profile != null ? profile.getUsername() : "";
+    }
+
+    public void setUsername(String username) {
+        if (profile == null) profile = new Profile();
+        profile.setUsername(username);
+    }
+
+    // PROXY: email (iz Profile)
+    public String getEmail() {
+        return profile != null ? profile.getEmail() : "";
+    }
+
+    public void setEmail(String email) {
+        if (profile == null) profile = new Profile();
+        profile.setEmail(email);
+    }
     public void setGender(String gender) {
-        this.gender = gender;
+        if (this instanceof Provider) {
+            ((Provider) this).setGender(gender);
+        } else if (this instanceof Organizer) {
+            ((Organizer) this).setGender(gender);
+        }
     }
-
-    public Company getCompany(){
-        return company;
-    }
-
-    public void setCompany (Company company){
-        this.company = company;
+    public String getGender() {
+        if (this instanceof Provider) {
+            return ((Provider) this).getGender();
+        } else if (this instanceof Organizer) {
+            return ((Organizer) this).getGender();
+        }
+        return "";
     }
 
 }
-
