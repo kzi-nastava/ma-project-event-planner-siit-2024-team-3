@@ -68,10 +68,17 @@
         android:name="com.example.eveant.admin.CategoryManagement"
         android:label="CategoryFragment">
     </fragment>
+
     <fragment
         android:id="@+id/serviceDetailsFragment"
         android:name="com.example.eveant.service.serviceDetails.ServiceDetails"
-        android:label="Service Details"/>
+        android:label="Service Details">
+
+        <action
+            android:id="@+id/action_serviceDetails_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/eventTypeFragment"
         android:name="com.example.eveant.eventType.EventTypeFragment"

@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.bumptech.glide.Glide;
 import com.example.eveant.R;
@@ -93,6 +95,7 @@ public class ServiceDetails extends Fragment {
         FlexboxLayout eventTypesContainer = view.findViewById(R.id.eventTypesContainer);
         HorizontalScrollView photosContainer = view.findViewById(R.id.photosContainer);
         LinearLayout photosLinear = view.findViewById(R.id.photosLinear);
+        Button btnChatWithUs = view.findViewById(R.id.btn_chat_with_us);
 
 
         // 🔹 Učitavanje podataka
@@ -171,6 +174,24 @@ public class ServiceDetails extends Fragment {
                 photosContainer.setVisibility(View.GONE);
             }
         }
+
+
+        btnChatWithUs.setOnClickListener(v -> {
+            if (prov == null || prov.getProfile() == null) {
+                Toast.makeText(getContext(), "Provider info not loaded yet", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            String providerUsername = prov.getProfile().getUsername();
+            String currentUsername = AuthManager.getInstance(requireContext()).getUsername();
+            Log.d("trenutni korisnik",currentUsername);
+
+            Bundle bundle = new Bundle();
+            bundle.putString("username", providerUsername);
+
+            NavController navController = NavHostFragment.findNavController(ServiceDetails.this);
+            navController.navigate(R.id.action_serviceDetails_to_chatFragment, bundle);
+        });
 
         RetrofitClient.userService.isOfferInFavourites(username, service.getId().longValue())
                 .enqueue(new Callback<Boolean>() {
