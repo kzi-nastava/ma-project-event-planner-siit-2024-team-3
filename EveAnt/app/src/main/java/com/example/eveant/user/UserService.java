@@ -69,4 +69,7 @@ public interface UserService {
 
     @DELETE("api/users/deactivate")
     Call<Map<String, String>> deactivateAccount(@Query("email") String email);
+
+    @GET("/api/users/services/{serviceId}")
+    Call<Provider> getProviderByServiceId(@Path("serviceId") Long serviceId);
 }

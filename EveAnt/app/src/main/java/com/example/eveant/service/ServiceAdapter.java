@@ -88,10 +88,16 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.ServiceV
 
 
         holder.viewMoreButton.setOnClickListener(v -> {
-            // Detalji
+            // Postavi selektovani service u ViewModel
+            ServiceCreateViewModel viewModel = new ViewModelProvider(fragment.requireActivity())
+                    .get(ServiceCreateViewModel.class);
+            viewModel.updateService(service);
+
+            // Navigacija na details fragment
             NavController navController = NavHostFragment.findNavController(fragment);
             navController.navigate(R.id.serviceDetailsFragment);
         });
+
 
         holder.editIcon.setOnClickListener(v -> {
             ServiceCreateViewModel viewModel = new ViewModelProvider(fragment.requireActivity())

@@ -264,34 +264,35 @@
                 android:layout_marginTop="16dp"
                 android:padding="16dp">
 
-
-
-                <!-- Ljubičasto dugme - Buy Product -->
+                <!-- Dugme za rezervaciju -->
                 <Button
-                    android:id="@+id/btn_buy_product"
+                    android:id="@+id/btn_reserve_service"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/rounded_corners_8599e0"
-                    android:text="Buy Product"
+                    android:text="Reserve Service"
                     android:textColor="@android:color/white"
                     android:textSize="16sp"
                     android:fontFamily="@font/poppins_medium"
                     android:textStyle="bold" />
+
+                <!-- Tekst ako je nedostupno -->
                 <TextView
-                    android:id="@+id/product_not_available"
+                    android:id="@+id/service_unavailable"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:padding="16dp"
                     android:background="@drawable/broken_border"
-                    android:text="Product not available at the moment"
+                    android:text="Service currently unavailable"
                     android:textColor="#000000"
                     android:textSize="16sp"
                     android:fontFamily="@font/poppins_medium"
                     android:textStyle="bold"
-                    android:gravity="center" />
-
+                    android:gravity="center"
+                    android:visibility="gone" />
             </LinearLayout>
+
 
             <!-- LinearLayout za dva siva dugmeta -->
             <LinearLayout
@@ -329,140 +330,6 @@
                     android:fontFamily="@font/poppins_medium" />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp"
-                android:background="#FFFFFF">
-
-                <!-- Text za komentare i recenzije -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/comments_and_reviews"
-                    android:textSize="20sp"
-                    android:textColor="#000000"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="30dp"
-                    />
-
-                <!-- Prvi komentar i recenzija -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="8dp"
-                    android:background="@drawable/rounded_corners_dark_gray"
-                    android:layout_marginBottom="8dp">
-
-                    <!-- Slika korisnika -->
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/profile_picture"
-                        android:contentDescription="User Profile Image"
-                        android:layout_marginEnd="12dp"/>
-
-                    <!-- Tekst komentara -->
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <!-- Ime korisnika -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Josh"
-                            android:textSize="16sp"
-                            android:textColor="#000000"
-                            android:fontFamily="@font/poppins_bold"
-                            android:textStyle="bold"/>
-
-                        <!-- Rating u zvezdama -->
-                        <RatingBar
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:numStars="5"
-                            android:rating="3.5"
-                            android:stepSize="0.5"
-                            android:layout_marginTop="4dp"
-                            android:isIndicator="true"
-                            android:progressTint="@color/purple"/>
-
-                        <!-- Komentar -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                            android:textColor="#000000"
-                            android:textSize="14sp"
-                            android:fontFamily="@font/poppins_regular"
-                            android:layout_marginTop="8dp" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <!-- Drugi komentar i recenzija -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="8dp"
-                    android:background="@drawable/rounded_corners_dark_gray">
-
-                    <!-- Slika korisnika -->
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center_vertical"
-                        android:src="@drawable/profile_picture"
-                        android:contentDescription="User Profile Image"
-                        android:layout_marginEnd="12dp"/>
-
-                    <!-- Tekst komentara -->
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <!-- Ime korisnika -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Josh"
-                            android:textSize="16sp"
-                            android:textColor="#000000"
-                            android:fontFamily="@font/poppins_bold"
-                            android:textStyle="bold"/>
-
-                        <!-- Rating u zvezdama -->
-                        <RatingBar
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:numStars="5"
-                            android:rating="2.5"
-                            android:stepSize="0.5"
-                            android:layout_marginTop="4dp"
-                            android:isIndicator="true"
-                            android:progressTint="@color/purple"/>
-
-                        <!-- Komentar -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-                            android:textColor="#000000"
-                            android:textSize="14sp"
-                            android:fontFamily="@font/poppins_regular"
-                            android:layout_marginTop="8dp" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
 
         </LinearLayout>
 
