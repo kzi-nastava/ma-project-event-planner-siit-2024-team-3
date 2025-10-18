@@ -73,6 +73,11 @@ dependencies {
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("org.osmdroid:osmdroid-android:6.1.17")
     implementation("com.google.android.flexbox:flexbox:3.0.0")
+    implementation ("com.github.NaikSoftware:StompProtocolAndroid:1.6.6")
+    implementation ("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation ("io.reactivex.rxjava2:rxandroid:2.1.1")
+    implementation ("io.reactivex.rxjava2:rxjava:2.2.21")
+
 
 
 }

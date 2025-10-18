@@ -3,6 +3,7 @@ package com.example.eveant;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.MutableLiveData;
@@ -10,6 +11,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.eveant.chat.ChatWebSocketManager;
 import com.example.eveant.service.model.Service;
 import com.example.eveant.user.security.AuthManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -29,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         final MutableLiveData<String> errorMessage = new MutableLiveData<>();
         final MutableLiveData<ArrayList<Service>> serviceLiveData = new MutableLiveData<>();
@@ -82,6 +83,16 @@ public class MainActivity extends AppCompatActivity {
             bottomNavigationView.inflateMenu(R.menu.bottom_nav_menu);
         }
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
+
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            if (destination.getId() == R.id.chatFragment) {
+                // Ako smo u ChatFragment → sakrij bottom navigation
+                bottomNavigationView.setVisibility(View.GONE);
+            } else {
+                // Inače → pokaži je
+                bottomNavigationView.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     public NavController getNavController() {

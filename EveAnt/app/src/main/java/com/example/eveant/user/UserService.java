@@ -82,4 +82,5 @@ public interface UserService {
     @POST("users/favourites/offer/remove/{username}/{offerId}")
     Call<Void> removeOfferFromFavourites(@Path("username") String username, @Path("offerId") Long offerId);
 
+
 }

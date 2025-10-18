@@ -41,6 +41,10 @@ public class AuthManager {
     public String getEmail() {
         return JwtDecoder.getClaim(getToken(), "sub"); // adjust if your claim key is different
     }
+    public String getUsername() {
+        return JwtDecoder.getClaim(getToken(), "username");
+    }
+
 
     public String getRole() {
         return JwtDecoder.getClaim(getToken(), "role");

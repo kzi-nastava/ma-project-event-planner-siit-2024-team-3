@@ -2,6 +2,7 @@ package com.example.eveant;
 
 import android.util.Log;
 
+import com.example.eveant.chat.ChatApiService;
 import com.example.eveant.event.EventService;
 import com.example.eveant.event.agenda.ActivityService;
 import com.example.eveant.event.invitations.InvitationService;
@@ -49,4 +50,5 @@ public class RetrofitClient {
    public static ActivityService activityService = retrofit.create(ActivityService.class);
    public static InvitationService invitationService = retrofit.create(InvitationService.class);
    public static OfferService offerService=retrofit.create(OfferService.class);
+   public static ChatApiService chatApiService=retrofit.create(ChatApiService.class);
 }
