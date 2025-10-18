@@ -36,40 +36,19 @@
 
             <!-- Slike -->
             <HorizontalScrollView
+                android:id="@+id/photosContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
                 android:scrollbars="none">
 
                 <LinearLayout
+                    android:id="@+id/photosLinear"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="300dp"
-                        android:layout_height="200dp"
-                        android:layout_marginEnd="8dp"
-                        android:scaleType="centerCrop"
-                        android:background="@drawable/rounded_corners_white"
-                        android:src="@drawable/pastry" />
-
-                    <ImageView
-                        android:layout_width="300dp"
-                        android:layout_height="200dp"
-                        android:layout_marginEnd="8dp"
-                        android:scaleType="centerCrop"
-                        android:background="@drawable/rounded_corners_white"
-                        android:src="@drawable/pastry" />
-
-                    <ImageView
-                        android:layout_width="300dp"
-                        android:layout_height="200dp"
-                        android:scaleType="centerCrop"
-                        android:background="@drawable/rounded_corners_white"
-                        android:src="@drawable/pastry" />
-                </LinearLayout>
+                    android:orientation="horizontal"/>
             </HorizontalScrollView>
+
 
             <!-- Osnovni info -->
             <LinearLayout

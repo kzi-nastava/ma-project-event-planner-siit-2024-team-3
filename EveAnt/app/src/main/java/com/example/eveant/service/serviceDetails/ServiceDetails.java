@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -90,10 +91,8 @@ public class ServiceDetails extends Fragment {
         TextView oldPrice = view.findViewById(R.id.oldPrice);
         TextView discountBadge = view.findViewById(R.id.discountBadge);
         FlexboxLayout eventTypesContainer = view.findViewById(R.id.eventTypesContainer);
-
-        /*ImageView image1 = view.findViewById(R.id.image1);
-        ImageView image2 = view.findViewById(R.id.image2);
-        ImageView image3 = view.findViewById(R.id.image3);*/
+        HorizontalScrollView photosContainer = view.findViewById(R.id.photosContainer);
+        LinearLayout photosLinear = view.findViewById(R.id.photosLinear);
 
 
         // 🔹 Učitavanje podataka
@@ -110,15 +109,6 @@ public class ServiceDetails extends Fragment {
             oldPrice.setText(String.format("%.2f$/hr", price));
             discountBadge.setText(discount + "%");
 
-            /*// Slike (ako imaš URL-ove)
-            if (service.getPhotos() != null && !service.getPhotos().isEmpty()) {
-                Glide.with(this).load(service.getPhotos().get(0)).into(image1);
-                if (service.getPhotos().size() > 1)
-                    Glide.with(this).load(service.getPhotos().get(1)).into(image2);
-                if (service.getPhotos().size() > 2)
-                    Glide.with(this).load(service.getPhotos().get(2)).into(image3);
-            }
-*/
             // 🔹 Status usluge
             if (!service.getStatus().equals(OfferStatus.AVAILABLE)) {
                 btnReserve.setVisibility(View.GONE);
@@ -154,7 +144,34 @@ public class ServiceDetails extends Fragment {
             } else {
                 Log.d("ServiceDetails", "No event types available for this service");
             }
+
+            if (service.getPhotos() != null && !service.getPhotos().isEmpty()) {
+                photosContainer.setVisibility(View.VISIBLE);
+                photosLinear.removeAllViews();
+
+                for (String photoUrl : service.getPhotos()) {
+                    ImageView imageView = new ImageView(getContext());
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                            300, // širina slike
+                            200  // visina slike
+                    );
+                    params.setMargins(8, 0, 8, 0);
+                    imageView.setLayoutParams(params);
+                    imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    imageView.setBackgroundResource(R.drawable.rounded_corners_white);
+
+                    Glide.with(this)
+                            .load(photoUrl)
+                            .into(imageView);
+
+                    photosLinear.addView(imageView);
+                }
+            } else {
+                // Ako nema slika, sakrij ceo container
+                photosContainer.setVisibility(View.GONE);
+            }
         }
+
         RetrofitClient.userService.isOfferInFavourites(username, service.getId().longValue())
                 .enqueue(new Callback<Boolean>() {
                     @Override
