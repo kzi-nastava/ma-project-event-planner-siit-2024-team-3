@@ -58,7 +58,11 @@ public class EventActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         outState.putString("step", current.name());
     }
-
+    private boolean isCurrentEventPublic() {
+        EventCreationViewModel vm = new ViewModelProvider(this).get(EventCreationViewModel.class);
+        Boolean v = vm.getIsPublic().getValue();
+        return v != null && v;
+    }
     public void goNext() {
         switch (current) {
             case CHOOSE_TYPE:
@@ -77,8 +81,14 @@ public class EventActivity extends AppCompatActivity {
             }
 
             case AGENDA:
-                showStep(Step.INVITATIONS, true);
+                if (isCurrentEventPublic()) {
+                    // Public event → no invitations step
+                    finish();
+                } else {
+                    showStep(Step.INVITATIONS, true);
+                }
                 break;
+
 
             case INVITATIONS:
                 finish();
@@ -149,9 +159,18 @@ public class EventActivity extends AppCompatActivity {
 
     private void updateButtons(Step step) {
         btnBack.setEnabled(step != Step.CHOOSE_TYPE);
-        btnNext.setText(step == Step.INVITATIONS ? getString(R.string.action_finish)
-                : getString(R.string.action_next));
+
+        boolean publicEvent = isCurrentEventPublic();
+
+        if (step == Step.AGENDA && publicEvent) {
+            btnNext.setText(getString(R.string.action_finish));
+        } else {
+            btnNext.setText(step == Step.INVITATIONS
+                    ? getString(R.string.action_finish)
+                    : getString(R.string.action_next));
+        }
     }
+
 
     private int getIndex(Step step) {
         switch (step) {
