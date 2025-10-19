@@ -59,10 +59,10 @@ public class CompanyFragment1 extends Fragment {
                     Bundle bundle = getArguments() != null ? getArguments() : new Bundle();
 
 
-                    bundle.putString("comapnyName", companyNameText);
-                    bundle.putString("comapnyEmail", companyEmailText);
-                    bundle.putString("comapnyContact", companyContactText);
-                    bundle.putString("comapnyDescription", companyDescriptionText);
+                    bundle.putString("companyName", companyNameText);
+                    bundle.putString("companyEmail", companyEmailText);
+                    bundle.putString("companyContact", companyContactText);
+                    bundle.putString("companyDescription", companyDescriptionText);
 
                     CompanyFragment2 companyFragment2 = new CompanyFragment2();
                     companyFragment2.setArguments(bundle);

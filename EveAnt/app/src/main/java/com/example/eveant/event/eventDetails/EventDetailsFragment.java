@@ -1,25 +1,23 @@
 package com.example.eveant.event.eventDetails;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.TextUtils;
 import android.view.*;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.eveant.BaseFragment;
 import com.example.eveant.HomeFragment;
-import androidx.core.content.ContextCompat;
-import com.bumptech.glide.Glide;
 import com.example.eveant.R;
 import com.example.eveant.RetrofitClient;
-import com.example.eveant.comment.CommentService;
-import com.example.eveant.comment.Comment;
 import com.example.eveant.event.Event;
 import com.example.eveant.event.agenda.Activity;
 import com.example.eveant.event.eventDetails.utils.Ui;
@@ -64,24 +62,17 @@ public class EventDetailsFragment extends BaseFragment {
         return f;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle s) {
+    @Override public void onCreate(@Nullable Bundle s) {
         super.onCreate(s);
-        if (getArguments() != null) eventId = getArguments().getInt(ARG_EVENT_ID, -1);
-
-        // Initialize services
-        commentService = RetrofitClient.retrofit.create(CommentService.class);
-        authManager = AuthManager.getInstance(requireContext());
+        if (getArguments()!=null) eventId = getArguments().getInt(ARG_EVENT_ID, -1);
     }
-
 
     @Nullable @Override
     public View onCreateView(@NonNull LayoutInflater inf, @Nullable ViewGroup c, @Nullable Bundle s) {
         return inf.inflate(R.layout.fragment_event_details, c, false);
     }
 
-    @Override
-    public void onViewCreated(@NonNull View v, @Nullable Bundle s) {
+    @Override public void onViewCreated(@NonNull View v, @Nullable Bundle s) {
         super.onViewCreated(v, s);
         setupBackBar(v);
         // 0) background
@@ -92,7 +83,7 @@ public class EventDetailsFragment extends BaseFragment {
         // 2) Pull core refs we need locally
         btnJoin       = v.findViewById(R.id.btnJoin);
         btnDownloadPdf= v.findViewById(R.id.btnDownloadPdf);
-        commentBox    = v.findViewById(R.id.commentBox);
+//        commentBox    = v.findViewById(R.id.commentBox);
         etComment     = v.findViewById(R.id.etComment);
         btnPost       = v.findViewById(R.id.btnPost);
 
@@ -105,7 +96,6 @@ public class EventDetailsFragment extends BaseFragment {
         if (rvComments != null) {
             rvComments.setLayoutManager(new LinearLayoutManager(getContext()));
         }
-    }
 
         // 3) Controllers
         joinController       = new JoinController(requireContext(), btnJoin, commentBox);
@@ -148,8 +138,7 @@ public class EventDetailsFragment extends BaseFragment {
 
     private void fetchEvent() {
         RetrofitClient.eventService.getEventById(eventId).enqueue(new Callback<Event>() {
-            @Override
-            public void onResponse(Call<Event> c, Response<Event> r) {
+            @Override public void onResponse(Call<Event> c, Response<Event> r) {
                 if (!isAdded()) return;
                 if (!r.isSuccessful() || r.body()==null) { Ui.toast(requireContext(),"Load event failed: "+r.code()); return; }
                 currentEvent = r.body();
@@ -169,8 +158,7 @@ public class EventDetailsFragment extends BaseFragment {
 
     private void fetchActivities() {
         RetrofitClient.activityService.getByEventId(eventId).enqueue(new Callback<List<Activity>>() {
-            @Override
-            public void onResponse(Call<List<Activity>> c, Response<List<Activity>> r) {
+            @Override public void onResponse(Call<List<Activity>> c, Response<List<Activity>> r) {
                 if (!isAdded()) return;
                 if (!r.isSuccessful() || r.body()==null) { Ui.toast(requireContext(),"Load agenda failed: "+r.code()); return; }
                 activitiesController.submit(r.body());
@@ -180,10 +168,11 @@ public class EventDetailsFragment extends BaseFragment {
     }
 
     private void checkIfUserHasJoined() {
-        String email = authManager.getEmail();
+        String email = com.example.eveant.user.security.AuthManager
+                .getInstance(requireContext())
+                .getEmail();
 
         RetrofitClient.invitationEventService.getInvitations(eventId).enqueue(new Callback<List<Invitation>>() {
-
             @Override public void onResponse(Call<List<Invitation>> c, Response<List<Invitation>> r) {
                 if (!isAdded()) return;
                 boolean joined = false;

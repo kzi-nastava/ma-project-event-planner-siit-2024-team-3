@@ -37,6 +37,15 @@
             android:text="Check emals"
             android:fontFamily="@font/poppins_bold"
             android:textColor="@color/white"/>
+        <Button
+            android:id="@+id/login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/rounded_corners_image_blue"
+            android:text="Go to login"
+            android:fontFamily="@font/poppins_bold"
+            android:textColor="@color/white"/>
     </LinearLayout>
 
 </FrameLayout>
