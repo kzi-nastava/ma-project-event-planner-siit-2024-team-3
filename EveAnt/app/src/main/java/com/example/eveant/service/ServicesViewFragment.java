@@ -91,7 +91,7 @@ public class ServicesViewFragment extends Fragment {
 //        Log.d( "fetchProviderServices: ", username);
 
         AuthManager auth = AuthManager.getInstance(requireContext());
-        String email = "provider";
+        String email = "networkingProvider";
 
         RetrofitClient.serviceService.getAllServicesForProvider(email).enqueue(new Callback<ArrayList<Service>>() {
             @Override

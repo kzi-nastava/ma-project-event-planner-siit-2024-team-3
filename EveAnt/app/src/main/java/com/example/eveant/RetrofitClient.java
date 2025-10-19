@@ -11,6 +11,7 @@ import com.example.eveant.eventType.EventTypeService;
 import com.example.eveant.priceList.OfferService;
 import com.example.eveant.invitation.InvitationService;
 import com.example.eveant.notification.NotificationService;
+import com.example.eveant.product.ProductService;
 import com.example.eveant.reviews.ReviewService;
 import com.example.eveant.service.ServiceService;
 import com.example.eveant.user.UserService;
@@ -54,7 +55,7 @@ public class RetrofitClient {
    public static InvitationService invitationService = retrofit.create(InvitationService.class);
    public static OfferService offerService=retrofit.create(OfferService.class);
    public static ChatApiService chatApiService=retrofit.create(ChatApiService.class);
-
+   public static ProductService productService=retrofit.create(ProductService.class);
    public static BudgetService budgetService=retrofit.create(BudgetService.class);
    public static InvitationEventService invitationEventService = retrofit.create(InvitationEventService.class);
    public static ReviewService reviewService = retrofit.create(ReviewService.class);

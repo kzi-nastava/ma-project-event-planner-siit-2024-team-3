@@ -43,6 +43,21 @@
         android:name="com.example.eveant.service.ServicesViewFragment"
         android:label="servicesViewFragment" />
     <fragment
+        android:id="@+id/offerChoose"
+        android:name="com.example.eveant.product.OfferFragment"
+        android:label="offerFragment">
+    <action
+        android:id="@+id/action_offerFragment_to_createProductFragment"
+        app:destination="@id/createProductFragment" />
+    <action
+        android:id="@+id/action_offerFragment_to_serviceCreateFragment1"
+        app:destination="@id/serviceCreateFragment1" />
+    </fragment>
+    <fragment
+        android:id="@+id/createProductFragment"
+        android:name="com.example.eveant.product.CreateProductFragment"
+        android:label="CreateProductFragment" />
+    <fragment
         android:id="@+id/serviceEditFragment"
         android:name="com.example.eveant.service.serviceEdit.ServiceEditFragment"
         android:label="ServiceEditFragment" />
