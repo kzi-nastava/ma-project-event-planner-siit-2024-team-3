@@ -254,7 +254,7 @@ public class ServiceCreateFragment3 extends Fragment {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
-                        Toast.makeText(getContext(), "Service created successfully!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Successfully!", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getContext(), "Failed to create service", Toast.LENGTH_SHORT).show();
                     }
