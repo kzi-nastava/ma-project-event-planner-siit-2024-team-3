@@ -51,7 +51,6 @@ public class InvitationFragment extends Fragment {
 
         guestRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        invitationService = RetrofitClient.invitationService;
         adapter = new InvitationAdapter(invitationService);
         guestRecycler.setAdapter(adapter);
 

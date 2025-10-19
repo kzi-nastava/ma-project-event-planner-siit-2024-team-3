@@ -24,6 +24,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.bumptech.glide.Glide;
 import com.example.eveant.R;
 import com.example.eveant.RetrofitClient;
+import com.example.eveant.reservation.ReservationFragment;
 import com.example.eveant.service.ServiceCreateViewModel;
 import com.example.eveant.service.model.OfferStatus;
 import com.example.eveant.service.model.Service;
@@ -262,8 +263,19 @@ public class ServiceDetails extends Fragment {
         // Rezervacija
         btnReserve.setOnClickListener(v -> {
             Toast.makeText(getActivity(), "Service reserved successfully!", Toast.LENGTH_SHORT).show();
-            // ovde možeš da dodaš Retrofit poziv za rezervaciju
-        });
+            Bundle b = new Bundle();
+//            b.putInt("serviceId", serviceId); // pass your actual id
+
+// if using Navigation Component:
+            NavHostFragment.findNavController(this).navigate(R.id.container, b);
+
+// or manual transaction:
+            ReservationFragment f = new ReservationFragment();
+            f.setArguments(b);
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.container, f)
+                    .addToBackStack(null)
+                    .commit();        });
 
         // Provider info popup
         btnProviderInfo.setOnClickListener(v -> {
