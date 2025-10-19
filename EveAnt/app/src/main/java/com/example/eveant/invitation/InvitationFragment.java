@@ -13,12 +13,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eveant.R;
 import com.example.eveant.RetrofitClient;
-import com.example.eveant.notification.Notification;
+import com.example.eveant.event.EventCreationViewModel;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -34,7 +36,8 @@ public class InvitationFragment extends Fragment {
 
     private InvitationService invitationService;
 
-    private int eventId = 2; // TODO: Replace with actual event ID
+    private EventCreationViewModel vm;
+    private int eventId = -1;
 
     @Nullable
     @Override
@@ -52,14 +55,34 @@ public class InvitationFragment extends Fragment {
         adapter = new InvitationAdapter(invitationService);
         guestRecycler.setAdapter(adapter);
 
-        loadInvitations();
-
+        // Always set the click listener; guard inside sendInvitation()
         sendButton.setOnClickListener(v -> sendInvitation());
+
+        // Hook the shared ViewModel from the Activity
+        vm = new ViewModelProvider(requireActivity()).get(EventCreationViewModel.class);
+        vm.getEventId().observe(getViewLifecycleOwner(), id -> {
+            if (id == null || id <= 0) {
+                eventId = -1;
+                sendButton.setEnabled(false);
+                return;
+            }
+            // If eventId changes (e.g., after create), refresh UI
+            boolean firstSetOrChanged = (eventId != id);
+            eventId = id;
+            sendButton.setEnabled(true);
+            if (firstSetOrChanged) {
+                loadInvitations();
+            }
+        });
+
+        // If VM value was already set before observer attached, observer above fires immediately.
+        // Otherwise, button remains disabled until create flow sets the id.
 
         return view;
     }
 
     private void loadInvitations() {
+        if (eventId <= 0) return;
         invitationService.getInvitations(eventId).enqueue(new Callback<List<Invitation>>() {
             @Override
             public void onResponse(Call<List<Invitation>> call, Response<List<Invitation>> response) {
@@ -76,6 +99,11 @@ public class InvitationFragment extends Fragment {
     }
 
     private void sendInvitation() {
+        if (eventId <= 0) {
+            Toast.makeText(getContext(), "Event ID is not available yet.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         String email = emailInput.getText().toString();
         String message = messageInput.getText().toString();
 
@@ -88,14 +116,20 @@ public class InvitationFragment extends Fragment {
         invitationService.sendInvitation(eventId, request).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                Toast.makeText(getContext(), "Invitation sent!", Toast.LENGTH_SHORT).show();
-                loadInvitations();
-                emailInput.setText("");
-                messageInput.setText("");
+                if (!isAdded()) return;
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), "Invitation sent!", Toast.LENGTH_SHORT).show();
+                    loadInvitations();
+                    emailInput.setText("");
+                    messageInput.setText("");
+                } else {
+                    Toast.makeText(getContext(), "Failed: " + response.code(), Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
+                if (!isAdded()) return;
                 Toast.makeText(getContext(), "Failed to send invitation", Toast.LENGTH_SHORT).show();
             }
         });

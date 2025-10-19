@@ -17,10 +17,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.eveant.BaseFragment;
+import com.example.eveant.HomeFragment;
 import com.example.eveant.R;
 import com.example.eveant.RetrofitClient;
 import com.example.eveant.databinding.DialogEventTypeCreateBinding;
@@ -41,10 +44,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class EventTypeFragment extends Fragment {
+public class EventTypeFragment extends BaseFragment {
 
     private FragmentEventTypeBinding binding;
     private String token;
+    @Override protected int getMainContainerId() { return R.id.home_container; } // your Activity container id
+    @NonNull @Override protected Fragment createHomeFragment() { return new HomeFragment(); }
 
     private final List<EventType> eventTypes = new ArrayList<>();
     private final EventTypeAdapter eventTypeAdapter = new EventTypeAdapter();
@@ -64,6 +69,12 @@ public class EventTypeFragment extends Fragment {
         binding.ibCreate.setOnClickListener(v -> openCreateDialog());
 
         return root;
+    }
+
+
+    @Override public void onViewCreated(@NonNull View v, @Nullable Bundle s) {
+        super.onViewCreated(v, s);
+        setupBackBar(v);   // <-- one line, done
     }
 
     private void setupRecycler() {

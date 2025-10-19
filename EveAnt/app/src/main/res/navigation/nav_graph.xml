@@ -80,4 +80,8 @@
         android:id="@+id/myEventsFragment"
         android:name="com.example.eveant.event.myEvents.MyEventsFragment"
         android:label="My Events"/>
+    <fragment
+        android:id="@+id/publicEventsStatsFragment"
+        android:name="com.example.eveant.admin.PublicEventsStatsFragment"
+        android:label="Public events stats"/>
 </navigation>

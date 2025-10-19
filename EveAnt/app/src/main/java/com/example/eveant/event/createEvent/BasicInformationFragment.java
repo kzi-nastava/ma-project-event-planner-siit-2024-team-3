@@ -243,6 +243,9 @@ public class BasicInformationFragment extends Fragment {
 
                             // Save into VM for AGENDA
                             vm.setEventId(eventId);
+                            final EventStatus status = rbPublic.isChecked() ? EventStatus.PUBLIC : EventStatus.PRIVATE;
+
+                            vm.setIsPublic(status == EventStatus.PUBLIC);
                             try {
                                 java.time.LocalDateTime ldt =
                                         null;
