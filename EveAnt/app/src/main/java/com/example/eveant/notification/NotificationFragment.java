@@ -2,15 +2,21 @@ package com.example.eveant.notification;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eveant.R;
 import com.example.eveant.RetrofitClient;
+import com.example.eveant.user.security.AuthManager;
 
 import java.util.List;
 
@@ -18,7 +24,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NotificationActivity extends AppCompatActivity {
+public class NotificationFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private NotificationAdapter adapter;
@@ -26,18 +32,32 @@ public class NotificationActivity extends AppCompatActivity {
     private TextView emptyText;
 
     private boolean isMuted = false;
-    private String userEmail = "jocaku@gmail.com"; // TODO: Replace with logged-in user's email
+    private AuthManager authManager;
+    private String userEmail;
+
+    public static NotificationFragment newInstance() {
+        return new NotificationFragment();
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_notification, container, false);
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notification);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        recyclerView = findViewById(R.id.notificationsRecycler);
-        muteButton = findViewById(R.id.muteButton);
-        emptyText = findViewById(R.id.emptyText);
+        // Initialize AuthManager and get user email
+        authManager = AuthManager.getInstance(requireContext());
+        userEmail = authManager.getEmail();
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView = view.findViewById(R.id.notificationsRecycler);
+        muteButton = view.findViewById(R.id.muteButton);
+        emptyText = view.findViewById(R.id.emptyText);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new NotificationAdapter(notification -> markAsRead(notification.getId()));
         recyclerView.setAdapter(adapter);
 
@@ -48,6 +68,11 @@ public class NotificationActivity extends AppCompatActivity {
     }
 
     private void loadNotifications() {
+        if (userEmail == null) {
+            Log.e("Notif", "User email is null");
+            return;
+        }
+
         RetrofitClient.notificationService.getAllNotifications(userEmail)
                 .enqueue(new Callback<List<Notification>>() {
                     @Override
@@ -93,6 +118,8 @@ public class NotificationActivity extends AppCompatActivity {
     }
 
     private void checkMuteStatus() {
+        if (userEmail == null) return;
+
         RetrofitClient.notificationService.getMuteStatus(userEmail)
                 .enqueue(new Callback<Boolean>() {
                     @Override
@@ -111,6 +138,8 @@ public class NotificationActivity extends AppCompatActivity {
     }
 
     private void toggleMute() {
+        if (userEmail == null) return;
+
         RetrofitClient.notificationService.toggleMute(userEmail)
                 .enqueue(new Callback<Void>() {
                     @Override
