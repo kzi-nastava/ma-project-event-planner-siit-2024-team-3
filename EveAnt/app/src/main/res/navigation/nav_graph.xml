@@ -111,6 +111,33 @@
         android:id="@+id/chatFragment"
         android:name="com.example.eveant.chat.ChatFragment"
         android:label="Chat" />
+    <fragment
+        android:id="@+id/budgetFragment"
+        android:name="com.example.eveant.budget.BudgetFragment"
+        android:label="Budget Planning" >
+        <argument
+            android:name="eventId"
+            app:argType="integer" />
+        <argument
+            android:name="budgetId"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/offerSelectionFragment"
+        android:name="com.example.eveant.budget.OfferSelectionFragment"
+        android:label="Offer Selection" >
+        <argument
+            android:name="budgetId"
+            app:argType="integer" />
+        <argument
+            android:name="itemId"
+            app:argType="integer" />
+        <argument
+            android:name="categoryId"
+            app:argType="integer" />
+    </fragment>
+
 
 
 </navigation>
