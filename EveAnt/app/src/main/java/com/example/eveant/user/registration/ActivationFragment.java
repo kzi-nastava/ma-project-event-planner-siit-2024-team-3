@@ -95,6 +95,7 @@ public class ActivationFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_activation, container, false);
         Button checkEmailButton = view.findViewById(R.id.check_email_button);
         Button sendActivationLink = view.findViewById(R.id.send_activation_link);
+        Button goToLogin = view.findViewById(R.id.login);
         LinearLayout progressRegistration = requireActivity().findViewById(R.id.progress_registration);
         LinearLayout firstHalf = requireActivity().findViewById(R.id.firstHalf);
         LinearLayout secondHalf = requireActivity().findViewById(R.id.secondHalf);
@@ -201,6 +202,20 @@ public class ActivationFragment extends Fragment {
             Toast.makeText(requireContext(), "Checking activation status...", Toast.LENGTH_SHORT).show();
             startPollingForActivation();
         });
+
+        goToLogin.setOnClickListener(v -> {
+            // Optional: show a short message
+            Toast.makeText(requireContext(), "Returning to login...", Toast.LENGTH_SHORT).show();
+
+            // Clear the current activity stack and start LoginActivity
+            Intent intent = new Intent(requireContext(), com.example.eveant.user.LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+
+            // Finish the current activity to remove it from the back stack
+            requireActivity().finish();
+        });
+
 
         return view;
     }
