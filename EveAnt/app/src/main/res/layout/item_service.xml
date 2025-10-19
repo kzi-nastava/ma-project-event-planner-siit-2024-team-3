@@ -1,103 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="8dp"
     android:background="@drawable/rounded_corners_white"
-    android:layout_marginBottom="10dp">
+    android:layout_marginBottom="12dp"
+    android:elevation="2dp"
+    android:padding="8dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+    <!-- Naziv i kategorija -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingBottom="4dp">
+
+        <TextView
+            android:id="@+id/service_name"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="8dp"
-            android:gravity="center_vertical">
-            <TextView
-                android:id="@+id/service_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_bold"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:paddingRight="20dp"/>
+            android:layout_weight="1"
+            android:text="Service name"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="@color/black" />
 
-            <TextView
-                android:id="@+id/service_category"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingRight="20dp"
-                android:textColor="@color/light_purple"
-                android:textSize="14sp"
-                android:fontFamily="@font/poppins_medium"/>
-        </LinearLayout>
+        <TextView
+            android:id="@+id/service_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Category"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            android:textColor="@color/purple" />
+    </LinearLayout>
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white">
+    <!-- Slika servisa -->
+    <ImageView
+        android:id="@+id/serviceImage"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/pastry"
+        android:clipToOutline="true"
+        android:background="@drawable/rounded_corners_image" />
 
-            <ImageView
-                android:id="@+id/serviceImage"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:background="@drawable/rounded_corners_image"
-                android:clipToOutline="true"
-                android:scaleType="centerCrop"
-                android:src="@drawable/pastry" />
+    <!-- Cena, status i akcije -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="8dp"
+        android:gravity="center_vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_gravity="bottom"
-                android:background="@drawable/rounded_corners_image"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+        <TextView
+            android:id="@+id/service_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="120€"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="14sp" />
 
-                <TextView
-                    android:id="@+id/service_price"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textColor="#FFFFFF"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+        <TextView
+            android:id="@+id/service_availability"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="AVAILABLE"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/service_availability"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:textColor="#FFFFFF"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
+        <!-- Akcione ikone -->
+        <ImageButton
+            android:id="@+id/editServiceButton"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_edit"
+            app:tint="@color/black"
+            android:contentDescription="Edit" />
 
-                <ImageButton
-                    android:id="@+id/editServiceButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_edit" />
+        <ImageButton
+            android:id="@+id/deleteServiceButton"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_delete"
+            app:tint="@color/black"
+            android:contentDescription="Delete" />
 
-                <ImageButton
-                    android:id="@+id/deleteServiceButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_delete" />
+        <ImageButton
+            android:id="@+id/viewMoreButton"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_arrow"
+            app:tint="@color/black"
+            android:contentDescription="Details" />
+    </LinearLayout>
 
-                <ImageButton
-                    android:id="@+id/viewMoreButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_arrow" />
-            </LinearLayout>
-
-        </FrameLayout>
 </LinearLayout>

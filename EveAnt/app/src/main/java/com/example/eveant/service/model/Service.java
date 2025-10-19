@@ -1,5 +1,7 @@
 package com.example.eveant.service.model;
 
+import com.example.eveant.eventType.EventType;
+
 import java.util.List;
 
 public class Service extends Offer {
@@ -15,7 +17,7 @@ public class Service extends Offer {
     }
 
     public Service(Integer id, String provider, String name, String description, Category category,
-                   List<Integer> eventTypes, Long price, int discount, Boolean visible,
+                   List<EventType> eventTypes, Long price, int discount, Boolean visible,
                    OfferStatus status, List<String> photos, String specification,
                    Integer maxEngagement, Integer minEngagement, Boolean automation,
                    Integer reservationDeadLine, Integer cancellationPeriod) {

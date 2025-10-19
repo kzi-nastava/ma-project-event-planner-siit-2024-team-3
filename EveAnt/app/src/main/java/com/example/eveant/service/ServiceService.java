@@ -30,6 +30,10 @@ public interface ServiceService {
 
     @PUT("/api/services/{id}")
     Call<Void> updateService(@Path("id") int id, @Body ServiceDTO serviceDTO);
+
+    @GET("/api/services/my_services/{username}")
+    Call<ArrayList<Service>> getAllServicesForProvider(@Path("username") String username);
+
     @GET("/api/services/search")
     Call<List<Service>> searchServices(
             @Query("search") String search,

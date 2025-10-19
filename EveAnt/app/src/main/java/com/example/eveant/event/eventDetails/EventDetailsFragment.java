@@ -1,14 +1,19 @@
 package com.example.eveant.event.eventDetails;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.*;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.eveant.BaseFragment;
 import com.example.eveant.HomeFragment;
 import com.example.eveant.R;
@@ -58,8 +63,7 @@ public class EventDetailsFragment extends BaseFragment {
         return f;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle s) {
+    @Override public void onCreate(@Nullable Bundle s) {
         super.onCreate(s);
         if (getArguments() != null) eventId = getArguments().getInt(ARG_EVENT_ID, -1);
 
@@ -72,8 +76,7 @@ public class EventDetailsFragment extends BaseFragment {
         return inf.inflate(R.layout.fragment_event_details, c, false);
     }
 
-    @Override
-    public void onViewCreated(@NonNull View v, @Nullable Bundle s) {
+    @Override public void onViewCreated(@NonNull View v, @Nullable Bundle s) {
         super.onViewCreated(v, s);
         setupBackBar(v);
 
@@ -127,8 +130,7 @@ public class EventDetailsFragment extends BaseFragment {
 
     private void fetchEvent() {
         RetrofitClient.eventService.getEventById(eventId).enqueue(new Callback<Event>() {
-            @Override
-            public void onResponse(Call<Event> c, Response<Event> r) {
+            @Override public void onResponse(Call<Event> c, Response<Event> r) {
                 if (!isAdded()) return;
                 if (!r.isSuccessful() || r.body()==null) {
                     Ui.toast(requireContext(),"Load event failed: "+r.code());
@@ -154,8 +156,7 @@ public class EventDetailsFragment extends BaseFragment {
 
     private void fetchActivities() {
         RetrofitClient.activityService.getByEventId(eventId).enqueue(new Callback<List<Activity>>() {
-            @Override
-            public void onResponse(Call<List<Activity>> c, Response<List<Activity>> r) {
+            @Override public void onResponse(Call<List<Activity>> c, Response<List<Activity>> r) {
                 if (!isAdded()) return;
                 if (!r.isSuccessful() || r.body()==null) {
                     Ui.toast(requireContext(),"Load agenda failed: "+r.code());
@@ -171,7 +172,9 @@ public class EventDetailsFragment extends BaseFragment {
     }
 
     private void checkIfUserHasJoined() {
-        String email = authManager.getEmail();
+        String email = com.example.eveant.user.security.AuthManager
+                .getInstance(requireContext())
+                .getEmail();
 
         RetrofitClient.invitationEventService.getInvitations(eventId).enqueue(new Callback<List<Invitation>>() {
             @Override

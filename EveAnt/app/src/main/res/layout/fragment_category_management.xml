@@ -34,7 +34,7 @@
                     android:layout_marginTop="10dp"
                     android:layout_marginStart="20dp"
                     android:fontFamily="@font/poppins_bold"
-                    android:text="@string/adminName"
+                    android:text="Categroy managemant"
                     android:textSize="30sp"
                     android:textAppearance="@style/place"
                     android:textStyle="bold" />

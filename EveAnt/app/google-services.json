@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "230061643985",
+    "project_id": "eveant-e15d8",
+    "storage_bucket": "eveant-e15d8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:230061643985:android:43376afd549cea277c4df0",
+        "android_client_info": {
+          "package_name": "com.example.eveant"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGgXtA9Qnk6h5uBQyVTrJRmD2kw2zVIKI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

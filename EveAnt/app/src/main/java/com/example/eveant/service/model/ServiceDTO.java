@@ -1,5 +1,7 @@
 package com.example.eveant.service.model;
 
+import com.example.eveant.eventType.EventType;
+
 import java.util.Date;
 import java.util.List;
 
@@ -8,9 +10,9 @@ public class ServiceDTO {
     private String provider;
     private Date lastModification;
     private String name;
-    private String category;
+    private Category category;
     private String description;
-    private List<Integer> eventTypes;
+    private List<EventType> eventTypes;
     private Long price;
     private int discount;
     private Boolean visible;
@@ -123,11 +125,11 @@ public class ServiceDTO {
         this.name = name;
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 
@@ -139,11 +141,11 @@ public class ServiceDTO {
         this.description = description;
     }
 
-    public List<Integer> getEventTypes() {
+    public List<EventType> getEventTypes() {
         return eventTypes;
     }
 
-    public void setEventTypes(List<Integer> eventTypes) {
+    public void setEventTypes(List<EventType> eventTypes) {
         this.eventTypes = eventTypes;
     }
 

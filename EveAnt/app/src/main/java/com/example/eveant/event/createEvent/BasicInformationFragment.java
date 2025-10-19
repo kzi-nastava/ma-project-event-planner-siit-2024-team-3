@@ -28,9 +28,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.eveant.R;
 import com.example.eveant.RetrofitClient;
+import com.example.eveant.budget.Budget;
+import com.example.eveant.budget.BudgetFragment;
 import com.example.eveant.event.Event;
 import com.example.eveant.event.EventActivity;
 import com.example.eveant.event.EventCreationViewModel;
@@ -259,9 +263,42 @@ public class BasicInformationFragment extends Fragment {
                                 // fallback: do nothing; Agenda will default to today (but server may reject)
                             }
                             // Tell Activity to move to AGENDA (single source of navigation)
-                            if (requireActivity() instanceof EventActivity) {
+                            /*if (requireActivity() instanceof EventActivity) {
                                 ((EventActivity) requireActivity()).showStep(EventActivity.Step.AGENDA, true);
-                            }
+                            }*/
+
+                            //Nakon kreiranja eventa odmah kreiramo i budžet
+                            RetrofitClient.budgetService.createBudget(eventId).enqueue(new retrofit2.Callback<Budget>() {
+                                @Override
+                                public void onResponse(@NonNull retrofit2.Call<Budget> call,
+                                                       @NonNull retrofit2.Response<Budget> resp2) {
+                                    if (!resp2.isSuccessful() || resp2.body() == null) {
+                                        showError("Failed to create budget (" + resp2.code() + ")");
+                                        return;
+                                    }
+                                    int budgetId = resp2.body().getId();
+
+                                    Bundle args = new Bundle();
+                                    args.putInt("eventId", eventId);
+                                    args.putInt("budgetId", budgetId);
+                                    args.putInt("eventTypeId", eventType.getId());
+                                    args.putBoolean("isFlowMode", true);
+
+                                    if (requireActivity() instanceof EventActivity) {
+                                        EventActivity activity = (EventActivity) requireActivity();
+                                        activity.setBudgetArgs(args);
+                                        activity.showStep(EventActivity.Step.BUDGET, true);
+                                    }
+
+
+                                }
+
+                                @Override
+                                public void onFailure(@NonNull retrofit2.Call<Budget> call, @NonNull Throwable t) {
+                                    showError("Network error while creating budget: " + t.getMessage());
+                                }
+                            });
+
                         }
 
                         @Override

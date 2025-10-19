@@ -1,5 +1,6 @@
 package com.example.eveant;
 
+import com.example.eveant.category.CategoryRejectionRequest;
 import com.example.eveant.service.model.Category;
 
 import java.util.List;
@@ -24,4 +25,9 @@ public interface CategoryService {
 
     @POST("/api/categories")
     Call<Category> createCategory(@Body Category category);
+    @PUT("/api/categories/{id}/reject")
+    Call<Void> rejectCategory(@Path("id") int id);
+    @PUT("/api/categories/{id}/reject")
+    Call<Void> rejectCategoryWithReplacement(@Path("id") int id, @Body CategoryRejectionRequest request);
+
 }

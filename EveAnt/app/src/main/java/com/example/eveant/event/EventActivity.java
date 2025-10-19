@@ -22,8 +22,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class EventActivity extends AppCompatActivity {
 
     public enum Step {
-        CHOOSE_TYPE, BASIC_INFO, AGENDA, INVITATIONS
+        CHOOSE_TYPE, BASIC_INFO, AGENDA, INVITATIONS, BUDGET
     }
+    private Bundle budgetArgs;
 
     private Step current = Step.CHOOSE_TYPE;
 
@@ -79,6 +80,9 @@ public class EventActivity extends AppCompatActivity {
                 }
                 break;
             }
+            case BUDGET:
+                showStep(Step.AGENDA, true);
+                break;
 
             case AGENDA:
                 if (isCurrentEventPublic()) {
@@ -104,8 +108,11 @@ public class EventActivity extends AppCompatActivity {
             case BASIC_INFO:
                 showStep(Step.CHOOSE_TYPE, true);
                 break;
-            case AGENDA:
+            case BUDGET:
                 showStep(Step.BASIC_INFO, true);
+                break;
+            case AGENDA:
+                showStep(Step.BUDGET, true);
                 break;
             case INVITATIONS:
                 showStep(Step.AGENDA, true);
@@ -125,6 +132,15 @@ public class EventActivity extends AppCompatActivity {
             case BASIC_INFO:
                 fragment = new BasicInformationFragment();
                 break;
+            case BUDGET: {
+                Fragment budgetFragment = new com.example.eveant.budget.BudgetFragment();
+                if (budgetArgs != null) {
+                    budgetFragment.setArguments(budgetArgs);
+                }
+                fragment = budgetFragment;
+                break;
+            }
+
 
             case AGENDA: {
                 // Create AGENDA with the freshly created eventId from the VM
@@ -175,10 +191,15 @@ public class EventActivity extends AppCompatActivity {
     private int getIndex(Step step) {
         switch (step) {
             case BASIC_INFO:  return 2;
-            case AGENDA:      return 3;
-            case INVITATIONS: return 4;
+            case BUDGET:      return 3;
+            case AGENDA:      return 4;
+            case INVITATIONS: return 5;
             default:          return 1;
         }
+    }
+
+    public void setBudgetArgs(Bundle args) {
+        this.budgetArgs = args;
     }
 
     public void updateProgress(int completedStep) {

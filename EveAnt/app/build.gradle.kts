@@ -2,6 +2,8 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
+    id("com.google.gms.google-services")
+
 }
 
 fun getIpAddress(): String? {
@@ -77,6 +79,18 @@ dependencies {
     annotationProcessor ("com.github.bumptech.glide:compiler:4.16.0")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("org.osmdroid:osmdroid-android:6.1.17")
+
+    implementation("com.google.android.flexbox:flexbox:3.0.0")
+    implementation ("com.github.NaikSoftware:StompProtocolAndroid:1.6.6")
+    implementation ("com.squareup.okhttp3:okhttp:4.9.3")
+    implementation ("io.reactivex.rxjava2:rxandroid:2.1.1")
+    implementation ("io.reactivex.rxjava2:rxjava:2.2.21")
+    implementation ("com.google.firebase:firebase-messaging:24.0.0")
+    implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
+    implementation("com.google.firebase:firebase-analytics")
+}
+apply(plugin = "com.google.gms.google-services")
+
 }
 java {
     sourceCompatibility = JavaVersion.VERSION_11
