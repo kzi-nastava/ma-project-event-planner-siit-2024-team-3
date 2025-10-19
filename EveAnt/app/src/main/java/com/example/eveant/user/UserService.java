@@ -85,18 +85,18 @@ public interface UserService {
 
 
 
-    @GET("api/users/{currentEmail}/blocked/{targetEmail}")
+    @GET("users/{currentEmail}/blocked/{targetEmail}")
     Call<Boolean> isUserBlocked(@Path("currentEmail") String currentEmail,
                                 @Path("targetEmail") String targetEmail);
 
-    @POST("api/users/{currentEmail}/block/{targetEmail}")
+    @POST("users/{currentEmail}/block/{targetEmail}")
     Call<Void> blockUser(@Path("currentEmail") String currentEmail,
                          @Path("targetEmail") String targetEmail);
 
-    @DELETE("api/users/{currentEmail}/block/{targetEmail}")
+    @DELETE("users/{currentEmail}/block/{targetEmail}")
     Call<Void> unblockUser(@Path("currentEmail") String currentEmail,
                            @Path("targetEmail") String targetEmail);
 
-    @POST("api/reports")
+    @POST("reports")
     Call<Void> submitReport(@Body ProfilePictureComponent.ReportRequest reportRequest);
 }

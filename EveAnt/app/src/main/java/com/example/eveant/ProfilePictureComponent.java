@@ -9,10 +9,12 @@ import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import com.example.eveant.R;
 import com.example.eveant.user.UserService;
 import com.example.eveant.user.model.Profile;
 import com.example.eveant.user.security.AuthManager;
+import com.google.gson.annotations.SerializedName;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -21,14 +23,9 @@ import retrofit2.Response;
 public class ProfilePictureComponent extends RelativeLayout {
 
     private ImageView avatar;
-    private LinearLayout profileMenu;
-    private Button btnBlock, btnReport;
-    private RelativeLayout profileContainer;
-
     private Profile profile;
     private String currentUserEmail;
     private boolean isBlocked = false;
-    private boolean menuOpen = false;
 
     private UserService userService;
     private static final String TAG = "ProfilePictureComponent";
@@ -53,10 +50,6 @@ public class ProfilePictureComponent extends RelativeLayout {
 
         // Initialize views
         avatar = findViewById(R.id.avatar);
-        profileMenu = findViewById(R.id.profile_menu);
-        btnBlock = findViewById(R.id.btn_block);
-        btnReport = findViewById(R.id.btn_report);
-        profileContainer = findViewById(R.id.profile_container);
 
         // Initialize services
         userService = RetrofitClient.retrofit.create(UserService.class);
@@ -70,32 +63,56 @@ public class ProfilePictureComponent extends RelativeLayout {
 
     private void setupClickListeners() {
         // Profile container click
-        profileContainer.setOnClickListener(v -> {
+        avatar.setOnClickListener(v -> {
+            Log.d(TAG, "Avatar clicked");
             if (!isOwnProfile()) {
-                toggleMenu();
+                showPopupMenu();
             }
         });
+    }
 
-        // Block button
+    private void showPopupMenu() {
+        // Inflate the popup menu layout
+        View popupView = LayoutInflater.from(getContext()).inflate(R.layout.profile_popup_menu, null);
+
+        Button btnBlock = popupView.findViewById(R.id.btn_block);
+        Button btnReport = popupView.findViewById(R.id.btn_report);
+
+        // Update block button text
+        btnBlock.setText(isBlocked ? "Unblock" : "Block");
+
+        // Create the popup window
+        PopupWindow popupWindow = new PopupWindow(
+                popupView,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                true // Focusable
+        );
+
+        // Set background and elevation
+        popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.profile_menu_background));
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            popupWindow.setElevation(20f);
+        }
+
+        // Set up button listeners
         btnBlock.setOnClickListener(v -> {
             toggleBlock();
-            profileMenu.setVisibility(View.GONE);
-            menuOpen = false;
+            popupWindow.dismiss();
         });
 
-        // Report button
         btnReport.setOnClickListener(v -> {
             showReportDialog();
-            profileMenu.setVisibility(View.GONE);
-            menuOpen = false;
+            popupWindow.dismiss();
         });
 
-        // Close menu when clicking outside
-        setOnClickListener(v -> {
-            if (menuOpen) {
-                profileMenu.setVisibility(View.GONE);
-                menuOpen = false;
-            }
+        // Show the popup window relative to avatar
+        popupWindow.showAsDropDown(avatar);
+
+        // Dismiss when touching outside
+        popupView.setOnTouchListener((v, event) -> {
+            popupWindow.dismiss();
+            return true;
         });
     }
 
@@ -114,11 +131,6 @@ public class ProfilePictureComponent extends RelativeLayout {
         avatar.setImageResource(R.drawable.ic_person);
     }
 
-    private void toggleMenu() {
-        menuOpen = !menuOpen;
-        profileMenu.setVisibility(menuOpen ? View.VISIBLE : View.GONE);
-    }
-
     private boolean isOwnProfile() {
         return profile != null && currentUserEmail != null && currentUserEmail.equals(profile.getEmail());
     }
@@ -126,12 +138,12 @@ public class ProfilePictureComponent extends RelativeLayout {
     private void updateAppearance() {
         if (isOwnProfile()) {
             // Disable interactions for own profile
-            profileContainer.setClickable(false);
-            profileContainer.setFocusable(false);
+            avatar.setClickable(false);
+            avatar.setFocusable(false);
             avatar.setBackgroundResource(R.drawable.own_profile_border);
         } else {
-            profileContainer.setClickable(true);
-            profileContainer.setFocusable(true);
+            avatar.setClickable(true);
+            avatar.setFocusable(true);
             avatar.setBackground(null);
         }
     }
@@ -145,7 +157,6 @@ public class ProfilePictureComponent extends RelativeLayout {
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     isBlocked = response.body();
-                    updateBlockButtonText();
                 }
             }
 
@@ -154,10 +165,6 @@ public class ProfilePictureComponent extends RelativeLayout {
                 Log.e(TAG, "Failed to check block status: " + t.getMessage());
             }
         });
-    }
-
-    private void updateBlockButtonText() {
-        btnBlock.setText(isBlocked ? "Unblock" : "Block");
     }
 
     private void toggleBlock() {
@@ -174,7 +181,6 @@ public class ProfilePictureComponent extends RelativeLayout {
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
                         isBlocked = false;
-                        updateBlockButtonText();
                         Toast.makeText(getContext(), "User unblocked", Toast.LENGTH_SHORT).show();
                         // Send notification if needed
                         // webSocketService.sendNotification(profile.getEmail() + " has been unblocked!");
@@ -197,7 +203,6 @@ public class ProfilePictureComponent extends RelativeLayout {
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     if (response.isSuccessful()) {
                         isBlocked = true;
-                        updateBlockButtonText();
                         Toast.makeText(getContext(), "User blocked", Toast.LENGTH_SHORT).show();
                         // Send notification if needed
                         // webSocketService.sendNotification(profile.getEmail() + " has been blocked!");
@@ -248,25 +253,52 @@ public class ProfilePictureComponent extends RelativeLayout {
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
+                Log.d(TAG, "Report response - Code: " + response.code() + ", Message: " + response.message());
+
                 if (response.isSuccessful()) {
                     Toast.makeText(getContext(), "Report submitted for admin review", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getContext(), "Failed to submit report", Toast.LENGTH_SHORT).show();
+                    // Try to get the error body for more details
+                    if (response.errorBody() != null) {
+                        try {
+                            String errorBody = response.errorBody().string();
+                            Log.e(TAG, "Report error body: " + errorBody);
+
+                            // Check for specific error patterns
+                            if (errorBody.contains("reporter") && errorBody.contains("reported")) {
+                                Toast.makeText(getContext(), "Cannot report yourself", Toast.LENGTH_SHORT).show();
+                            } else if (errorBody.contains("not found") || errorBody.contains("user")) {
+                                Toast.makeText(getContext(), "User not found", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getContext(), "Report failed: " + response.code(), Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (Exception e) {
+                            Log.e(TAG, "Error reading error body: " + e.getMessage());
+                            Toast.makeText(getContext(), "Report failed: " + response.code(), Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(getContext(), "Report failed: " + response.code(), Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Log.e(TAG, "Report failed: " + t.getMessage());
-                Toast.makeText(getContext(), "Failed to submit report", Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Report network failure: " + t.getMessage());
+                Toast.makeText(getContext(), "Network error", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     // Helper class for report request
     public static class ReportRequest {
+        @SerializedName("reporterEmail")
         private String reporterEmail;
+
+        @SerializedName("reportedEmail")
         private String reportedEmail;
+
+        @SerializedName("reason")
         private String reason;
 
         public ReportRequest(String reporterEmail, String reportedEmail, String reason) {

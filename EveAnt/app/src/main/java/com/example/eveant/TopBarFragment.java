@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.eveant.R;
-import com.example.eveant.notification.NotificationActivity;
+import com.example.eveant.notification.NotificationFragment;
 
 public class TopBarFragment extends Fragment {
 
@@ -27,7 +27,7 @@ public class TopBarFragment extends Fragment {
         backButton.setOnClickListener(view -> requireActivity().onBackPressed());
 
         notifButton.setOnClickListener(view -> {
-            Intent intent = new Intent(requireContext(), NotificationActivity.class);
+            Intent intent = new Intent(requireContext(), NotificationFragment.class);
             startActivity(intent);
         });
 

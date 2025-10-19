@@ -10,6 +10,9 @@ import androidx.fragment.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.eveant.notification.NotificationFragment;
+
 public abstract class BaseFragment extends Fragment {
 
     /** Must return the Activity container id used by FragmentTransactions. */
@@ -46,7 +49,7 @@ public abstract class BaseFragment extends Fragment {
         FragmentManager fm = requireActivity().getSupportFragmentManager();
         fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
         fm.beginTransaction()
-                .replace(getMainContainerId(), createHomeFragment())
+                .replace(getMainContainerId(), new NotificationFragment())
                 .commit();
     }
 

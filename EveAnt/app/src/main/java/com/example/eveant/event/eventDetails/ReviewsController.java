@@ -3,6 +3,7 @@ package com.example.eveant.event.eventDetails;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eveant.RetrofitClient;
+import com.example.eveant.comment.Comment;
 import com.example.eveant.reviews.Review;
 
 import java.util.ArrayList;
@@ -35,7 +36,31 @@ class ReviewsController {
             @Override public void onFailure(Call<List<Review>> c, Throwable t) { /* optionally toast */ }
         });
     }
+    void setApiComments(List<Comment> comments) {
+        if (rv == null || comments == null) return;
 
+        // Convert Comment objects to Review objects
+        List<Review> reviews = new ArrayList<>();
+        for (Comment comment : comments) {
+            // Extract author name from profile
+            String authorName = "Anonymous";
+            if (comment.getProfile() != null && comment.getProfile().getUsername() != null) {
+                authorName = comment.getProfile().getUsername();
+            }
+
+            // Use createdAt as the date
+            String date = comment.getCreatedAt();
+
+            Review review = new Review(
+                    authorName,
+                    comment.getContent(),
+                    date,
+                    0  // default rating since comments don't have ratings
+            );
+            reviews.add(review);
+        }
+        adapter.replaceAll(reviews);
+    }
     /** For local echo after posting comment (if you keep comments inline). */
     void addLocalComment(String author, String text, String when) {
         Review local = new Review(author, text, when, 0); // adapt to your constructor

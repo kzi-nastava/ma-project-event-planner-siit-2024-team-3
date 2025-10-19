@@ -18,13 +18,14 @@ import com.example.eveant.BaseFragment;
 import com.example.eveant.HomeFragment;
 import com.example.eveant.R;
 import com.example.eveant.RetrofitClient;
+import com.example.eveant.comment.CommentsSectionFragment;
 import com.example.eveant.event.Event;
 import com.example.eveant.event.agenda.Activity;
 import com.example.eveant.event.eventDetails.utils.Ui;
 import com.example.eveant.event.invitations.Invitation;
 import com.example.eveant.event.invitations.InviteRequest;
+import com.example.eveant.user.security.AuthManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -42,15 +43,15 @@ public class EventDetailsFragment extends BaseFragment {
     private Event currentEvent;
 
     // UI refs we need directly
-    private Button btnJoin, btnDownloadPdf, btnPost;
-    private EditText etComment;
-    private LinearLayout commentBox;
-    private RecyclerView rvActivities, rvComments;
+    private Button btnJoin, btnDownloadPdf;
+    private RecyclerView rvActivities;
+
+    // Services
+    private AuthManager authManager;
 
     // Controllers
     private JoinController joinController;
     private ActivitiesController activitiesController;
-    private ReviewsController reviewsController;
     private MapController mapController;
     private PdfExporter pdfExporter;
 
@@ -64,7 +65,10 @@ public class EventDetailsFragment extends BaseFragment {
 
     @Override public void onCreate(@Nullable Bundle s) {
         super.onCreate(s);
-        if (getArguments()!=null) eventId = getArguments().getInt(ARG_EVENT_ID, -1);
+        if (getArguments() != null) eventId = getArguments().getInt(ARG_EVENT_ID, -1);
+
+        // Initialize services
+        authManager = AuthManager.getInstance(requireContext());
     }
 
     @Nullable @Override
@@ -75,36 +79,26 @@ public class EventDetailsFragment extends BaseFragment {
     @Override public void onViewCreated(@NonNull View v, @Nullable Bundle s) {
         super.onViewCreated(v, s);
         setupBackBar(v);
+
         // 0) background
         v.setBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.white));
 
-        // 1) Back navigator (header + system)
-
-        // 2) Pull core refs we need locally
+        // 1) Pull core refs we need locally
         btnJoin       = v.findViewById(R.id.btnJoin);
         btnDownloadPdf= v.findViewById(R.id.btnDownloadPdf);
-//        commentBox    = v.findViewById(R.id.commentBox);
-        etComment     = v.findViewById(R.id.etComment);
-        btnPost       = v.findViewById(R.id.btnPost);
-
         rvActivities  = v.findViewById(R.id.rvActivities);
-        rvComments    = v.findViewById(R.id.rvComments);
 
         if (rvActivities != null) {
             rvActivities.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         }
-        if (rvComments != null) {
-            rvComments.setLayoutManager(new LinearLayoutManager(getContext()));
-        }
 
-        // 3) Controllers
-        joinController       = new JoinController(requireContext(), btnJoin, commentBox);
+        // 2) Controllers
+        joinController       = new JoinController(requireContext(), btnJoin, null); // Remove comment section reference
         activitiesController = new ActivitiesController(rvActivities);
-        reviewsController    = new ReviewsController(rvComments);
         mapController        = new MapController(v); // finds mapView inside
         pdfExporter          = new PdfExporter(requireContext(), v);
 
-        // 4) UI events
+        // 3) UI events
         if (btnJoin != null) btnJoin.setOnClickListener(x -> joinController.handleJoinClick(currentEvent, () -> toggleJoin()));
         if (btnDownloadPdf != null) btnDownloadPdf.setOnClickListener(x -> {
             if (currentEvent == null) {
@@ -113,25 +107,23 @@ public class EventDetailsFragment extends BaseFragment {
                 pdfExporter.export(currentEvent, activitiesController.getCurrentActivities());
             }
         });
-        if (btnPost != null) {
-            btnPost.setOnClickListener(x -> {
-                String txt = etComment != null ? String.valueOf(etComment.getText()).trim() : "";
-                if (TextUtils.isEmpty(txt)) {
-                    if (etComment != null) etComment.setError("Required");
-                    return;
-                }
-                if (etComment != null) { etComment.setError(null); etComment.setText(""); }
-                reviewsController.addLocalComment("You", txt, "Just now"); // or send to backend if needed
-                Ui.toast(requireContext(), "Comment posted");
-            });
-        }
+
+        // 4) Add Comments Section Fragment
+        addCommentsFragment();
 
         // 5) Data
         if (eventId > 0) {
             fetchEvent();
             fetchActivities();
-            reviewsController.fetchReviews(eventId); // load all reviews
         }
+    }
+
+    private void addCommentsFragment() {
+        CommentsSectionFragment commentsFragment = CommentsSectionFragment.newInstance(eventId);
+        getChildFragmentManager()
+                .beginTransaction()
+                .replace(R.id.comments_container, commentsFragment)
+                .commit();
     }
 
     /* ---------------------------- Network orchestration ---------------------------- */
@@ -140,7 +132,10 @@ public class EventDetailsFragment extends BaseFragment {
         RetrofitClient.eventService.getEventById(eventId).enqueue(new Callback<Event>() {
             @Override public void onResponse(Call<Event> c, Response<Event> r) {
                 if (!isAdded()) return;
-                if (!r.isSuccessful() || r.body()==null) { Ui.toast(requireContext(),"Load event failed: "+r.code()); return; }
+                if (!r.isSuccessful() || r.body()==null) {
+                    Ui.toast(requireContext(),"Load event failed: "+r.code());
+                    return;
+                }
                 currentEvent = r.body();
 
                 // Bind top header fields + photo + map
@@ -152,7 +147,10 @@ public class EventDetailsFragment extends BaseFragment {
                     checkIfUserHasJoined(); // calls joinController.refreshUi()
                 }
             }
-            @Override public void onFailure(Call<Event> c, Throwable t) { if (isAdded()) Ui.toast(requireContext(),"Error: "+t.getMessage()); }
+            @Override
+            public void onFailure(Call<Event> c, Throwable t) {
+                if (isAdded()) Ui.toast(requireContext(),"Error: "+t.getMessage());
+            }
         });
     }
 
@@ -160,10 +158,16 @@ public class EventDetailsFragment extends BaseFragment {
         RetrofitClient.activityService.getByEventId(eventId).enqueue(new Callback<List<Activity>>() {
             @Override public void onResponse(Call<List<Activity>> c, Response<List<Activity>> r) {
                 if (!isAdded()) return;
-                if (!r.isSuccessful() || r.body()==null) { Ui.toast(requireContext(),"Load agenda failed: "+r.code()); return; }
+                if (!r.isSuccessful() || r.body()==null) {
+                    Ui.toast(requireContext(),"Load agenda failed: "+r.code());
+                    return;
+                }
                 activitiesController.submit(r.body());
             }
-            @Override public void onFailure(Call<List<Activity>> c, Throwable t) { if (isAdded()) Ui.toast(requireContext(),"Error: "+t.getMessage()); }
+            @Override
+            public void onFailure(Call<List<Activity>> c, Throwable t) {
+                if (isAdded()) Ui.toast(requireContext(),"Error: "+t.getMessage());
+            }
         });
     }
 
@@ -173,36 +177,44 @@ public class EventDetailsFragment extends BaseFragment {
                 .getEmail();
 
         RetrofitClient.invitationEventService.getInvitations(eventId).enqueue(new Callback<List<Invitation>>() {
-            @Override public void onResponse(Call<List<Invitation>> c, Response<List<Invitation>> r) {
+            @Override
+            public void onResponse(Call<List<Invitation>> c, Response<List<Invitation>> r) {
                 if (!isAdded()) return;
                 boolean joined = false;
                 if (r.isSuccessful() && r.body() != null) {
                     for (Invitation inv : r.body()) {
-                        if (email.equalsIgnoreCase(inv.email)) { joined = true; break; }
+                        if (email.equalsIgnoreCase(inv.email)) {
+                            joined = true;
+                            break;
+                        }
                     }
                 }
                 joinController.setJoined(joined);
             }
-            @Override public void onFailure(Call<List<Invitation>> c, Throwable t) { if (!isAdded()) return; joinController.refreshUi(); }
+            @Override
+            public void onFailure(Call<List<Invitation>> c, Throwable t) {
+                if (!isAdded()) return;
+                joinController.refreshUi();
+            }
         });
     }
 
     /* ---------------------------- Join/Leave actions ---------------------------- */
 
     private void toggleJoin() {
-        if (joinController.isJoined()) leaveEvent(); else joinEvent();
+        if (joinController.isJoined()) leaveEvent();
+        else joinEvent();
     }
 
     private void joinEvent() {
         joinController.setLoading(true);
-        String email = com.example.eveant.user.security.AuthManager
-                .getInstance(requireContext())
-                .getEmail();
+        String email = authManager.getEmail();
 
         RetrofitClient.invitationEventService
                 .sendInvitation(eventId, new InviteRequest(email, "", eventId))
                 .enqueue(new Callback<Void>() {
-                    @Override public void onResponse(Call<Void> c, Response<Void> r) {
+                    @Override
+                    public void onResponse(Call<Void> c, Response<Void> r) {
                         if (!isAdded()) return;
                         joinController.setLoading(false);
                         if (r.isSuccessful()) {
@@ -212,7 +224,8 @@ public class EventDetailsFragment extends BaseFragment {
                             Ui.toast(requireContext(), "Join failed: " + r.code());
                         }
                     }
-                    @Override public void onFailure(Call<Void> c, Throwable t) {
+                    @Override
+                    public void onFailure(Call<Void> c, Throwable t) {
                         if (!isAdded()) return;
                         joinController.setLoading(false);
                         Ui.toast(requireContext(), "Network error: " + t.getMessage());
@@ -222,14 +235,13 @@ public class EventDetailsFragment extends BaseFragment {
 
     private void leaveEvent() {
         joinController.setLoading(true);
-        String email = com.example.eveant.user.security.AuthManager
-                .getInstance(requireContext())
-                .getEmail();
+        String email = authManager.getEmail();
 
         RetrofitClient.invitationEventService
                 .declineInvitation(eventId, java.net.URLEncoder.encode(email))
                 .enqueue(new Callback<Void>() {
-                    @Override public void onResponse(Call<Void> c, Response<Void> r) {
+                    @Override
+                    public void onResponse(Call<Void> c, Response<Void> r) {
                         if (!isAdded()) return;
                         joinController.setLoading(false);
                         if (r.isSuccessful()) {
@@ -239,7 +251,8 @@ public class EventDetailsFragment extends BaseFragment {
                             Ui.toast(requireContext(), "Leave failed: " + r.code());
                         }
                     }
-                    @Override public void onFailure(Call<Void> c, Throwable t) {
+                    @Override
+                    public void onFailure(Call<Void> c, Throwable t) {
                         if (!isAdded()) return;
                         joinController.setLoading(false);
                         Ui.toast(requireContext(), "Network error: " + t.getMessage());

@@ -13,44 +13,4 @@
         android:scaleType="centerCrop"
         android:src="@drawable/ic_person" />
 
-    <LinearLayout
-        android:id="@+id/profile_menu"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/avatar"
-        android:layout_alignEnd="@id/avatar"
-        android:background="@drawable/profile_menu_background"
-        android:orientation="vertical"
-        android:padding="8dp"
-        android:visibility="gone">
-
-        <Button
-            android:id="@+id/btn_block"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:padding="8dp"
-            android:text="Block"
-            android:textAllCaps="false"
-            android:textColor="@android:color/black"
-            android:textSize="14sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#f0f0f0"
-            android:layout_marginVertical="4dp" />
-
-        <Button
-            android:id="@+id/btn_report"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:padding="8dp"
-            android:text="Report"
-            android:textAllCaps="false"
-            android:textColor="@android:color/black"
-            android:textSize="14sp" />
-    </LinearLayout>
-
 </RelativeLayout>

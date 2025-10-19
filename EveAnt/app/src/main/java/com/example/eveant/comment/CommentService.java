@@ -8,19 +8,19 @@ import java.util.List;
 
 public interface CommentService {
 
-    @POST("api/comments")
+    @POST("comments")
     Call<Comment> addComment(@Body CommentRequest comment);
 
-    @GET("api/comments/event/{eventId}")
+    @GET("comments/event/{eventId}")
     Call<List<Comment>> getApprovedComments(@Path("eventId") Integer eventId);
 
-    @GET("api/comments/pending")
+    @GET("comments/pending")
     Call<List<Comment>> getPendingComments();
 
-    @POST("api/comments/{id}/approve")
+    @POST("comments/{id}/approve")
     Call<Void> approveComment(@Path("id") Integer id);
 
-    @DELETE("api/comments/{id}")
+    @DELETE("comments/{id}")
     Call<Void> deleteComment(@Path("id") Integer id);
 
     // Request class for adding comments
