@@ -530,7 +530,7 @@ public class SearchResults extends Fragment {
             @Override
             public void onResponse(Call<List<Service>> call, Response<List<Service>> response) {
                 if (response.isSuccessful() && response.body() != null && recyclerView != null) {
-                    recyclerView.setAdapter(new ServiceAdapter((ArrayList<Service>) response.body()));
+                    recyclerView.setAdapter(new ServiceAdapter((ArrayList<Service>) response.body(), null));
                 } else {
                     Toast.makeText(getContext(), "No services found", Toast.LENGTH_SHORT).show();
                 }

@@ -21,30 +21,69 @@
             android:id="@+id/llGlobalButtons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:gravity="center"
             android:padding="8dp">
 
-            <Button
-                android:id="@+id/btnAllAttendance"
-                android:layout_width="wrap_content"
+            <!-- First row of buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rounded_corners_8599e0"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:textColor="@color/white"
-                android:text="Attendance graph" />
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:paddingBottom="8dp">
 
-            <Button
-                android:id="@+id/btnAllReviews"
-                android:layout_width="wrap_content"
+                <Button
+                    android:id="@+id/btnAllAttendance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_corners_8599e0"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:textColor="@color/white"
+                    android:text="Attendance graph" />
+
+                <Button
+                    android:id="@+id/btnAllReviews"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Reviews graph"
+                    android:background="@drawable/rounded_corners_8599e0"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:textColor="@color/white"
+                    android:layout_marginStart="12dp"/>
+            </LinearLayout>
+
+            <!-- Second row of buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Reviews graph"
-                android:background="@drawable/rounded_corners_8599e0"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:textColor="@color/white"
-                android:layout_marginStart="12dp"/>
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/btnAdminComments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Approve Comments"
+                    android:background="@drawable/rounded_corners_8599e0"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:textColor="@color/white"
+                    android:layout_marginEnd="6dp"/>
+
+                <Button
+                    android:id="@+id/btnAdminReports"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Manage Reports"
+                    android:background="@drawable/rounded_corners_8599e0"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:textColor="@color/white"
+                    android:layout_marginStart="6dp"/>
+            </LinearLayout>
         </LinearLayout>
 
         <TextView

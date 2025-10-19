@@ -17,6 +17,8 @@ import com.example.eveant.BaseFragment;
 import com.example.eveant.HomeFragment;
 import com.example.eveant.R;
 import com.example.eveant.RetrofitClient;
+import com.example.eveant.admin.adminReports.AdminReportsFragment;
+import com.example.eveant.admin.commentApproval.AdminCommentApprovalFragment;
 import com.example.eveant.event.Event;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -28,11 +30,12 @@ public class PublicEventsStatsFragment extends BaseFragment {
     private ProgressBar progress;
     private TextView tvTotalPublic, tvByCity;
     private PublicEventAdapter adapter;
-    @Override protected int getMainContainerId() { return R.id.home_container; } // your Activity container id
+    private Button btnAdminReports;
+    private Button btnAllAttendance, btnAllReviews, btnAdminComments;
+
+    @Override protected int getMainContainerId() { return R.id.home_container; }
     @NonNull @Override protected Fragment createHomeFragment() { return new HomeFragment(); }
 
-
-    private Button btnAllAttendance, btnAllReviews;
     private List<Event> lastLoaded = new ArrayList<>();
 
     @Nullable
@@ -45,6 +48,8 @@ public class PublicEventsStatsFragment extends BaseFragment {
         tvByCity = v.findViewById(R.id.tvByCity);
         btnAllAttendance = v.findViewById(R.id.btnAllAttendance);
         btnAllReviews = v.findViewById(R.id.btnAllReviews);
+        btnAdminComments = v.findViewById(R.id.btnAdminComments);
+        btnAdminReports = v.findViewById(R.id.btnAdminReports);
 
         rv.setLayoutManager(new LinearLayoutManager(requireContext()));
         adapter = new PublicEventAdapter();
@@ -62,6 +67,27 @@ public class PublicEventsStatsFragment extends BaseFragment {
             startActivity(GraphsActivity.intentForAll(requireContext(), ids, names, GraphsActivity.TYPE_REVIEWS));
         });
 
+        // Add click listener for admin comments button
+        btnAdminComments.setOnClickListener(view -> {
+            AdminCommentApprovalFragment adminCommentFragment = AdminCommentApprovalFragment.newInstance();
+
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(getId(), adminCommentFragment) // Use the current fragment's container
+                    .addToBackStack("admin_comments")
+                    .commit();
+        });
+
+
+
+
+
+        btnAdminReports.setOnClickListener(view -> {
+            AdminReportsFragment adminReportsFragment = AdminReportsFragment.newInstance();
+            requireActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(getId(), adminReportsFragment)
+                    .addToBackStack("admin_reports")
+                    .commit();
+        });
         loadData();
         return v;
     }
@@ -93,6 +119,7 @@ public class PublicEventsStatsFragment extends BaseFragment {
         super.onViewCreated(v, s);
         setupBackBar(v);
     }
+
     private void updateStats(List<Event> items) {
         tvTotalPublic.setText("Public events: " + (items == null ? 0 : items.size()));
         Map<String, Long> byCity = new LinkedHashMap<>();

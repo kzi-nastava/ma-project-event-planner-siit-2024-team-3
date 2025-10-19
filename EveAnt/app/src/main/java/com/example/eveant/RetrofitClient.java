@@ -2,6 +2,7 @@ package com.example.eveant;
 
 import android.util.Log;
 
+import com.example.eveant.admin.adminReports.ReportService;
 import com.example.eveant.budget.BudgetService;
 import com.example.eveant.chat.ChatApiService;
 import com.example.eveant.event.EventService;
@@ -52,11 +53,11 @@ public class RetrofitClient {
    public static EventService eventService = retrofit.create(EventService.class);
    public static UserService userService = retrofit.create(UserService.class);
    public static ActivityService activityService = retrofit.create(ActivityService.class);
-   public static InvitationService invitationService = retrofit.create(InvitationService.class);
    public static OfferService offerService=retrofit.create(OfferService.class);
    public static ChatApiService chatApiService=retrofit.create(ChatApiService.class);
 
    public static BudgetService budgetService=retrofit.create(BudgetService.class);
    public static InvitationEventService invitationEventService = retrofit.create(InvitationEventService.class);
    public static ReviewService reviewService = retrofit.create(ReviewService.class);
+   public static ReportService reportService = retrofit.create(ReportService.class);
 }

@@ -90,9 +90,3 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
 }
 apply(plugin = "com.google.gms.google-services")
-
-}
-java {
-    sourceCompatibility = JavaVersion.VERSION_11
-    targetCompatibility = JavaVersion.VERSION_11
-}

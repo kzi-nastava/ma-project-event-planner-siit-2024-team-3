@@ -971,13 +971,13 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Service>> call, Response<List<Service>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    recyclerView.setAdapter(new ServiceAdapter((ArrayList<Service>) response.body()));
+                    recyclerView.setAdapter(new ServiceAdapter((ArrayList<Service>) response.body(), null));
                     Log.d(TAG, "Services loaded: " + response.body().size() + " items for query: '" + searchQuery + "'");
                     Toast.makeText(getContext(), "Found " + response.body().size() + " services for: " + (searchQuery.isEmpty() ? "all services" : searchQuery), Toast.LENGTH_SHORT).show();
                 } else {
                     Log.d(TAG, "No services found for query: '" + searchQuery + "'");
                     Toast.makeText(getContext(), "No services found for: " + (searchQuery.isEmpty() ? "all services" : searchQuery), Toast.LENGTH_SHORT).show();
-                    recyclerView.setAdapter(new ServiceAdapter(new ArrayList<>()));
+                    recyclerView.setAdapter(new ServiceAdapter(new ArrayList<>(), null));
                 }
             }
 
