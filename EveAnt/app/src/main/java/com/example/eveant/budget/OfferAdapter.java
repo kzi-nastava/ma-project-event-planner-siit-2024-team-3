@@ -1,7 +1,7 @@
 package com.example.eveant.budget;
 
-import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,61 +15,102 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eveant.R;
+import com.example.eveant.RetrofitClient;
 import com.example.eveant.service.model.OfferDTO;
 
 import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHolder> {
 
     private final List<OfferDTO> offers;
     private final double remainingBudget;
-    private final double maxPriceForItem;
+    private final double maxPrice;
+    private final int budgetId;
+    private final Item selectedItem;
 
-    public OfferAdapter(List<OfferDTO> offers, double remainingBudget, double maxPriceForItem) {
+
+    public OfferAdapter(List<OfferDTO> offers, double remainingBudget, double maxPrice, int budgetId, Item selectedItem) {
         this.offers = offers;
         this.remainingBudget = remainingBudget;
-        this.maxPriceForItem = maxPriceForItem;
+        this.maxPrice = maxPrice;
+        this.budgetId = budgetId;
+        this.selectedItem = selectedItem;
     }
 
     @NonNull
     @Override
     public OfferViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_offer, parent, false);
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_offer, parent, false);
         return new OfferViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull OfferViewHolder holder, int position) {
         OfferDTO offer = offers.get(position);
+
         holder.tvName.setText(offer.getName());
-        holder.tvType.setText(offer.getType().equalsIgnoreCase("service") ? "Service" : "Product");
-        holder.tvPrice.setText(offer.getPrice() + " RSD");
+        holder.tvPrice.setText("Price: " + offer.getPrice() + " RSD");
+        holder.tvDiscount.setText("Discount: " + (offer.getDiscount() != null ? offer.getDiscount() + "%" : "0%"));
 
-        holder.btnViewDetails.setOnClickListener(v -> {
-            double offerPrice = offer.getPrice() != null ? offer.getPrice() : 0.0;
-
-            // ✅ Proveri budžet i maxPrice pre nego što dozvoli detalje/rezervaciju
-            if (offerPrice > remainingBudget) {
-                Toast.makeText(v.getContext(), " Not enough remaining budget.", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            if (offerPrice > maxPriceForItem) {
-                Toast.makeText(v.getContext(), "Offer exceeds max price for this item.", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
+        // Detalji
+        holder.btnViewDetail.setOnClickListener(v -> {
             NavController navController = Navigation.findNavController(v);
-            Bundle args = new Bundle();
-            args.putInt("offerId", offer.getId());
-
-            navController.navigate(R.id.action_offerListFragment_to_serviceDetails, args);
-
-            /*if ("service".equalsIgnoreCase(offer.getType())) {
-                navController.navigate(R.id.action_offerListFragment_to_serviceDetails, args);
-            } else {
-                navController.navigate(R.id.action_offerListFragment_to_productDetails, args);
-            }*/
+            Bundle bundle = new Bundle();
+            bundle.putInt("offerId", offer.getId());
+            navController.navigate(R.id.action_offerListFragment_to_offerDetailsFragment, bundle);
         });
+
+        holder.btnReserve.setOnClickListener(v -> {
+            Log.d("BUDGET_DEBUG",
+                    "offerPrice = " + offer.getPrice() +
+                            ", remainingBudget = " + remainingBudget +
+                            ", maxPrice = " + maxPrice);
+
+
+            if (offer.getPrice() > remainingBudget || offer.getPrice() > maxPrice) {
+                Toast.makeText(v.getContext(), "Offer exceeds budget!", Toast.LENGTH_SHORT).show();
+            } else {
+
+                selectedItem.setOffer(offer);
+
+                RetrofitClient.budgetService.updateItem(budgetId, selectedItem)
+                        .enqueue(new Callback<Item>() {
+                            @Override
+                            public void onResponse(Call<Item> call, Response<Item> response) {
+                                if (response.isSuccessful()) {
+                                    Toast.makeText(v.getContext(), " Offer reserved successfully!", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(v.getContext(), " Failed to reserve offer", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Item> call, Throwable t) {
+                                Toast.makeText(v.getContext(), "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        });
+        OfferDTO reservedOffer = selectedItem.getOffer(); // već postoji ako je rezervisano
+
+        boolean isReserved = reservedOffer != null && reservedOffer.getId() == offer.getId();
+        if (isReserved) {
+            holder.itemView.setBackgroundResource(R.drawable.bg_reserved_offer); // specijalni background
+            holder.tvName.setText(offer.getName() + " (Reserved)");
+            holder.btnReserve.setEnabled(false);
+            holder.btnReserve.setText("Reserved");
+        } else {
+            holder.itemView.setBackgroundResource(R.drawable.bg_offer_default);
+            holder.btnReserve.setEnabled(true);
+            holder.btnReserve.setText("Reserve");
+        }
+
     }
 
     @Override
@@ -78,15 +119,16 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
     }
 
     static class OfferViewHolder extends RecyclerView.ViewHolder {
-        TextView tvName, tvType, tvPrice;
-        Button btnViewDetails;
+        TextView tvName, tvPrice, tvDiscount;
+        Button btnViewDetail, btnReserve;
 
-        public OfferViewHolder(@NonNull View itemView) {
+        OfferViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tvOfferName);
-            tvType = itemView.findViewById(R.id.tvOfferType);
             tvPrice = itemView.findViewById(R.id.tvOfferPrice);
-            btnViewDetails = itemView.findViewById(R.id.btnViewDetails);
+            tvDiscount = itemView.findViewById(R.id.tvOfferDiscount);
+            btnViewDetail = itemView.findViewById(R.id.btnViewDetails);
+            btnReserve = itemView.findViewById(R.id.btnReserve);
         }
     }
 }

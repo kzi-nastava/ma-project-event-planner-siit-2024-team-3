@@ -3,7 +3,9 @@ package com.example.eveant.budget;
 import com.example.eveant.service.model.Category;
 import com.example.eveant.service.model.OfferDTO;
 
-public class Item {
+import java.io.Serializable;
+
+public class Item  implements Serializable {
     private Integer id;
     private String name;
     private Category category;

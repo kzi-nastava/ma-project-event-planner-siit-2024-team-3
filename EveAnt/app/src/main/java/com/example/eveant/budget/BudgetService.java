@@ -24,9 +24,6 @@ public interface BudgetService {
     @POST("budgets/{budgetId}/items")
     Call<Item> addItem(@Path("budgetId") int budgetId, @Body Item item);
 
-    @PUT("budgets/{budgetId}/items")
-    Call<Item> updateItem(@Path("budgetId") int budgetId, @Body Item item);
-
 
     @DELETE("budgets/items/{itemId}")
     Call<Void> deleteItem(@Path("itemId") int itemId);
@@ -35,5 +32,9 @@ public interface BudgetService {
 
     @GET("budgets")
     Call<List<Budget>> getAllBudgets();
+    @PUT("budgets/{budgetId}/items")
+    Call<Item> updateItem(@Path("budgetId") int budgetId, @Body Item item);
+
+
 
 }

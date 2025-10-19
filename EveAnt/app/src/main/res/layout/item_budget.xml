@@ -37,20 +37,26 @@
             android:id="@+id/btnEdit"
             android:text="Edit"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:background="@color/purple"
+            android:textColor="@color/white"/>
 
         <Button
             android:id="@+id/btnDelete"
             android:text="Delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp" />
+            android:layout_marginStart="8dp"
+            android:background="@color/purple"
+            android:textColor="@color/white"/>
 
         <Button
             android:id="@+id/btnSelectOffer"
             android:text="View Offers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp" />
+            android:layout_marginStart="8dp"
+            android:background="@color/purple"
+            android:textColor="@color/white"/>
     </LinearLayout>
 </LinearLayout>

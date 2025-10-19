@@ -56,8 +56,8 @@ public class OfferListFragment extends Fragment {
 
         if (getArguments() != null) {
             categoryId = getArguments().getInt("categoryId", -1);
-            remainingBudget = getArguments().getDouble("remainingBudget", 0.0);
-            maxPriceForItem = getArguments().getDouble("maxPrice", 0.0);
+            remainingBudget = getArguments().getFloat("remainingBudget", 0.0f);
+            maxPriceForItem = getArguments().getFloat("maxPrice", 0.0f);
         }
 
         loadOffers();
@@ -79,7 +79,14 @@ public class OfferListFragment extends Fragment {
                         tvEmpty.setVisibility(View.VISIBLE);
                     } else {
                         tvEmpty.setVisibility(View.GONE);
-                        OfferAdapter adapter = new OfferAdapter(offers, remainingBudget, maxPriceForItem);
+                        OfferAdapter adapter = new OfferAdapter(
+                                offers,
+                                remainingBudget,
+                                maxPriceForItem,
+                                getArguments().getInt("budgetId"),
+                                (Item) getArguments().getSerializable("selectedItem")
+                        );
+
                         rvOffers.setAdapter(adapter);
                     }
                 } else {

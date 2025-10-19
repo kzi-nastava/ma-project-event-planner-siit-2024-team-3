@@ -279,6 +279,11 @@ public class BudgetFragment extends Fragment {
                 .setTitle("Delete item")
                 .setMessage("Are you sure you want to delete \"" + item.getName() + "\"?")
                 .setPositiveButton("Delete", (dialog, which) -> {
+                    if (item.getOffer() != null) {
+                        Toast.makeText(requireContext(), "Cannot delete item with reserved offer.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                     int position = items.indexOf(item);
                     if (position != -1) {
                         items.remove(position);
@@ -330,7 +335,10 @@ public class BudgetFragment extends Fragment {
         Bundle args = new Bundle();
         args.putInt("categoryId", categoryId);
         args.putFloat("remainingBudget", (float) remainingBudget);
-        args.putFloat("maxPrice", (float) (item.getMaxPrice() != null ? item.getMaxPrice() : 0.0));
+        args.putFloat("maxPrice", (float) (item.getMaxPrice() != null ? item.getMaxPrice() : 0.0f));
+        args.putInt("budgetId", budgetId);
+        args.putSerializable("selectedItem", item);
+
 
         NavController navController = NavHostFragment.findNavController(this);
         navController.navigate(R.id.action_budgetFragment_to_offerListFragment, args);

@@ -8,8 +8,10 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface OfferService {
 
@@ -25,6 +27,10 @@ public interface OfferService {
 
     @GET("/api/offers/category/{categoryId}")
     Call<List<OfferDTO>> getOffersByCategory(@Path("categoryId") int categoryId);
-    
+
+    @POST("/offers/{offerId}/reserve")
+    Call<ResponseBody> reserveOffer(@Path("offerId") int offerId, @Query("budgetId") int budgetId);
+
+
 
 }
