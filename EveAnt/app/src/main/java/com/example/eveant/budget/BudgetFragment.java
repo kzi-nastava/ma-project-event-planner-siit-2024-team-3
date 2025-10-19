@@ -222,25 +222,21 @@ public class BudgetFragment extends Fragment {
                     RetrofitClient.budgetService.addItem(budgetId, newItem).enqueue(new Callback<Item>() {
                         @Override
                         public void onResponse(Call<Item> call, Response<Item> response) {
-                            if (response.isSuccessful() && response.body() != null) {
-                                items.add(response.body());
-                                itemAdapter.notifyItemInserted(items.size() - 1);
-                                recalculateBudget();
-
-                                suggestedCategories.removeIf(c -> c.getId() == category.getId());
-                                renderSuggestedCategories();
-
+                            if (response.isSuccessful()) {
+                                Toast.makeText(requireContext(), "Item created successfully", Toast.LENGTH_SHORT).show();
+                                loadItems();
+                                loadSuggestedCategories();
                             } else {
                                 Toast.makeText(requireContext(), "Failed to add item", Toast.LENGTH_SHORT).show();
                             }
                         }
-
 
                         @Override
                         public void onFailure(Call<Item> call, Throwable t) {
                             Toast.makeText(requireContext(), "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
+
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
@@ -396,28 +392,21 @@ public class BudgetFragment extends Fragment {
                     RetrofitClient.budgetService.addItem(budgetId, newItem).enqueue(new Callback<Item>() {
                         @Override
                         public void onResponse(Call<Item> call, Response<Item> response) {
-                            if (response.isSuccessful() && response.body() != null) {
-                                items.add(response.body());
-                                itemAdapter.notifyItemInserted(items.size() - 1);
-                                recalculateBudget();
-
-                                if (response.body().getCategory() != null) {
-                                    int catId = response.body().getCategory().getId();
-                                    suggestedCategories.removeIf(c -> c.getId() == catId);
-                                    renderSuggestedCategories();
-                                }
-
+                            if (response.isSuccessful()) {
+                                Toast.makeText(requireContext(), "Item created successfully", Toast.LENGTH_SHORT).show();
+                                loadItems();
+                                loadSuggestedCategories();
                             } else {
                                 Toast.makeText(requireContext(), "Failed to add item", Toast.LENGTH_SHORT).show();
                             }
                         }
-
 
                         @Override
                         public void onFailure(Call<Item> call, Throwable t) {
                             Toast.makeText(requireContext(), "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
+
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
