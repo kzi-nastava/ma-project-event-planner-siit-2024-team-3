@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,7 +42,6 @@ public class SuggestedCategoryAdapter extends RecyclerView.Adapter<SuggestedCate
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Category category = categoryList.get(position);
         holder.name.setText(category.getName());
-        holder.description.setText(category.getDescription());
 
         holder.btnApprove.setOnClickListener(v -> listener.onApprove(category));
         holder.btnReject.setOnClickListener(v -> listener.onReject(category));
@@ -53,15 +53,15 @@ public class SuggestedCategoryAdapter extends RecyclerView.Adapter<SuggestedCate
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView name, description;
-        Button btnApprove, btnReject;
+        TextView name;
+        ImageButton btnApprove, btnReject;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.categoryName);
-            description = itemView.findViewById(R.id.categoryDescription);
-            /*btnApprove = itemView.findViewById(R.id.btnApprove);
-            btnReject = itemView.findViewById(R.id.btnReject);*/
+            btnApprove = itemView.findViewById(R.id.btnApprove);
+            btnReject = itemView.findViewById(R.id.btnReject);
         }
     }
+
 }
