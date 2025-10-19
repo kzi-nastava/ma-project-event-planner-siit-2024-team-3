@@ -6,12 +6,14 @@ import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.MutableLiveData;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.eveant.chat.ChatWebSocketManager;
+import com.example.eveant.reviews.ReviewPromptDialogFragment;
 import com.example.eveant.service.model.Service;
 import com.example.eveant.user.security.AuthManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -63,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
         AuthManager auth = AuthManager.getInstance(this);
         final String role = auth.getRole();
+        maybeShowReviewPrompt(auth.getEmail());
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment);
         navController = navHostFragment.getNavController();
@@ -94,7 +97,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
+    private void maybeShowReviewPrompt(String username) {
+        ReviewPromptDialogFragment dlg = ReviewPromptDialogFragment.newInstance(username);
+        dlg.setListener(new ReviewPromptDialogFragment.Listener() {
+            @Override public void onReviewSubmitted(int eventId, int rating) {
+                // Optionally refresh UI / stats / toast
+            }
+            @Override public void onReviewDismissed() {
+                // No-op
+            }
+        });
+        FragmentManager fm = getSupportFragmentManager();
+        dlg.show(fm, "review_prompt");
+    }
     public NavController getNavController() {
         return navController;
     }

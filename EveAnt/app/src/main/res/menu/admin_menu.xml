@@ -5,19 +5,23 @@
         android:icon="@drawable/bottom_nav_ic_home"
         android:title="Home" />
     <item
-        android:id="@+id/categoryManagement"
-        android:icon="@drawable/bottom_nav_ic_add_service"
-        android:title="Categories" />
-    <item
-        android:id="@+id/eventTypeFragment"
-        android:icon="@drawable/bottom_nav_ic_calendar"
-        android:title="Event types" />
-    <item
         android:id="@+id/accountFragment"
         android:icon="@drawable/bottom_nav_ic_profile"
         android:title="Profile" />
     <item
+        android:id="@+id/categoryManagement"
+        android:icon="@drawable/bottom_nav_ic_add_service"
+        android:title="Categories" />
+<!--     <item
+        android:id="@+id/eventTypeFragment"
+        android:icon="@drawable/bottom_nav_ic_add_service"
+        android:title="Event types" /> -->
+    <item
         android:id="@+id/chatListFragment"
         android:icon="@drawable/ic_chat"
         android:title="Messages" />
+  <item
+        android:id="@+id/publicEventsStatsFragment"
+        android:icon="@drawable/bottom_nav_ic_calendar"
+        android:title="Public event stats" />
 </menu>

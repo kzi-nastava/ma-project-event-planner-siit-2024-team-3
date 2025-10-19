@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.eveant.R;
 import com.example.eveant.event.createEvent.BasicInformationFragment;
 import com.example.eveant.event.createEvent.ChooseEventTypeFragment;
-import com.example.eveant.event.invitations.InvitationListFragment;
+import com.example.eveant.invitation.InvitationFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class EventActivity extends AppCompatActivity {
@@ -59,7 +59,11 @@ public class EventActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         outState.putString("step", current.name());
     }
-
+    private boolean isCurrentEventPublic() {
+        EventCreationViewModel vm = new ViewModelProvider(this).get(EventCreationViewModel.class);
+        Boolean v = vm.getIsPublic().getValue();
+        return v != null && v;
+    }
     public void goNext() {
         switch (current) {
             case CHOOSE_TYPE:
@@ -81,8 +85,14 @@ public class EventActivity extends AppCompatActivity {
                 break;
 
             case AGENDA:
-                showStep(Step.INVITATIONS, true);
+                if (isCurrentEventPublic()) {
+                    // Public event → no invitations step
+                    finish();
+                } else {
+                    showStep(Step.INVITATIONS, true);
+                }
                 break;
+
 
             case INVITATIONS:
                 finish();
@@ -143,7 +153,7 @@ public class EventActivity extends AppCompatActivity {
 
             case INVITATIONS:
             default:
-                fragment = new InvitationListFragment();
+                fragment = new InvitationFragment();
                 break;
         }
 
@@ -165,9 +175,18 @@ public class EventActivity extends AppCompatActivity {
 
     private void updateButtons(Step step) {
         btnBack.setEnabled(step != Step.CHOOSE_TYPE);
-        btnNext.setText(step == Step.INVITATIONS ? getString(R.string.action_finish)
-                : getString(R.string.action_next));
+
+        boolean publicEvent = isCurrentEventPublic();
+
+        if (step == Step.AGENDA && publicEvent) {
+            btnNext.setText(getString(R.string.action_finish));
+        } else {
+            btnNext.setText(step == Step.INVITATIONS
+                    ? getString(R.string.action_finish)
+                    : getString(R.string.action_next));
+        }
     }
+
 
     private int getIndex(Step step) {
         switch (step) {

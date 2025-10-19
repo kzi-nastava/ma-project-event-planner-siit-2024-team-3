@@ -87,13 +87,16 @@ public class AgendaFragment extends Fragment {
 
     /** Called by EventCreationActivity when user taps Next on this step. */
     public void handleNext() {
-        // If you need validation (e.g., at least one activity), do it here:
-        // if (activities.isEmpty()) { Toast.makeText(getContext(),"Add at least one activity",Toast.LENGTH_SHORT).show(); return; }
+        Boolean pub = vm.getIsPublic().getValue();
+        boolean isPublic = pub != null && pub;
 
         if (requireActivity() instanceof EventActivity) {
-            ((EventActivity) requireActivity()).showStep(
-                    EventActivity.Step.INVITATIONS, true
-            );
+            if (isPublic) {
+                // Skip invitations entirely for public events
+                requireActivity().finish();
+            } else {
+                ((EventActivity) requireActivity()).showStep(EventActivity.Step.INVITATIONS, true);
+            }
         }
     }
 

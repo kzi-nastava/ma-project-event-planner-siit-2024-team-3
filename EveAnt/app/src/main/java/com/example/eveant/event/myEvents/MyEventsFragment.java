@@ -15,6 +15,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.eveant.BaseFragment;
+import com.example.eveant.HomeFragment;
 import com.example.eveant.R;
 import com.example.eveant.RetrofitClient;
 import com.example.eveant.event.Event;
@@ -34,7 +36,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MyEventsFragment extends Fragment {
+public class MyEventsFragment extends BaseFragment {
 
     private TextView tvDateFilter;
     private Spinner spEventType;
@@ -46,9 +48,12 @@ public class MyEventsFragment extends Fragment {
     private MyEventsAdapter adapter;
     private final List<Event> allEvents = new ArrayList<>();
     private final List<EventType> allTypes = new ArrayList<>();
+    @Override protected int getMainContainerId() { return R.id.home_container; } // your Activity container id
+    @NonNull @Override protected Fragment createHomeFragment() { return new HomeFragment(); }
 
     private Integer selectedTypeId = null;
     private String selectedDateIso = null; // yyyy-MM-dd
+
 
     @Nullable @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -57,6 +62,7 @@ public class MyEventsFragment extends Fragment {
 
     @Override public void onViewCreated(@NonNull View v, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(v, savedInstanceState);
+        setupBackBar(v);   // <-- one line, done
 
         tvDateFilter = v.findViewById(R.id.tvDateFilter);
         spEventType   = v.findViewById(R.id.spEventType);

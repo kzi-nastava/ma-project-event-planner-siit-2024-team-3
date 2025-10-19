@@ -156,7 +156,8 @@
             app:destination="@id/budgetFragment" />
     </fragment>
 
-
-
-
+     <fragment
+        android:id="@+id/publicEventsStatsFragment"
+        android:name="com.example.eveant.admin.PublicEventsStatsFragment"
+        android:label="Public events stats"/>
 </navigation>
