@@ -9,7 +9,7 @@ public class Comment {
     private Integer id;
 
     @SerializedName("event")
-    private Event event;
+    private transient Event event;
 
     @SerializedName("profile")
     private Profile profile;

@@ -88,25 +88,35 @@ public class CommentsSectionFragment extends Fragment {
     }
 
     private void loadApprovedComments() {
-        if (eventId == null) return;
+        if (eventId == null) {
+            System.out.println("DEBUG: Event ID is null");
+            return;
+        }
+
+        System.out.println("DEBUG: Loading comments for event: " + eventId);
 
         Call<List<Comment>> call = commentService.getApprovedComments(eventId);
         call.enqueue(new Callback<List<Comment>>() {
             @Override
             public void onResponse(Call<List<Comment>> call, Response<List<Comment>> response) {
+                System.out.println("DEBUG: Response received - Code: " + response.code() + ", Successful: " + response.isSuccessful());
                 if (response.isSuccessful() && response.body() != null) {
+                    System.out.println("DEBUG: Loaded " + response.body().size() + " comments");
                     comments.clear();
                     comments.addAll(response.body());
                     commentAdapter.setComments(comments);
                     updateEmptyState();
                 } else {
-                    Toast.makeText(getContext(), "Failed to load comments", Toast.LENGTH_SHORT).show();
+                    System.out.println("DEBUG: Response not successful - Code: " + response.code());
+                    Toast.makeText(getContext(), "Failed to load comments: " + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<Comment>> call, Throwable t) {
-                Toast.makeText(getContext(), "Error loading comments", Toast.LENGTH_SHORT).show();
+                System.out.println("DEBUG: Network failure: " + t.getMessage());
+                t.printStackTrace(); // This will show the full stack trace
+                Toast.makeText(getContext(), "Error loading comments: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
