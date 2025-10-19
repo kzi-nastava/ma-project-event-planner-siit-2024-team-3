@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/bottom_nav_ic_home"
+        android:title="Home" />
+    <item
+        android:id="@+id/createEvent"
+        android:icon="@drawable/bottom_nav_ic_add_service"
+        android:title="Add event" />
+    <item
+        android:id="@+id/myEventsFragment"
+        android:icon="@drawable/bottom_nav_ic_calendar"
+        android:title="My events" />
+    <item
+        android:id="@+id/accountFragment"
+        android:icon="@drawable/bottom_nav_ic_profile"
+        android:title="Profile" />
+    <!--<item
+        android:id="@+id/chatListFragment"
+        android:icon="@drawable/ic_chat"
+        android:title="Messages" />-->
+    <item
+        android:id="@+id/organizerEventsFragment"
+        android:icon="@drawable/ic_arrow"
+        android:title="My Events" />
+
+</menu>

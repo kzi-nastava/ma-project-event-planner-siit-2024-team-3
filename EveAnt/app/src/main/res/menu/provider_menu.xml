@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/bottom_nav_ic_home"
+        android:title="Home" />
+    <item
+        android:id="@+id/offerChoose"
+        android:icon="@drawable/bottom_nav_ic_add_service"
+        android:title="Add service or product" />
+    <item
+        android:id="@+id/servicesViewFragment"
+        android:icon="@drawable/bottom_nav_ic_calendar"
+        android:title="My services" />
+<!--    <item-->
+<!--        android:id="@+id/accountFragment"-->
+<!--        android:icon="@drawable/bottom_nav_ic_profile"-->
+<!--        android:title="Profile" />-->
+    <item
+        android:id="@+id/priceListFragment"
+        android:icon="@drawable/ic_price"
+        android:title="Price list" />
+    <item
+        android:id="@+id/chatListFragment"
+        android:icon="@drawable/ic_chat"
+        android:title="Messages" />
+</menu>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F0F3FF">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="0dp">
+            <RelativeLayout
+                android:id="@+id/home_search_rectangle_layout"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:background="@drawable/service_search_rectangle"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/place"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Categroy managemant"
+                    android:textSize="30sp"
+                    android:textAppearance="@style/place"
+                    android:textStyle="bold" />
+
+
+            </RelativeLayout>
+
+            <!--kartica-->
+
+            <androidx.recyclerview.widget.RecyclerView android:id="@+id/recycler_suggested_categories"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp"
+                android:clipToPadding="false"
+                tools:listitem="@layout/suggested_category"
+                xmlns:tools="http://schemas.android.com/tools" />
+
+            <androidx.recyclerview.widget.RecyclerView android:id="@+id/recycler_categories"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="16dp"
+                android:layout_marginBottom="10dp"
+                android:clipToPadding="false"
+                tools:listitem="@layout/category"
+                xmlns:tools="http://schemas.android.com/tools" />
+
+
+
+
+        </LinearLayout>
+    </ScrollView>
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/fabAddCategory"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="60dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@android:color/transparent"
+        android:src="@drawable/ic_add_rounded_big"
+        android:padding="16dp"
+        android:scaleType="center" />
+
+</FrameLayout>
+

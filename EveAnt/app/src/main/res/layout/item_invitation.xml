@@ -1,0 +1,52 @@
+<!-- res/layout/item_invitation.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/rounded_input"
+    android:gravity="center_vertical">
+
+    <ImageView
+        android:id="@+id/guest_avatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="10dp"
+        android:src="@drawable/ic_person"
+        android:backgroundTint="#C5D0F4"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/guest_email"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="email@example.com"
+        android:textColor="#2A3B58"
+        android:textSize="14sp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <ImageButton
+            android:id="@+id/button_accept"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:backgroundTint="#27AE60"
+            android:background="@drawable/rounded_input"
+            android:src="@drawable/ic_check"/>
+
+        <ImageButton
+            android:id="@+id/button_decline"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:backgroundTint="#E74C3C"
+            android:background="@drawable/rounded_input"
+            android:src="@drawable/ic_close"
+            android:layout_marginStart="5dp" />
+    </LinearLayout>
+</LinearLayout>

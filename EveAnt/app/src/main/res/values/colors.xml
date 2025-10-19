@@ -6,4 +6,15 @@
     <color name="dark_gray">#E1E2E6</color>
     <color name="purple">#8599E0</color>
     <color name="light_purple">#8094DB</color>
+    <color name="selectedBackground">#4285F4</color> <!-- Blue for selected day -->
+    <color name="normalBackground">#FFFFFF</color>   <!-- White for normal days -->
+    <color name="disabledBackground">#E0E0E0</color> <!-- Gray for inactive days -->
+    <color name="todayBackground">#1565C0</color>    <!-- Deep blue for today -->
+    <color name="reservationDeadlineBackground">#EF5350</color> <!-- Red for reservation deadlines -->
+    <color name="cancellationPeriodBackground">#FFEB3B</color>  <!-- Yellow for cancellation period -->
+    <color name="defaultTextColor">#000000</color>  <!-- Black for default text -->
+    <color name="selectedTextColor">#FFFFFF</color> <!-- White for selected text -->
+    <color name="disabledTextColor">#9E9E9E</color>
+    <color name="red">#cc0000</color> <!-- Light gray for disabled text -->
+
 </resources>

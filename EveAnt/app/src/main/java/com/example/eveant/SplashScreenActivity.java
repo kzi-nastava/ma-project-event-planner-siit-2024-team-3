@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.example.eveant.user.LoginActivity;
+
 public class SplashScreenActivity extends AppCompatActivity {
 
     @Override

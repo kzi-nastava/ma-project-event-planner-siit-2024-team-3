@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#f0f3ff">
+
+        <include
+            layout="@layout/fragment_back"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvEventTypes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="88dp"
+                android:overScrollMode="never" />
+
+            <!-- Non-Material floating button: simple ImageButton with a pill bg -->
+            <ImageButton
+                android:id="@+id/ibCreate"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_gravity="bottom|end"
+                android:layout_marginBottom="60dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/ic_add_rounded_big"
+                android:contentDescription="create"
+                android:padding="12dp"
+                android:src="@drawable/ic_add"
+                app:tint="@android:color/white" />
+        </FrameLayout>
+    </LinearLayout>
+</layout>
