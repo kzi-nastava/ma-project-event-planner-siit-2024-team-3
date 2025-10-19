@@ -57,13 +57,21 @@
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <!-- Opis kategorije -->
+                <TextView
+                    android:id="@+id/status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/categoryName"
+                    android:text="APPROVED"
+                    android:textColor="@color/purple"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_medium"/>
+
                 <TextView
                     android:id="@+id/categoryDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/categoryName"
-                    android:layout_marginTop="8dp"
+                    android:layout_below="@id/status"
                     android:text="@string/description"
                     android:textColor="@color/black"
                     android:textSize="14sp" />

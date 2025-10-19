@@ -1,5 +1,7 @@
 package com.example.eveant.eventType;
 
+import com.example.eveant.service.model.Category;
+
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.*;
@@ -38,4 +40,6 @@ public interface EventTypeService {
     Call<EventType> patch(@Path("id") int id,
                           @Body com.example.eveant.eventType.EventTypeFragment.EventTypePatch dto);
 
+    @GET("/api/event-types/{id}/categories")
+    Call<List<Category>> getEventTypeCategories(@Path("id") int eventTypeId);
 }

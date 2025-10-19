@@ -1,0 +1,26 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@drawable/rounded_corners_white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:text="Company Information"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:fontFamily="@font/poppins_bold"
+        android:layout_marginBottom="8dp"
+        android:layout_height="60dp"
+        android:layout_width="300dp"/>
+
+    <TextView android:id="@+id/companyName" android:text="Name" android:layout_marginTop="8dp"
+        android:layout_height="60dp"
+        android:layout_width="300dp"/>
+    <TextView android:id="@+id/companyAddress" android:text="Address" android:layout_marginTop="4dp"
+        android:layout_height="60dp"
+        android:layout_width="300dp"/>
+    <TextView android:id="@+id/companyPhone" android:text="Phone" android:layout_marginTop="4dp" android:layout_height="60dp"
+        android:layout_width="300dp"
+        />
+</LinearLayout>

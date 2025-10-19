@@ -217,7 +217,7 @@ public class ServiceEditFragment3 extends Fragment {
     private void updateService() {
         Service serviceToSave = viewModel.getService().getValue();
 
-        ServiceDTO serviceDTO = ServiceMapper.INSTANCE.toDTO(serviceToSave);
+        ServiceDTO serviceDTO = ServiceMapper.toDTO(serviceToSave);
 
         Log.d(TAG, "updateService:ovo gledaj to mi trebaaaaa "+serviceDTO);
         if (serviceToSave != null) {

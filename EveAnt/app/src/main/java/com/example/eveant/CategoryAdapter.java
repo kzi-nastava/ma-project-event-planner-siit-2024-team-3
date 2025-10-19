@@ -13,16 +13,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.eveant.service.ServiceAdapter;
 import com.example.eveant.service.model.Category;
 import com.example.eveant.service.model.CategoryStatus;
-import com.example.eveant.service.model.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -31,67 +29,29 @@ import retrofit2.Response;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder> {
     private ArrayList<Category> categoryList;
     private Fragment fragment;
-    public CategoryAdapter(ArrayList<Category> categoryList) {
-        this.categoryList = categoryList;
-    }
 
     public CategoryAdapter(ArrayList<Category> categoryList, Fragment fragment) {
         this.categoryList = categoryList;
         this.fragment = fragment;
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        Category category = categoryList.get(position);
-        return CategoryStatus.SUGGESTED.equals(category.getStatus()) ? 0 : 1;
-    }
-
     @NonNull
     @Override
     public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view;
-        if (viewType == 0) {
-            view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.suggested_category, parent, false);
-        } else {
-            view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.category, parent, false);
-        }
-        return new CategoryViewHolder(view, viewType);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.category, parent, false); // ✅ samo category.xml
+        return new CategoryViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Category category = categoryList.get(position);
         holder.categoryName.setText(category.getName());
-        if(holder.fabAddCategory!=null) {
-            holder.fabAddCategory.setOnClickListener(v -> {
-                Toast.makeText(holder.itemView.getContext(), "Add Category clicked", Toast.LENGTH_SHORT).show();
-            });
-        }
-        if (getItemViewType(position) == 0) {
-            holder.status.setText(category.getStatus().toString());
-            holder.addCategoryButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showUpdatePopup(category, position, holder.itemView.getContext());
-                }
-            });
-        } else {
-            holder.categoryDescription.setText(category.getDescription());
-            holder.editButtoncategory.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showUpdatePopup(category, position, holder.itemView.getContext());
-                }
-            });
-            holder.deleteButtonCategory.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showDeleteDialog(category, position, holder.itemView.getContext());
-                }
-            });
-        }
+        holder.status.setText(category.getStatus().toString());
+        holder.categoryDescription.setText(category.getDescription());
+
+        holder.editButtoncategory.setOnClickListener(v -> showUpdatePopup(category, position, holder.itemView.getContext()));
+        holder.deleteButtonCategory.setOnClickListener(v -> showDeleteDialog(category, position, holder.itemView.getContext()));
     }
 
     @Override
@@ -99,33 +59,27 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         return categoryList.size();
     }
 
+    @SuppressLint("NotifyDataSetChanged")
+    public void updateData(List<Category> newList) {
+        this.categoryList.clear();
+        this.categoryList.addAll(newList);
+        notifyDataSetChanged();
+    }
 
     public static class CategoryViewHolder extends RecyclerView.ViewHolder {
+        TextView categoryName, status, categoryDescription;
+        ImageButton editButtoncategory, deleteButtonCategory;
 
-        TextView categoryName,status,categoryDescription;
-        ImageButton addCategoryButton,editButtoncategory,deleteButtonCategory;
-        ImageButton fabAddCategory;
-
-        public CategoryViewHolder(@NonNull View itemView, int viewType) {
+        public CategoryViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            fabAddCategory = itemView.findViewById(R.id.fabAddCategory);
-
-            if (viewType == 0) { // Suggested category
-                addCategoryButton = itemView.findViewById(R.id.addCategoryButton);
-                categoryName = itemView.findViewById(R.id.categoryName);
-                status = itemView.findViewById(R.id.status);
-            } else { // Regular category
-                categoryName = itemView.findViewById(R.id.categoryName);
-                status = itemView.findViewById(R.id.status);
-                categoryDescription=itemView.findViewById(R.id.categoryDescription);
-                editButtoncategory = itemView.findViewById(R.id.editButtoncategory);
-                deleteButtonCategory = itemView.findViewById(R.id.deleteButtonCategory);
-
-            }
-
+            categoryName = itemView.findViewById(R.id.categoryName);
+            status = itemView.findViewById(R.id.status);
+            categoryDescription = itemView.findViewById(R.id.categoryDescription);
+            editButtoncategory = itemView.findViewById(R.id.editButtoncategory);
+            deleteButtonCategory = itemView.findViewById(R.id.deleteButtonCategory);
         }
     }
+
     private void showUpdatePopup(Category category, int position, Context context){
         LayoutInflater inflater = LayoutInflater.from(context);
         View dialogView = inflater.inflate(R.layout.category_dialog_box, null);
@@ -225,7 +179,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
                         notifyItemRemoved(position);
                         Toast.makeText(context, "Category deleted", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(context, "Failed to delete category", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "Can not delete. Ofer is connected to this category", Toast.LENGTH_SHORT).show();
                     }
                     dialog.dismiss();
                 }

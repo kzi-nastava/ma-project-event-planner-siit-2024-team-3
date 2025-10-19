@@ -71,6 +71,19 @@ public interface UserService {
     @DELETE("api/users/deactivate")
     Call<Map<String, String>> deactivateAccount(@Query("email") String email);
 
+    @GET("/api/users/services/{serviceId}")
+    Call<Provider> getProviderByServiceId(@Path("serviceId") Long serviceId);
+
+    @GET("users/favourites/offer/check/{username}/{offerId}")
+    Call<Boolean> isOfferInFavourites(@Path("username") String username, @Path("offerId") Long offerId);
+
+    @POST("users/favourites/offer/{username}/{offerId}")
+    Call<Void> addOfferToFavourites(@Path("username") String username, @Path("offerId") Long offerId);
+
+    @POST("users/favourites/offer/remove/{username}/{offerId}")
+    Call<Void> removeOfferFromFavourites(@Path("username") String username, @Path("offerId") Long offerId);
+
+
 
     @GET("api/users/{currentEmail}/blocked/{targetEmail}")
     Call<Boolean> isUserBlocked(@Path("currentEmail") String currentEmail,

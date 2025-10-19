@@ -4,10 +4,10 @@
         android:id="@+id/homeFragment"
         android:icon="@drawable/bottom_nav_ic_home"
         android:title="Home" />
-    <item
+    <!--<item
         android:id="@+id/serviceCreateFragment1"
         android:icon="@drawable/bottom_nav_ic_add_service"
-        android:title="Add service" />
+        android:title="Add service" />-->
     <item
         android:id="@+id/servicesViewFragment"
         android:icon="@drawable/bottom_nav_ic_calendar"
@@ -16,4 +16,12 @@
         android:id="@+id/accountFragment"
         android:icon="@drawable/bottom_nav_ic_profile"
         android:title="Profile" />
+    <item
+        android:id="@+id/priceListFragment"
+        android:icon="@drawable/ic_price"
+        android:title="Price list" />
+    <item
+        android:id="@+id/chatListFragment"
+        android:icon="@drawable/ic_chat"
+        android:title="Messages" />
 </menu>

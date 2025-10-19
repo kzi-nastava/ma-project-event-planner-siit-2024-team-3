@@ -15,6 +15,7 @@ public interface EventService {
     @GET("/api/events/{id}")
     Call<Event> getEventById(@Path("id") int id);
 
+
     @GET("/api/events")
     Call<List<Event>> getAllEvents();
 
@@ -57,4 +58,6 @@ public interface EventService {
 
     @DELETE("/api/events/{id}")
     Call<Void> deleteEvent(@Path("id") int id);
+
+
 }

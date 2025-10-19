@@ -15,68 +15,89 @@
         android:elevation="8dp"
         android:orientation="vertical"
         android:paddingHorizontal="8dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_bold"
-                android:text="@string/create_service"
-                android:textAlignment="center"
-                android:textSize="25sp"
-                android:layout_marginTop="40dp"
-                android:textColor="@color/black"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_bold"
+            android:text="@string/create_service"
+            android:textAlignment="center"
+            android:textSize="25sp"
+            android:layout_marginTop="40dp"
+            android:textColor="@color/black"/>
+
+        <!-- Description -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_corners_f0f3ff">
+            <EditText
+                android:id="@+id/description"
+                style="@style/loginInputText"
+                android:hint="@string/prompt_description"
+                android:inputType="textMultiLine"
+                android:minLines="3"
+                android:maxLines="5"
+                android:gravity="top"
+                android:scrollbars="vertical"/>
+        </LinearLayout>
+
+        <!-- Specification -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_corners_f0f3ff">
+            <EditText
+                android:id="@+id/specifications"
+                style="@style/loginInputText"
+                android:hint="@string/prompt_specifications"
+                android:inputType="textMultiLine"
+                android:minLines="3"
+                android:maxLines="5"
+                android:gravity="top"
+                android:scrollbars="vertical"/>
+        </LinearLayout>
+
+        <!-- Button for adding photos -->
+        <Button
+            android:id="@+id/upload_images_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/add_photos"
+            android:textColor="@color/black"
+            android:drawableStart="@drawable/photo_plus"
+            android:paddingStart="10dp"
+            android:background="@drawable/rounded_corners_f0f3ff"
+            android:orientation="horizontal"/>
+
+        <!-- 🖼️ Preview container za slike -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginTop="10dp"
+            android:scrollbars="horizontal">
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:id="@+id/image_preview_container"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="horizontal"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/rounded_corners_f0f3ff">
-                <EditText
-                    android:id="@+id/description"
-                    style="@style/loginInputText"
-                    android:hint="@string/prompt_description"
-                    android:inputType="textMultiLine"
-                    android:minLines="3"
-                    android:maxLines="5"
-                    android:gravity="top"
-                    android:scrollbars="vertical"/>
-            </LinearLayout>
+                android:padding="8dp" />
+        </HorizontalScrollView>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/rounded_corners_f0f3ff">
-                <EditText
-                    android:id="@+id/specifications"
-                    style="@style/loginInputText"
-                    android:hint="@string/prompt_specifications"
-                    android:inputType="textMultiLine"
-                    android:minLines="3"
-                    android:maxLines="5"
-                    android:gravity="top"
-                    android:scrollbars="vertical"/>
-            </LinearLayout>
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/add_photos"
-                android:textColor="@color/black"
-                android:drawableStart="@drawable/photo_plus"
-                android:paddingStart="10dp"
-                android:background="@drawable/rounded_corners_f0f3ff"
-                android:orientation="horizontal"/>
-
-        <!-- Dugmad za navigaciju -->
+        <!-- Navigaciona dugmad -->
         <LinearLayout
             style="?android:attr/buttonBarStyle"
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:orientation="horizontal"
             android:gravity="center"
-            android:layout_marginTop="207dp">
+            android:layout_marginTop="20dp">
 
             <Button
                 android:id="@+id/previous_button"
@@ -101,8 +122,8 @@
                 android:textColor="@color/white"
                 android:fontFamily="@font/poppins_bold"
                 android:layout_marginStart="5dp"/>
-
         </LinearLayout>
+
         <!-- Page broj -->
         <TextView
             android:id="@+id/pageNumber"
@@ -113,8 +134,5 @@
             android:text="2"
             android:layout_marginTop="10dp"
             android:textSize="12sp"/>
-
-        </LinearLayout>
-
-
+    </LinearLayout>
 </FrameLayout>

@@ -1,30 +1,46 @@
 package com.example.eveant.service.model;
 
-import com.example.eveant.service.model.Service;
-import com.example.eveant.service.model.ServiceDTO;
+import android.util.Log;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
+import com.example.eveant.eventType.EventType;
 
-@Mapper
-public interface ServiceMapper {
-    ServiceMapper INSTANCE = Mappers.getMapper(ServiceMapper.class);
+import java.util.ArrayList;
+import java.util.List;
 
-    @Mapping(source = "category.name", target = "category")
-    ServiceDTO toDTO(Service service);
+public class ServiceMapper {
 
-    @Mapping(source = "category", target = "category.name")
-    Service toEntity(ServiceDTO serviceDTO);
+    public static ServiceDTO toDTO(Service service) {
+        if (service == null) return null;
 
-    default String map(Category category) {
-        return category != null ? category.getName() : null;
-    }
+        ServiceDTO dto = new ServiceDTO();
 
-    default Category map(String categoryName) {
-        if (categoryName == null || categoryName.isEmpty()) {
-            return null;
+        dto.setName(service.getName());
+        dto.setDescription(service.getDescription());
+        dto.setPrice(service.getPrice());
+        dto.setDiscount(service.getDiscount() != 0 ? service.getDiscount() : 0);
+        dto.setVisible(service.getVisible());
+        dto.setStatus(service.getStatus());
+        dto.setSpecification(service.getSpecification());
+        dto.setMaxEngagement(service.getMaxEngagement());
+        dto.setMinEngagement(service.getMinEngagement());
+        dto.setAutomation(service.getAutomation());
+        dto.setReservationDeadLine(service.getReservationDeadLine());
+        dto.setCancellationPeriod(service.getCancellationPeriod());
+        dto.setPhotos(service.getPhotos());
+
+        dto.setProvider("provider"); // TODO: zameni sa stvarnim username-om koji je logovan
+
+        if (service.getCategory() != null) {
+            Category catDto = new Category();
+            catDto.setName(service.getCategory().getName());
+            dto.setCategory(catDto);
         }
-        return new Category(categoryName);
+
+        if (service.getEventTypes() != null) {
+            Log.d("Event typovi",service.getEventTypes().toString());
+            dto.setEventTypes(service.getEventTypes());
+        }
+
+        return dto;
     }
 }

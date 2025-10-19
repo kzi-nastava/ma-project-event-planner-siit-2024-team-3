@@ -133,7 +133,7 @@
     <string name="price">Price</string>
     <string name="only_available">Show only available services</string>
     <string name="chose_category">Choose categories</string>
-    <string name="max_price">500 €</string>
+    <string name="max_price">10000 €</string>
     <string name="min_price">0 €</string>
     <string name="add_service">Add new service</string>
     <string name="edit_service">Edit service</string>
