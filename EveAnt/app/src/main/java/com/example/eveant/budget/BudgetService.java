@@ -32,4 +32,8 @@ public interface BudgetService {
     Call<Void> deleteItem(@Path("itemId") int itemId);
     @GET("offers/category/{categoryId}")
     Call<List<OfferDTO>> getOffersByCategory(@Path("categoryId") int categoryId);
+
+    @GET("budgets")
+    Call<List<Budget>> getAllBudgets();
+
 }

@@ -9,6 +9,8 @@ import android.widget.*;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -78,8 +80,13 @@ public class BudgetFragment extends Fragment {
         setupRecyclerView();
 
         loadItems();
-        loadSuggestedCategories();
         loadAllCategories();
+        if (eventTypeId != -1) {
+            loadSuggestedCategories();
+        } else {
+            suggestedCategories.clear();
+            renderSuggestedCategories();
+        }
 
     }
 
@@ -313,9 +320,20 @@ public class BudgetFragment extends Fragment {
 
     /** Navigacija do ponuda (placeholder – kasnije ide OfferSelectionFragment) */
     private void navigateToOffers(Item item) {
-        Toast.makeText(requireContext(),
-                "Here you would open offers for: " + item.getName(),
-                Toast.LENGTH_SHORT).show();
+        if (item.getCategory() == null) {
+            Toast.makeText(requireContext(), "This item has no category assigned.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        int categoryId = item.getCategory().getId();
+
+        Bundle args = new Bundle();
+        args.putInt("categoryId", categoryId);
+        args.putFloat("remainingBudget", (float) remainingBudget);
+        args.putFloat("maxPrice", (float) (item.getMaxPrice() != null ? item.getMaxPrice() : 0.0));
+
+        NavController navController = NavHostFragment.findNavController(this);
+        navController.navigate(R.id.action_budgetFragment_to_offerListFragment, args);
     }
 
     /** Popup: ručno dodavanje stavke sa izborom kategorije */

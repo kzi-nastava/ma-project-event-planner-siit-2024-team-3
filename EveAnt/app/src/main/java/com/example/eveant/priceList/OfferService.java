@@ -1,5 +1,7 @@
 package com.example.eveant.priceList;
 
+import com.example.eveant.service.model.OfferDTO;
+
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -20,5 +22,9 @@ public interface OfferService {
 
     @GET("/api/offers/priceList/pdf/{providerUsername}")
     Call<ResponseBody> downloadPriceListPdf(@Path("providerUsername") String providerUsername);
+
+    @GET("/api/offers/category/{categoryId}")
+    Call<List<OfferDTO>> getOffersByCategory(@Path("categoryId") int categoryId);
+    
 
 }

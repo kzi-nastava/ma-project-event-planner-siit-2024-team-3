@@ -117,26 +117,54 @@
         android:label="Budget Planning" >
         <argument
             android:name="eventId"
-            app:argType="integer" />
+            app:argType="integer"
+            android:defaultValue="-1"/>
         <argument
             android:name="budgetId"
             app:argType="integer" />
     </fragment>
 
     <fragment
-        android:id="@+id/offerSelectionFragment"
-        android:name="com.example.eveant.budget.OfferSelectionFragment"
-        android:label="Offer Selection" >
-        <argument
-            android:name="budgetId"
-            app:argType="integer" />
-        <argument
-            android:name="itemId"
-            app:argType="integer" />
+        android:id="@+id/offerListFragment"
+        android:name="com.example.eveant.budget.OfferListFragment"
+        android:label="Offers">
         <argument
             android:name="categoryId"
             app:argType="integer" />
+        <argument
+            android:name="remainingBudget"
+            app:argType="float" />
+        <argument
+            android:name="maxPrice"
+            app:argType="float" />
+
+        <action
+            android:id="@+id/action_offerListFragment_to_serviceDetails"
+            app:destination="@id/serviceDetailsFragment" />
+
+        <fragment
+            android:id="@+id/budgetFragment"
+            android:name="com.example.eveant.budget.BudgetFragment"
+            android:label="Budget Planning" >
+            <argument
+                android:name="budgetId"
+                app:argType="integer" />
+
+            <action
+                android:id="@+id/action_budgetFragment_to_offerListFragment"
+                app:destination="@id/offerListFragment" />
+        </fragment>
+
     </fragment>
+    <fragment
+        android:id="@+id/organizerEventsFragment"
+        android:name="com.example.eveant.budget.OrganizerEventsFragment"
+        android:label="My Events" >
+        <action
+            android:id="@+id/action_organizerEventsFragment_to_budgetFragment"
+            app:destination="@id/budgetFragment" />
+    </fragment>
+
 
 
 
