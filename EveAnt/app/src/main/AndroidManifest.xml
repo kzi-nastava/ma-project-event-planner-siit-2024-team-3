@@ -17,17 +17,20 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".admin.GraphsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_graphs"
+            android:theme="@style/Theme.EveAnt" />
+        <activity
             android:name=".event.EventActivity"
-            android:exported="false" />
-<!--        <activity-->
-<!--            android:name=".reservation.ReservationActivity"-->
-<!--            android:exported="true">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
+            android:exported="false" /> <!-- <activity -->
+        <!-- android:name=".reservation.ReservationActivity" -->
+        <!-- android:exported="true"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
+        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
         <activity
             android:name=".SplashScreenActivity"
             android:exported="true">
