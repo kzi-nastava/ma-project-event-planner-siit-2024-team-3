@@ -24,7 +24,7 @@ public class ChatWebSocketManager {
 
     private static ChatWebSocketManager instance;
     private StompClient stompClient;
-    private final String WS_URL = "ws://192.168.1.13:8080/ws/websocket";
+    private final String WS_URL = "ws://192.168.1.10:8080/ws/websocket";
     private String currentUsername;
     private boolean isConnected = false;
     private String jwtToken;

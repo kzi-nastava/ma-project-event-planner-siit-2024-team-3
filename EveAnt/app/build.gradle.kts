@@ -2,6 +2,8 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
+    id("com.google.gms.google-services")
+
 }
 
 fun getIpAddress(): String? {
@@ -77,7 +79,8 @@ dependencies {
     implementation ("com.squareup.okhttp3:okhttp:4.9.3")
     implementation ("io.reactivex.rxjava2:rxandroid:2.1.1")
     implementation ("io.reactivex.rxjava2:rxjava:2.2.21")
-
-
-
+    implementation ("com.google.firebase:firebase-messaging:24.0.0")
+    implementation(platform("com.google.firebase:firebase-bom:34.4.0"))
+    implementation("com.google.firebase:firebase-analytics")
 }
+apply(plugin = "com.google.gms.google-services")

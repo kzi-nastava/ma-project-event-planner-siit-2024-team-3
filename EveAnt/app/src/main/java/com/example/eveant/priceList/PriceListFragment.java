@@ -1,5 +1,7 @@
 package com.example.eveant.priceList;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.LayoutInflater;
@@ -28,10 +30,15 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class PriceListFragment extends Fragment {
-    private String providerUsername = "faks1543@gmail.com"; /*TODO da uzme korisnika a ne staticko*/
+    private String providerUsername;
     public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState){
 
+        SharedPreferences prefs = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+        String providerUsername = prefs.getString("username", "");
 
+        if(providerUsername.isEmpty()){
+            providerUsername="provider";
+        }
         View view = inflater.inflate(R.layout.fragment_price_list,container,false);
 
         RecyclerView recyclerView=view.findViewById(R.id.priceListItem);
@@ -41,7 +48,8 @@ public class PriceListFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         Button exportPdfButton = view.findViewById(R.id.export_pdf_button);
-        exportPdfButton.setOnClickListener(v -> downloadPdf(providerUsername));
+        String finalProviderUsername = providerUsername;
+        exportPdfButton.setOnClickListener(v -> downloadPdf(finalProviderUsername));
 
 
 

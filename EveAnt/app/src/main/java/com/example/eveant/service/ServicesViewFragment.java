@@ -81,7 +81,6 @@ public class ServicesViewFragment extends Fragment {
     }
 
     private void fetchProviderServices() {
-        // TODO: ovde ubaci username aktivnog providera
         SharedPreferences prefs = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
         String username = prefs.getString("username", "");
 
