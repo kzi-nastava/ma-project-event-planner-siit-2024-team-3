@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.core.content.ContextCompat;
 
 import com.bumptech.glide.Glide;
+import com.example.eveant.HomeFragment;
 import com.example.eveant.R;
 import com.example.eveant.RetrofitClient;
 import com.example.eveant.event.Event;
@@ -93,7 +94,19 @@ public class EventDetailsFragment extends Fragment {
 
     @Override public void onViewCreated(@NonNull View v, @Nullable Bundle s) {
         super.onViewCreated(v, s);
+        View backBtn = v.findViewById(R.id.back_button);
+        if (backBtn != null) backBtn.setOnClickListener(x -> popOrGoHome());
 
+//        View homeBtn = v.findViewById(R.id.notification_button);
+//        if (homeBtn != null) homeBtn.setOnClickListener(x -> goHome());
+
+        // 2) System back should do the same
+        requireActivity().getOnBackPressedDispatcher().addCallback(
+                getViewLifecycleOwner(),
+                new androidx.activity.OnBackPressedCallback(true) {
+                    @Override public void handleOnBackPressed() { popOrGoHome(); }
+                }
+        );
         // Force white background / black text feel without changing global night mode
         v.setBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.white));
         btnJoin = v.findViewById(R.id.btnJoin);
@@ -311,6 +324,27 @@ public class EventDetailsFragment extends Fragment {
                         Toast.makeText(getContext(), "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private void popOrGoHome() {
+        androidx.fragment.app.FragmentManager fm = requireActivity().getSupportFragmentManager();
+        if (fm.getBackStackEntryCount() > 0) {
+            fm.popBackStack(); // removes the current fragment and returns to the previous one
+        } else {
+            goHome();
+        }
+    }
+
+    private void goHome() {
+        androidx.fragment.app.FragmentManager fm = requireActivity().getSupportFragmentManager();
+
+        // Clear everything to avoid stacking multiple homes
+        fm.popBackStack(null, androidx.fragment.app.FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+        // Replace with your home/root fragment. IMPORTANT: use your Activity's real container id.
+        fm.beginTransaction()
+                .replace(R.id.home_container, new HomeFragment()) // <-- change to your container id
+                .commit();
     }
 
     private void leaveEvent() {

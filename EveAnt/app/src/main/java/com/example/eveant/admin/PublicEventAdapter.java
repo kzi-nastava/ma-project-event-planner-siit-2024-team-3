@@ -123,7 +123,7 @@ public class PublicEventAdapter extends RecyclerView.Adapter<PublicEventAdapter.
         });
 
         // --- REVIEWS ---
-        RetrofitClient.reviewService.getReviews(e.getId()).enqueue(new Callback<List<Review>>() {
+        RetrofitClient.reviewService.getEventReviews(e.getId()).enqueue(new Callback<List<Review>>() {
             @Override
             public void onResponse(Call<List<Review>> call, Response<List<Review>> response) {
                 if (response.isSuccessful() && response.body() != null) {

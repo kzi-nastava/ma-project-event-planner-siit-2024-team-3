@@ -122,7 +122,7 @@ public class GraphsActivity extends AppCompatActivity {
                 }
             });
         } else {
-            RetrofitClient.reviewService.getReviews(eventId).enqueue(new Callback<List<Review>>() {
+            RetrofitClient.reviewService.getEventReviews(eventId).enqueue(new Callback<List<Review>>() {
                 @Override public void onResponse(Call<List<Review>> call, Response<List<Review>> resp) {
                     List<Review> list = (resp.isSuccessful() && resp.body() != null) ? resp.body() : Collections.emptyList();
                     int count = list.size();
@@ -179,7 +179,7 @@ public class GraphsActivity extends AppCompatActivity {
         for (int i = 0; i < n; i++) {
             final int idx = i;
             labels[idx] = shortenName(names != null && idx < names.length ? names[idx] : ("#" + ids[idx]));
-            RetrofitClient.reviewService.getReviews(ids[idx]).enqueue(new Callback<List<Review>>() {
+            RetrofitClient.reviewService.getEventReviews(ids[idx]).enqueue(new Callback<List<Review>>() {
                 @Override public void onResponse(Call<List<Review>> call, Response<List<Review>> resp) {
                     int c = 0; double sum = 0.0;
                     if (resp.isSuccessful() && resp.body() != null) {

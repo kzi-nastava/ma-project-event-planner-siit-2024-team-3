@@ -12,6 +12,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.eveant.BaseFragment;
+import com.example.eveant.HomeFragment;
 import com.example.eveant.R;
 import com.example.eveant.RetrofitClient;
 import com.example.eveant.event.Event;
@@ -19,12 +22,15 @@ import java.util.*;
 import java.util.stream.Collectors;
 import retrofit2.*;
 
-public class PublicEventsStatsFragment extends Fragment {
+public class PublicEventsStatsFragment extends BaseFragment {
 
     private RecyclerView rv;
     private ProgressBar progress;
     private TextView tvTotalPublic, tvByCity;
     private PublicEventAdapter adapter;
+    @Override protected int getMainContainerId() { return R.id.home_container; } // your Activity container id
+    @NonNull @Override protected Fragment createHomeFragment() { return new HomeFragment(); }
+
 
     private Button btnAllAttendance, btnAllReviews;
     private List<Event> lastLoaded = new ArrayList<>();
@@ -83,6 +89,10 @@ public class PublicEventsStatsFragment extends Fragment {
         });
     }
 
+    @Override public void onViewCreated(@NonNull View v, @Nullable Bundle s) {
+        super.onViewCreated(v, s);
+        setupBackBar(v);
+    }
     private void updateStats(List<Event> items) {
         tvTotalPublic.setText("Public events: " + (items == null ? 0 : items.size()));
         Map<String, Long> byCity = new LinkedHashMap<>();

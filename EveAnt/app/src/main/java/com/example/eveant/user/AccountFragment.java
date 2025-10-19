@@ -15,6 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.eveant.BaseFragment;
+import com.example.eveant.HomeFragment;
+import com.example.eveant.R;
 import com.example.eveant.RetrofitClient;
 import com.example.eveant.databinding.FragmentAccountBinding;
 import com.example.eveant.user.model.Address;
@@ -32,12 +35,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AccountFragment extends Fragment {
+public class AccountFragment extends BaseFragment {
     private User user;
     private Profile profile;
     private String token;
     private String role;
     private FragmentAccountBinding binding;
+    @Override protected int getMainContainerId() { return R.id.home_container; } // your Activity container id
+    @NonNull @Override protected Fragment createHomeFragment() { return new HomeFragment(); }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -140,6 +145,7 @@ public class AccountFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setupBackBar(view);
         disableEditing();
 
         binding.saveChangesButton.setOnClickListener(v -> saveChanges());
