@@ -4,25 +4,27 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.view.*;
 import android.widget.*;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.core.content.ContextCompat;
-
 import com.bumptech.glide.Glide;
 import com.example.eveant.R;
 import com.example.eveant.RetrofitClient;
+import com.example.eveant.comment.CommentService;
+import com.example.eveant.comment.Comment;
 import com.example.eveant.event.Event;
 import com.example.eveant.event.agenda.Activity;
 import com.example.eveant.event.invitations.Invitation;
 import com.example.eveant.event.invitations.InviteRequest;
-
+import com.example.eveant.user.security.AuthManager;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.osmdroid.config.Configuration;
@@ -30,48 +32,55 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.Marker;
-
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URLEncoder;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class EventDetailsFragment extends Fragment {
 
     private static final String ARG_EVENT_ID = "eventId";
 
-    // header views (nullable-safe)
+    // header views
     private ImageView ivPhoto;
     private TextView tvEventType, tvTitle, tvAddress, tvDate, tvTime, tvGuests, tvDescription;
     private Button btnDownloadPdf, btnJoin;
 
-    // lists
+    // comments views
     private RecyclerView rvActivities, rvComments;
-    private EditText etComment; private Button btnPost;
+    private EditText etComment;
+    private Button btnPost;
+    private TextView emptyComments;
+    private TextView commentConfirmation;
+    private LinearLayout commentInputSection;
 
     // adapters
     private MiniActivityAdapter miniAdapter;
-    private CommentAdapter commentAdapter; // your adapter
+    private CommentAdapter commentAdapter;
 
     // OSM map
     private MapView mapView;
     private Marker marker;
 
+    // services
+    private CommentService commentService;
+    private AuthManager authManager;
+
     private int eventId = -1;
     private Event currentEvent;
     private boolean hasJoinedFlag = false;
-
     private final List<Activity> currentActivities = new ArrayList<>();
+    private Handler handler = new Handler(Looper.getMainLooper());
 
     public static EventDetailsFragment newInstance(int eventId) {
         Bundle b = new Bundle();
@@ -81,100 +90,130 @@ public class EventDetailsFragment extends Fragment {
         return f;
     }
 
-    @Override public void onCreate(@Nullable Bundle s) {
+    @Override
+    public void onCreate(@Nullable Bundle s) {
         super.onCreate(s);
-        if (getArguments()!=null) eventId = getArguments().getInt(ARG_EVENT_ID, -1);
+        if (getArguments() != null) eventId = getArguments().getInt(ARG_EVENT_ID, -1);
+
+        // Initialize services
+        commentService = RetrofitClient.retrofit.create(CommentService.class);
+        authManager = AuthManager.getInstance(requireContext());
     }
 
     @Nullable
-    @Override public View onCreateView(@NonNull LayoutInflater inf, @Nullable ViewGroup c, @Nullable Bundle s) {
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inf, @Nullable ViewGroup c, @Nullable Bundle s) {
         return inf.inflate(R.layout.fragment_event_details, c, false);
     }
 
-    @Override public void onViewCreated(@NonNull View v, @Nullable Bundle s) {
+    @Override
+    public void onViewCreated(@NonNull View v, @Nullable Bundle s) {
         super.onViewCreated(v, s);
 
-        // Force white background / black text feel without changing global night mode
+        // Force white background
         v.setBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.white));
-        btnJoin = v.findViewById(R.id.btnJoin);
-        btnJoin.setOnClickListener(v1 -> handleJoinClick());
-        // header refs (any may be absent in XML -> keep null-safe usage)
-        ivPhoto       = v.findViewById(R.id.ivPhoto);
-        tvEventType   = v.findViewById(R.id.tvEventType);
-        tvTitle       = v.findViewById(R.id.tvTitle);
-        tvAddress     = v.findViewById(R.id.tvAddress);
-        tvDate        = v.findViewById(R.id.tvDate);
-        tvTime        = v.findViewById(R.id.tvTime);
-        tvGuests      = v.findViewById(R.id.tvGuests);
-        tvDescription = v.findViewById(R.id.tvDescription);
-        btnDownloadPdf= v.findViewById(R.id.btnDownloadPdf);
-        btnJoin       = v.findViewById(R.id.btnJoin);
 
-        // activities (horizontal)
+        initializeViews(v);
+        setupClickListeners();
+        setupRecyclerViews();
+        setupMap();
+
+        if (eventId > 0) {
+            fetchEvent();
+            fetchActivities();
+            loadComments();
+        }
+    }
+
+    private void initializeViews(View v) {
+        // Header views
+        ivPhoto = v.findViewById(R.id.ivPhoto);
+        tvEventType = v.findViewById(R.id.tvEventType);
+        tvTitle = v.findViewById(R.id.tvTitle);
+        tvAddress = v.findViewById(R.id.tvAddress);
+        tvDate = v.findViewById(R.id.tvDate);
+        tvTime = v.findViewById(R.id.tvTime);
+        tvGuests = v.findViewById(R.id.tvGuests);
+        tvDescription = v.findViewById(R.id.tvDescription);
+        btnDownloadPdf = v.findViewById(R.id.btnDownloadPdf);
+        btnJoin = v.findViewById(R.id.btnJoin);
+
+        // Comments views
+        rvComments = v.findViewById(R.id.rvComments);
+        etComment = v.findViewById(R.id.etComment);
+        btnPost = v.findViewById(R.id.btnPost);
+        emptyComments = v.findViewById(R.id.empty_comments);
+        commentConfirmation = v.findViewById(R.id.comment_confirmation);
+        commentInputSection = v.findViewById(R.id.comment_input_section);
+
+        // Activities
         rvActivities = v.findViewById(R.id.rvActivities);
+
+        // Map
+        mapView = v.findViewById(R.id.mapView);
+    }
+
+    private void setupClickListeners() {
+        btnJoin.setOnClickListener(v -> handleJoinClick());
+        btnDownloadPdf.setOnClickListener(v -> exportEventPdf());
+        btnPost.setOnClickListener(v -> postComment());
+    }
+
+    private void setupRecyclerViews() {
+        // Activities RecyclerView
         if (rvActivities != null) {
             rvActivities.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
             miniAdapter = new MiniActivityAdapter();
             rvActivities.setAdapter(miniAdapter);
         }
 
-        // comments
-        rvComments = v.findViewById(R.id.rvComments);
+        // Comments RecyclerView
         if (rvComments != null) {
             rvComments.setLayoutManager(new LinearLayoutManager(getContext()));
             commentAdapter = new CommentAdapter(new ArrayList<>());
             rvComments.setAdapter(commentAdapter);
         }
+    }
 
-        btnDownloadPdf.setOnClickListener(l -> exportEventPdf());
-
-        etComment = v.findViewById(R.id.etComment);
-        btnPost   = v.findViewById(R.id.btnPost);
-        if (btnPost != null) {
-            btnPost.setOnClickListener(x -> {
-                String txt = etComment != null ? String.valueOf(etComment.getText()).trim() : "";
-                if (TextUtils.isEmpty(txt)) { if (etComment!=null) etComment.setError("Required"); return; }
-                if (etComment!=null) { etComment.setError(null); etComment.setText(""); }
-                if (commentAdapter!=null) commentAdapter.addFirst(new Comment("You", txt, "Just now"));
-                toast("Comment posted");
-            });
-        }
-
-        // OSM map setup (if present)
-        mapView = v.findViewById(R.id.mapView);
+    private void setupMap() {
         if (mapView != null) {
             Configuration.getInstance().setUserAgentValue(requireContext().getPackageName());
             mapView.setTileSource(TileSourceFactory.MAPNIK);
             mapView.setMultiTouchControls(true);
             mapView.getController().setZoom(15.0);
         }
-
-        if (eventId > 0) {
-            fetchEvent();
-            fetchActivities();
-        }
     }
 
-
-
-    /* ------------------------ API: Event + Activities ------------------------ */
+    /* ------------------------ API Calls ------------------------ */
 
     private void fetchEvent() {
         RetrofitClient.eventService.getEventById(eventId).enqueue(new Callback<Event>() {
-            @Override public void onResponse(Call<Event> c, Response<Event> r) {
+            @Override
+            public void onResponse(Call<Event> c, Response<Event> r) {
                 if (!isAdded()) return;
-                if (!r.isSuccessful() || r.body()==null) { toast("Load event failed: "+r.code()); return; }
+                if (!r.isSuccessful() || r.body() == null) {
+                    toast("Load event failed: " + r.code());
+                    return;
+                }
                 bindEvent(r.body());
             }
-            @Override public void onFailure(Call<Event> c, Throwable t) { if (isAdded()) toast("Error: "+t.getMessage()); }
+
+            @Override
+            public void onFailure(Call<Event> c, Throwable t) {
+                if (isAdded()) toast("Error: " + t.getMessage());
+            }
         });
     }
 
     private void fetchActivities() {
         RetrofitClient.activityService.getByEventId(eventId).enqueue(new Callback<List<Activity>>() {
-            @Override public void onResponse(Call<List<Activity>> c, Response<List<Activity>> r) {
+            @Override
+            public void onResponse(Call<List<Activity>> c, Response<List<Activity>> r) {
                 if (!isAdded()) return;
-                if (!r.isSuccessful() || r.body()==null) { toast("Load agenda failed: "+r.code()); return; }
+                if (!r.isSuccessful() || r.body() == null) {
+                    toast("Load agenda failed: " + r.code());
+                    return;
+                }
                 if (miniAdapter == null) return;
 
                 List<Activity> data = new ArrayList<>(r.body());
@@ -190,33 +229,158 @@ public class EventDetailsFragment extends Fragment {
 
                     String where = "";
                     if (a.address != null) {
-                        where = join(", ",
-                                a.address.getStreet(),
-                                a.address.getCity());
+                        where = join(", ", a.address.getStreet(), a.address.getCity());
                     }
                     minis.add(new Mini(win, safe(a.name), where));
                 }
                 miniAdapter.submit(minis);
             }
-            @Override public void onFailure(Call<List<Activity>> c, Throwable t) { if (isAdded()) toast("Error: "+t.getMessage()); }
+
+            @Override
+            public void onFailure(Call<List<Activity>> c, Throwable t) {
+                if (isAdded()) toast("Error: " + t.getMessage());
+            }
         });
     }
 
-    /* ------------------------ Bind Event Header ------------------------ */
+    private void loadComments() {
+        if (eventId <= 0) return;
+
+        Call<List<Comment>> call = commentService.getApprovedComments(eventId);
+        call.enqueue(new Callback<List<Comment>>() {
+            @Override
+            public void onResponse(Call<List<Comment>> call, Response<List<Comment>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<Comment> comments = response.body();
+                    updateCommentsUI(comments);
+                } else {
+                    toast("Failed to load comments");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Comment>> call, Throwable t) {
+                toast("Error loading comments: " + t.getMessage());
+            }
+        });
+    }
+
+    /* ------------------------ Comment Functionality ------------------------ */
+
+    private void postComment() {
+        String commentText = etComment != null ? etComment.getText().toString().trim() : "";
+
+        if (TextUtils.isEmpty(commentText)) {
+            if (etComment != null) etComment.setError("Please enter a comment");
+            return;
+        }
+
+        if (!authManager.isLoggedIn()) {
+            toast("Please log in to comment");
+            return;
+        }
+
+        String userEmail = authManager.getEmail();
+
+        // Disable button during submission
+        if (btnPost != null) btnPost.setEnabled(false);
+
+        CommentService.CommentRequest commentRequest = new CommentService.CommentRequest(
+                commentText, eventId, userEmail
+        );
+
+        Call<Comment> call = commentService.addComment(commentRequest);
+        call.enqueue(new Callback<Comment>() {
+            @Override
+            public void onResponse(Call<Comment> call, Response<Comment> response) {
+                if (btnPost != null) btnPost.setEnabled(true);
+
+                if (response.isSuccessful()) {
+                    // Clear input
+                    if (etComment != null) etComment.setText("");
+
+                    // Show confirmation message
+                    showCommentConfirmation("Your comment has been sent to the admin for approval.");
+
+                    // Refresh comments to show the new one
+                    loadComments();
+                } else {
+                    toast("Failed to post comment");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Comment> call, Throwable t) {
+                if (btnPost != null) btnPost.setEnabled(true);
+                toast("Network error: " + t.getMessage());
+            }
+        });
+    }
+
+    private void showCommentConfirmation(String message) {
+        if (commentConfirmation != null) {
+            commentConfirmation.setText(message);
+            commentConfirmation.setVisibility(View.VISIBLE);
+
+            handler.postDelayed(() -> {
+                if (commentConfirmation != null) {
+                    commentConfirmation.setVisibility(View.GONE);
+                }
+            }, 5000);
+        }
+    }
+
+    private void updateCommentsUI(List<Comment> comments) {
+        if (commentAdapter != null) {
+            commentAdapter.setComments(comments);
+        }
+
+        // Update empty state
+        if (emptyComments != null) {
+            if (comments.isEmpty()) {
+                emptyComments.setVisibility(View.VISIBLE);
+                if (rvComments != null) rvComments.setVisibility(View.GONE);
+            } else {
+                emptyComments.setVisibility(View.GONE);
+                if (rvComments != null) rvComments.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    private void checkCommentPermissions() {
+        boolean isLoggedIn = authManager.isLoggedIn();
+
+        if (commentInputSection != null) {
+            commentInputSection.setVisibility(isLoggedIn ? View.VISIBLE : View.GONE);
+        }
+
+        if (etComment != null) {
+            etComment.setEnabled(isLoggedIn);
+            if (!isLoggedIn) {
+                etComment.setHint("Please log in to comment");
+            }
+        }
+
+        if (btnPost != null) {
+            btnPost.setEnabled(isLoggedIn);
+        }
+    }
+
+    /* ------------------------ Event Binding ------------------------ */
 
     private void bindEvent(Event e) {
         currentEvent = e;
         if (tvTitle != null) tvTitle.setText(nz(e.getName()));
-        if (tvEventType != null) tvEventType.setText(e.getEventType()!=null ? nz(e.getEventType().getName()) : "All");
+        if (tvEventType != null) tvEventType.setText(e.getEventType() != null ? nz(e.getEventType().getName()) : "All");
         if (tvDescription != null) tvDescription.setText(nz(e.getDescription()));
-        if (tvGuests != null) tvGuests.setText(e.getMaxAttendance()==null ? "—" : String.valueOf(e.getMaxAttendance()));
+        if (tvGuests != null) tvGuests.setText(e.getMaxAttendance() == null ? "—" : String.valueOf(e.getMaxAttendance()));
 
         String datePart = extractDate(e.getDate());
         String timePart = extractTime(e.getDate());
         if (tvDate != null) tvDate.setText(datePart);
         if (tvTime != null) tvTime.setText(timePart);
 
-        if (tvAddress != null && e.getAddress()!=null) {
+        if (tvAddress != null && e.getAddress() != null) {
             String displayAddr = join(", ",
                     e.getAddress().getStreet(),
                     e.getAddress().getHouseNumber(),
@@ -232,128 +396,12 @@ public class EventDetailsFragment extends Fragment {
         btnJoin.setVisibility(isPublic ? View.VISIBLE : View.GONE);
 
         if (isPublic) {
-            checkIfUserHasJoined(); // updates the button text
+            checkIfUserHasJoined();
         }
+
+        checkCommentPermissions();
         bindHeaderPhoto(e);
     }
-    private void checkIfUserHasJoined() {
-        String email = com.example.eveant.user.security.AuthManager
-                .getInstance(requireContext())
-                .getEmail();
-
-        RetrofitClient.invitationEventService.getInvitations(eventId).enqueue(new retrofit2.Callback<java.util.List<Invitation>>() {
-            @Override public void onResponse(retrofit2.Call<java.util.List<Invitation>> c,
-                                             retrofit2.Response<java.util.List<Invitation>> r) {
-                if (!isAdded()) return;
-                if (r.isSuccessful() && r.body() != null) {
-                    hasJoinedFlag = false;
-                    for (Invitation inv : r.body()) {
-                        if (email.equalsIgnoreCase(inv.email)) { hasJoinedFlag = true; break; }
-                    }
-                    refreshJoinButton();
-                } else if (r.code() == 404) {
-                    // no invitations for event
-                    hasJoinedFlag = false;
-                    refreshJoinButton();
-                } else {
-                    // leave previous state, but set as not joined on error if you prefer
-                    refreshJoinButton();
-                }
-            }
-            @Override public void onFailure(retrofit2.Call<java.util.List<Invitation>> c, Throwable t) {
-                if (!isAdded()) return;
-                // network error → keep default false
-                refreshJoinButton();
-            }
-        });
-    }
-
-    private void refreshJoinButton() {
-        btnJoin.setText(hasJoinedFlag ? "Leave event" : "Join event");
-    }
-
-    private void handleJoinClick() {
-        if (isEventOver(currentEvent != null ? currentEvent.getDate() : null)) {
-            Toast.makeText(getContext(), "This event is over.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        toggleJoin();
-    }
-
-    private void toggleJoin() {
-        if (hasJoinedFlag) leaveEvent();
-        else joinEvent();
-    }
-
-    private void joinEvent() {
-        btnJoin.setEnabled(false);
-        String email = com.example.eveant.user.security.AuthManager
-                .getInstance(requireContext())
-                .getEmail();
-
-        RetrofitClient.invitationEventService
-                .sendInvitation(eventId, new InviteRequest(email, "", eventId))
-                .enqueue(new retrofit2.Callback<Void>() {
-                    @Override public void onResponse(retrofit2.Call<Void> c, retrofit2.Response<Void> r) {
-                        if (!isAdded()) return;
-                        btnJoin.setEnabled(true);
-                        if (r.isSuccessful()) {
-                            hasJoinedFlag = true;
-                            refreshJoinButton();
-                            Toast.makeText(getContext(), "Joined", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getContext(), "Join failed: " + r.code(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                    @Override public void onFailure(retrofit2.Call<Void> c, Throwable t) {
-                        if (!isAdded()) return;
-                        btnJoin.setEnabled(true);
-                        Toast.makeText(getContext(), "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
-    private void leaveEvent() {
-        btnJoin.setEnabled(false);
-        String email = com.example.eveant.user.security.AuthManager
-                .getInstance(requireContext())
-                .getEmail();
-
-        RetrofitClient.invitationEventService
-                .declineInvitation(eventId, java.net.URLEncoder.encode(email))
-                .enqueue(new retrofit2.Callback<Void>() {
-                    @Override public void onResponse(retrofit2.Call<Void> c, retrofit2.Response<Void> r) {
-                        if (!isAdded()) return;
-                        btnJoin.setEnabled(true);
-                        if (r.isSuccessful()) {
-                            hasJoinedFlag = false;
-                            refreshJoinButton();
-                            Toast.makeText(getContext(), "Left event", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getContext(), "Leave failed: " + r.code(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                    @Override public void onFailure(retrofit2.Call<Void> c, Throwable t) {
-                        if (!isAdded()) return;
-                        btnJoin.setEnabled(true);
-                        Toast.makeText(getContext(), "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
-    // Same semantics as your Angular guard:
-    private boolean isEventOver(@Nullable String iso) {
-        if (iso == null || iso.isEmpty()) return false;
-        try {
-            int t = Math.max(iso.indexOf('T'), iso.indexOf(' '));
-            String date = (t > 0) ? iso.substring(0, t) : iso;
-            String time = (t > 0 && iso.length() >= t + 5) ? iso.substring(t + 1, t + 6) : "23:59";
-            java.text.SimpleDateFormat in = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm", java.util.Locale.US);
-            java.util.Date eventDt = in.parse(date + " " + time);
-            return eventDt != null && eventDt.before(new java.util.Date());
-        } catch (Exception ignored) { return false; }
-    }
-
 
     private void bindHeaderPhoto(Event e) {
         if (ivPhoto == null) return;
@@ -365,6 +413,7 @@ public class EventDetailsFragment extends Fragment {
                     .into(ivPhoto);
             return;
         }
+
         // Base64 path
         if (cover != null) {
             try {
@@ -372,7 +421,7 @@ public class EventDetailsFragment extends Fragment {
                     int comma = cover.indexOf(',');
                     if (comma > 0) cover = cover.substring(comma + 1);
                 }
-                if (cover.length() > 64) { // heuristic to avoid tiny strings
+                if (cover.length() > 64) {
                     byte[] data = android.util.Base64.decode(cover, android.util.Base64.DEFAULT);
                     Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
                     if (bmp != null) {
@@ -385,15 +434,137 @@ public class EventDetailsFragment extends Fragment {
         ivPhoto.setImageResource(R.drawable.rounded_corners_image_blue);
     }
 
-    // ====== PDF EXPORT ======
+    /* ------------------------ Join/Leave Event ------------------------ */
+
+    private void checkIfUserHasJoined() {
+        String email = authManager.getEmail();
+
+        RetrofitClient.invitationEventService.getInvitations(eventId).enqueue(new Callback<List<Invitation>>() {
+            @Override
+            public void onResponse(Call<List<Invitation>> c, Response<List<Invitation>> r) {
+                if (!isAdded()) return;
+                if (r.isSuccessful() && r.body() != null) {
+                    hasJoinedFlag = false;
+                    for (Invitation inv : r.body()) {
+                        if (email.equalsIgnoreCase(inv.email)) {
+                            hasJoinedFlag = true;
+                            break;
+                        }
+                    }
+                    refreshJoinButton();
+                } else if (r.code() == 404) {
+                    hasJoinedFlag = false;
+                    refreshJoinButton();
+                } else {
+                    refreshJoinButton();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Invitation>> c, Throwable t) {
+                if (!isAdded()) return;
+                refreshJoinButton();
+            }
+        });
+    }
+
+    private void refreshJoinButton() {
+        btnJoin.setText(hasJoinedFlag ? "Leave event" : "Join event");
+    }
+
+    private void handleJoinClick() {
+        if (isEventOver(currentEvent != null ? currentEvent.getDate() : null)) {
+            toast("This event is over.");
+            return;
+        }
+        toggleJoin();
+    }
+
+    private void toggleJoin() {
+        if (hasJoinedFlag) leaveEvent();
+        else joinEvent();
+    }
+
+    private void joinEvent() {
+        btnJoin.setEnabled(false);
+        String email = authManager.getEmail();
+
+        RetrofitClient.invitationEventService
+                .sendInvitation(eventId, new InviteRequest(email, "", eventId))
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> c, Response<Void> r) {
+                        if (!isAdded()) return;
+                        btnJoin.setEnabled(true);
+                        if (r.isSuccessful()) {
+                            hasJoinedFlag = true;
+                            refreshJoinButton();
+                            toast("Joined");
+                        } else {
+                            toast("Join failed: " + r.code());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> c, Throwable t) {
+                        if (!isAdded()) return;
+                        btnJoin.setEnabled(true);
+                        toast("Network error: " + t.getMessage());
+                    }
+                });
+    }
+
+    private void leaveEvent() {
+        btnJoin.setEnabled(false);
+        String email = authManager.getEmail();
+
+        RetrofitClient.invitationEventService
+                .declineInvitation(eventId, java.net.URLEncoder.encode(email))
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> c, Response<Void> r) {
+                        if (!isAdded()) return;
+                        btnJoin.setEnabled(true);
+                        if (r.isSuccessful()) {
+                            hasJoinedFlag = false;
+                            refreshJoinButton();
+                            toast("Left event");
+                        } else {
+                            toast("Leave failed: " + r.code());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> c, Throwable t) {
+                        if (!isAdded()) return;
+                        btnJoin.setEnabled(true);
+                        toast("Network error: " + t.getMessage());
+                    }
+                });
+    }
+
+    private boolean isEventOver(@Nullable String iso) {
+        if (iso == null || iso.isEmpty()) return false;
+        try {
+            int t = Math.max(iso.indexOf('T'), iso.indexOf(' '));
+            String date = (t > 0) ? iso.substring(0, t) : iso;
+            String time = (t > 0 && iso.length() >= t + 5) ? iso.substring(t + 1, t + 6) : "23:59";
+            SimpleDateFormat in = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
+            Date eventDt = in.parse(date + " " + time);
+            return eventDt != null && eventDt.before(new Date());
+        } catch (Exception ignored) {
+            return false;
+        }
+    }
+
+    /* ------------------------ PDF Export ------------------------ */
 
     private void exportEventPdf() {
         if (currentEvent == null) {
-            Toast.makeText(getContext(), "Event not loaded yet", Toast.LENGTH_SHORT).show();
+            toast("Event not loaded yet");
             return;
         }
 
-        // Try to grab the image shown in the header, if any
         Bitmap cover = null;
         try {
             if (ivPhoto.getDrawable() instanceof android.graphics.drawable.BitmapDrawable) {
@@ -402,14 +573,13 @@ public class EventDetailsFragment extends Fragment {
         } catch (Exception ignored) {}
 
         if (cover == null) {
-            // Fallback to Base64 (if your backend returns base64 strings in photos)
             String b64 = firstBase64(currentEvent.getPhotos());
             if (b64 != null) cover = decodeBase64Bitmap(b64);
         }
 
         byte[] bytes = buildEventPdfBytes(currentEvent, cover, currentActivities);
         if (bytes == null || bytes.length == 0) {
-            Toast.makeText(getContext(), "Failed to build PDF", Toast.LENGTH_SHORT).show();
+            toast("Failed to build PDF");
             return;
         }
 
@@ -418,21 +588,20 @@ public class EventDetailsFragment extends Fragment {
 
         try {
             String path = savePdfToDownloads(bytes, filename);
-            Toast.makeText(getContext(), "Saved: " + path, Toast.LENGTH_LONG).show();
+            toast("Saved: " + path);
         } catch (Exception ex) {
-            Toast.makeText(getContext(), "Save failed: " + ex.getMessage(), Toast.LENGTH_LONG).show();
+            toast("Save failed: " + ex.getMessage());
         }
     }
+
     private String firstBase64(@Nullable List<String> photos) {
         if (photos == null || photos.isEmpty()) return null;
         String p = photos.get(0);
         if (p == null) return null;
-        // strip "data:image/*;base64," prefix if present
         if (p.startsWith("data:")) {
             int comma = p.indexOf(',');
             if (comma > 0) p = p.substring(comma + 1);
         }
-        // Heuristic: only treat as base64 if it is reasonably long and not a URL
         if (p.startsWith("http://") || p.startsWith("https://")) return null;
         return p.length() > 60 ? p : null;
     }
@@ -441,16 +610,16 @@ public class EventDetailsFragment extends Fragment {
     private Bitmap decodeBase64Bitmap(String base64) {
         try {
             byte[] bytes = android.util.Base64.decode(base64, android.util.Base64.DEFAULT);
-            return android.graphics.BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         } catch (Exception e) {
             return null;
         }
     }
 
     private byte[] buildEventPdfBytes(Event e, @Nullable Bitmap coverBmp, List<Activity> agenda) {
-        final int pageWidth  = 612; // 8.5" * 72
-        final int pageHeight = 792; // 11"  * 72
-        final int margin = 36;      // 0.5"
+        final int pageWidth = 612;
+        final int pageHeight = 792;
+        final int margin = 36;
         final int contentWidth = pageWidth - margin * 2;
 
         android.graphics.pdf.PdfDocument pdf = new android.graphics.pdf.PdfDocument();
@@ -468,7 +637,7 @@ public class EventDetailsFragment extends Fragment {
         sectionPaint.setTextSize(14f);
 
         android.graphics.Paint labelPaint = new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
-        labelPaint.setColor(android.graphics.Color.rgb(80,80,80));
+        labelPaint.setColor(android.graphics.Color.rgb(80, 80, 80));
         labelPaint.setTextSize(11f);
 
         android.graphics.Paint valuePaint = new android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG);
@@ -498,12 +667,13 @@ public class EventDetailsFragment extends Fragment {
         }
 
         // Separator
-        canvas.drawLine(x, y, x + contentWidth, y, linePaint); y += dp(12);
+        canvas.drawLine(x, y, x + contentWidth, y, linePaint);
+        y += dp(12);
 
         // Quick facts
-        String type = (e.getEventType()!=null && e.getEventType().getName()!=null) ? e.getEventType().getName() : "—";
+        String type = (e.getEventType() != null && e.getEventType().getName() != null) ? e.getEventType().getName() : "—";
         String date = "—", time = "—";
-        if (e.getDate()!=null && !e.getDate().isEmpty()) {
+        if (e.getDate() != null && !e.getDate().isEmpty()) {
             int tPos = Math.max(e.getDate().indexOf('T'), e.getDate().indexOf(' '));
             if (tPos > 0) {
                 date = e.getDate().substring(0, tPos);
@@ -511,10 +681,10 @@ public class EventDetailsFragment extends Fragment {
                 if (time.length() >= 5) time = time.substring(0, 5);
             } else date = e.getDate();
         }
-        String guests = (e.getMaxAttendance()==null) ? "—" : String.valueOf(e.getMaxAttendance());
-        String status = (e.getStatus()==null) ? "—" : e.getStatus().name();
+        String guests = (e.getMaxAttendance() == null) ? "—" : String.valueOf(e.getMaxAttendance());
+        String status = (e.getStatus() == null) ? "—" : e.getStatus().name();
         String address = "";
-        if (e.getAddress()!=null) {
+        if (e.getAddress() != null) {
             address = join(", ",
                     nz(e.getAddress().getStreet()),
                     nz(e.getAddress().getHouseNumber()),
@@ -532,10 +702,12 @@ public class EventDetailsFragment extends Fragment {
         }
 
         // Separator
-        y += dp(8); canvas.drawLine(x, y, x + contentWidth, y, linePaint); y += dp(12);
+        y += dp(8);
+        canvas.drawLine(x, y, x + contentWidth, y, linePaint);
+        y += dp(12);
 
         // Description
-        if (e.getDescription()!=null && !e.getDescription().trim().isEmpty()) {
+        if (e.getDescription() != null && !e.getDescription().trim().isEmpty()) {
             y += drawMultilineText(canvas, "Description", x, y, contentWidth, sectionPaint) + dp(6);
             y += drawMultilineText(canvas, e.getDescription().trim(), x, y, contentWidth, valuePaint) + dp(8);
         }
@@ -544,7 +716,6 @@ public class EventDetailsFragment extends Fragment {
         if (agenda != null && !agenda.isEmpty()) {
             y += drawMultilineText(canvas, "Agenda", x, y, contentWidth, sectionPaint) + dp(6);
 
-            // Sort by start time if needed (optional)
             List<Activity> sorted = new ArrayList<>(agenda);
             try {
                 sorted.sort((a, b) -> {
@@ -552,13 +723,13 @@ public class EventDetailsFragment extends Fragment {
                     long sb = parseMinutes(b.startTime);
                     return Long.compare(sa, sb);
                 });
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
 
             for (Activity a : sorted) {
                 String hhmm = formatHHmm(a.startTime);
                 String line = String.format(Locale.getDefault(), "%s  –  %s", hhmm, nz(a.name));
                 y += drawMultilineText(canvas, line, x, y, contentWidth, monoPaint) + dp(2);
-                // stop if close to bottom margin
                 if (y > pageHeight - margin - dp(24)) break;
             }
         }
@@ -566,15 +737,19 @@ public class EventDetailsFragment extends Fragment {
         pdf.finishPage(page);
 
         java.io.ByteArrayOutputStream bos = new java.io.ByteArrayOutputStream();
-        try { pdf.writeTo(bos); } catch (Exception ignore) {}
-        finally { pdf.close(); }
+        try {
+            pdf.writeTo(bos);
+        } catch (Exception ignore) {
+        } finally {
+            pdf.close();
+        }
         return bos.toByteArray();
     }
 
     private int drawLabelValue(android.graphics.Canvas c, String label, String value,
-                                 int x, int y, int width,
-                                 android.graphics.Paint labelPaint, android.graphics.Paint valuePaint) {
-        int line = (int)(valuePaint.getTextSize() + dp(6));
+                               int x, int y, int width,
+                               android.graphics.Paint labelPaint, android.graphics.Paint valuePaint) {
+        int line = (int) (valuePaint.getTextSize() + dp(6));
         c.drawText(label + ":", x, y + valuePaint.getTextSize(), labelPaint);
         int labelWidth = (int) labelPaint.measureText(label + ":  ");
         int used = drawMultilineText(c, value, x + labelWidth + dp(4), y, width - labelWidth - dp(4), valuePaint);
@@ -627,14 +802,12 @@ public class EventDetailsFragment extends Fragment {
         }
     }
 
-
     private String formatHHmm(@Nullable String iso) {
         if (iso == null) return "—";
         try {
-            // Try the common formats
             int t = Math.max(iso.indexOf('T'), iso.indexOf(' '));
             if (t > 0 && iso.length() >= t + 5) {
-                return iso.substring(t + 1, t + 6); // HH:mm
+                return iso.substring(t + 1, t + 6);
             }
             return iso;
         } catch (Exception e) {
@@ -651,7 +824,8 @@ public class EventDetailsFragment extends Fragment {
                 int m = Integer.parseInt(iso.substring(t + 4, t + 6));
                 return h * 60L + m;
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         return Long.MAX_VALUE;
     }
 
@@ -659,21 +833,20 @@ public class EventDetailsFragment extends Fragment {
         return (int) (v * getResources().getDisplayMetrics().density + 0.5f);
     }
 
-    private static String safeFileName(String s){
+    private static String safeFileName(String s) {
         return s.replaceAll("[\\\\/:*?\"<>|]", "_").trim();
     }
 
-
-    /* ------------------------ Geocoding (OSM Nominatim) ------------------------ */
+    /* ------------------------ Geocoding ------------------------ */
 
     private String buildAddressLine(Event e) {
         if (e.getAddress() == null) return "";
-        String street  = nz(e.getAddress().getStreet());
-        String house   = nz(e.getAddress().getHouseNumber());
-        String city    = nz(e.getAddress().getCity());
+        String street = nz(e.getAddress().getStreet());
+        String house = nz(e.getAddress().getHouseNumber());
+        String city = nz(e.getAddress().getCity());
         String country = nz(e.getAddress().getCountry());
         String line = join(" ", street, house);
-        return join(", ", line.isEmpty()? null: line, city, country);
+        return join(", ", line.isEmpty() ? null : line, city, country);
     }
 
     private void geocodeWithNominatim(String fullAddress) {
@@ -692,21 +865,26 @@ public class EventDetailsFragment extends Fragment {
                 int code = conn.getResponseCode();
                 if (code == 200) {
                     BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8));
-                    StringBuilder sb = new StringBuilder(); String line;
+                    StringBuilder sb = new StringBuilder();
+                    String line;
                     while ((line = br.readLine()) != null) sb.append(line);
                     br.close();
 
                     JSONArray arr = new JSONArray(sb.toString());
                     if (arr.length() > 0 && isAdded()) {
                         JSONObject obj = arr.getJSONObject(0);
-                        double lat = Double.parseDouble(obj.optString("lat","0"));
-                        double lon = Double.parseDouble(obj.optString("lon","0"));
-                        if (!isAdded()) { conn.disconnect(); return; }
+                        double lat = Double.parseDouble(obj.optString("lat", "0"));
+                        double lon = Double.parseDouble(obj.optString("lon", "0"));
+                        if (!isAdded()) {
+                            conn.disconnect();
+                            return;
+                        }
                         requireActivity().runOnUiThread(() -> placeMarker(lat, lon));
                     }
                 }
                 conn.disconnect();
-            } catch (Exception ignore) { }
+            } catch (Exception ignore) {
+            }
         });
     }
 
@@ -726,14 +904,29 @@ public class EventDetailsFragment extends Fragment {
 
     /* ------------------------ Utils ------------------------ */
 
-    private void toast(String s){ if (isAdded()) Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show(); }
-    private String nz(String s){ return s==null? "": s; }
-    private String safe(String s){ return s==null? "": s; }
-    private boolean isDash(String s){ return s==null || s.isEmpty() || "—".equals(s); }
+    private void toast(String s) {
+        if (isAdded()) Toast.makeText(getContext(), s, Toast.LENGTH_SHORT).show();
+    }
 
-    private String join(String sep, String... parts){
-        StringBuilder sb=new StringBuilder();
-        for (String p:parts) if (p!=null && !p.trim().isEmpty()){ if (sb.length()>0) sb.append(sep); sb.append(p.trim()); }
+    private String nz(String s) {
+        return s == null ? "" : s;
+    }
+
+    private String safe(String s) {
+        return s == null ? "" : s;
+    }
+
+    private boolean isDash(String s) {
+        return s == null || s.isEmpty() || "—".equals(s);
+    }
+
+    private String join(String sep, String... parts) {
+        StringBuilder sb = new StringBuilder();
+        for (String p : parts)
+            if (p != null && !p.trim().isEmpty()) {
+                if (sb.length() > 0) sb.append(sep);
+                sb.append(p.trim());
+            }
         return sb.toString();
     }
 
@@ -750,7 +943,8 @@ public class EventDetailsFragment extends Fragment {
                 try {
                     java.time.LocalDateTime ldt = java.time.LocalDateTime.parse(s, java.time.format.DateTimeFormatter.ISO_DATE_TIME);
                     return ldt.toLocalDate().toString();
-                } catch (Exception ignored2) { }
+                } catch (Exception ignored2) {
+                }
             }
         }
         Matcher m = DATE_RE.matcher(s);
@@ -762,32 +956,39 @@ public class EventDetailsFragment extends Fragment {
         if (Build.VERSION.SDK_INT >= 26) {
             try {
                 java.time.OffsetDateTime odt = java.time.OffsetDateTime.parse(s, java.time.format.DateTimeFormatter.ISO_DATE_TIME);
-                return odt.toLocalTime().toString().substring(0,5);
+                return odt.toLocalTime().toString().substring(0, 5);
             } catch (Exception ignored) {
                 try {
                     java.time.LocalDateTime ldt = java.time.LocalDateTime.parse(s, java.time.format.DateTimeFormatter.ISO_DATE_TIME);
-                    return ldt.toLocalTime().toString().substring(0,5);
-                } catch (Exception ignored2) { }
+                    return ldt.toLocalTime().toString().substring(0, 5);
+                } catch (Exception ignored2) {
+                }
             }
         }
         Matcher m = TIME_RE.matcher(s);
         return m.find() ? m.group(1) : "—";
     }
 
-    /* ------------------------ Mini agenda (HH:mm) adapter ------------------------ */
+    /* ------------------------ Adapters ------------------------ */
 
     private static class Mini {
         final String time;
         final String title;
         final String where;
-        Mini(String t, String ti, String w) { time = t; title = ti; where = w; }
+
+        Mini(String t, String ti, String w) {
+            time = t;
+            title = ti;
+            where = w;
+        }
     }
 
     private static class MiniVH extends RecyclerView.ViewHolder {
         TextView tvTime, tvTitle, tvWhere;
+
         MiniVH(@NonNull View v) {
             super(v);
-            tvTime  = v.findViewById(R.id.tvTime);
+            tvTime = v.findViewById(R.id.tvTime);
             tvTitle = v.findViewById(R.id.tvTitle);
             tvWhere = v.findViewById(R.id.tvAddress);
         }
@@ -795,18 +996,31 @@ public class EventDetailsFragment extends Fragment {
 
     private class MiniActivityAdapter extends RecyclerView.Adapter<MiniVH> {
         private final List<Mini> items = new ArrayList<>();
-        void submit(List<Mini> data) { items.clear(); if (data!=null) items.addAll(data); notifyDataSetChanged(); }
 
-        @NonNull @Override public MiniVH onCreateViewHolder(@NonNull ViewGroup p, int vType) {
+        void submit(List<Mini> data) {
+            items.clear();
+            if (data != null) items.addAll(data);
+            notifyDataSetChanged();
+        }
+
+        @NonNull
+        @Override
+        public MiniVH onCreateViewHolder(@NonNull ViewGroup p, int vType) {
             View v = LayoutInflater.from(p.getContext()).inflate(R.layout.item_activity_card, p, false);
             return new MiniVH(v);
         }
-        @Override public void onBindViewHolder(@NonNull MiniVH h, int pos) {
+
+        @Override
+        public void onBindViewHolder(@NonNull MiniVH h, int pos) {
             Mini m = items.get(pos);
             h.tvTime.setText(m.time);
             h.tvTitle.setText(m.title);
             h.tvWhere.setText(TextUtils.isEmpty(m.where) ? "—" : m.where);
         }
-        @Override public int getItemCount() { return items.size(); }
+
+        @Override
+        public int getItemCount() {
+            return items.size();
+        }
     }
 }
