@@ -440,6 +440,8 @@ public class AccountFragment extends BaseFragment {
                                 // stay in dialog and show server reason
                                 String reason = "Could not deactivate account. You have ongoing events/services/products.";
                                 tvMsg.setText(reason);
+                                btnYes.setVisibility(View.GONE);
+                                btnNo.setText("Return");
                             }
                         }
 
