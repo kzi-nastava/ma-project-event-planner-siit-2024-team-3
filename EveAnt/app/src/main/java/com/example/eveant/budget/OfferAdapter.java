@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eveant.R;
@@ -20,7 +19,6 @@ import com.example.eveant.service.model.OfferDTO;
 
 import java.util.List;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,14 +30,20 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
     private final double maxPrice;
     private final int budgetId;
     private final Item selectedItem;
+    private final NavController navController;
 
-
-    public OfferAdapter(List<OfferDTO> offers, double remainingBudget, double maxPrice, int budgetId, Item selectedItem) {
+    public OfferAdapter(List<OfferDTO> offers,
+                        double remainingBudget,
+                        double maxPrice,
+                        int budgetId,
+                        Item selectedItem,
+                        NavController navController) {
         this.offers = offers;
         this.remainingBudget = remainingBudget;
         this.maxPrice = maxPrice;
         this.budgetId = budgetId;
         this.selectedItem = selectedItem;
+        this.navController = navController;
     }
 
     @NonNull
@@ -58,35 +62,37 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
         holder.tvPrice.setText("Price: " + offer.getPrice() + " RSD");
         holder.tvDiscount.setText("Discount: " + (offer.getDiscount() != null ? offer.getDiscount() + "%" : "0%"));
 
-        // Detalji
+        // 🔎 View Details
         holder.btnViewDetail.setOnClickListener(v -> {
-            NavController navController = Navigation.findNavController(v);
-            Bundle bundle = new Bundle();
-            bundle.putInt("offerId", offer.getId());
-            navController.navigate(R.id.action_offerListFragment_to_offerDetailsFragment, bundle);
+            if (navController != null) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("offerId", offer.getId());
+                navController.navigate(R.id.action_offerListFragment_to_offerDetailsFragment, bundle);
+            } else {
+                Toast.makeText(v.getContext(), "Navigation not available", Toast.LENGTH_SHORT).show();
+            }
         });
 
+        // 📦 Reserve Offer
         holder.btnReserve.setOnClickListener(v -> {
             Log.d("BUDGET_DEBUG",
                     "offerPrice = " + offer.getPrice() +
                             ", remainingBudget = " + remainingBudget +
                             ", maxPrice = " + maxPrice);
 
-
             if (offer.getPrice() > remainingBudget || offer.getPrice() > maxPrice) {
                 Toast.makeText(v.getContext(), "Offer exceeds budget!", Toast.LENGTH_SHORT).show();
             } else {
-
                 selectedItem.setOffer(offer);
-
                 RetrofitClient.budgetService.updateItem(budgetId, selectedItem)
                         .enqueue(new Callback<Item>() {
                             @Override
                             public void onResponse(Call<Item> call, Response<Item> response) {
                                 if (response.isSuccessful()) {
-                                    Toast.makeText(v.getContext(), " Offer reserved successfully!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(v.getContext(), "Offer reserved successfully!", Toast.LENGTH_SHORT).show();
+                                    notifyItemChanged(holder.getAdapterPosition());
                                 } else {
-                                    Toast.makeText(v.getContext(), " Failed to reserve offer", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(v.getContext(), "Failed to reserve offer", Toast.LENGTH_SHORT).show();
                                 }
                             }
 
@@ -97,11 +103,13 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
                         });
             }
         });
-        OfferDTO reservedOffer = selectedItem.getOffer(); // već postoji ako je rezervisano
 
+        // 🎯 Rezervisana ponuda — vizuelni prikaz
+        OfferDTO reservedOffer = selectedItem.getOffer();
         boolean isReserved = reservedOffer != null && reservedOffer.getId() == offer.getId();
+
         if (isReserved) {
-            holder.itemView.setBackgroundResource(R.drawable.bg_reserved_offer); // specijalni background
+            holder.itemView.setBackgroundResource(R.drawable.bg_reserved_offer);
             holder.tvName.setText(offer.getName() + " (Reserved)");
             holder.btnReserve.setEnabled(false);
             holder.btnReserve.setText("Reserved");
@@ -110,7 +118,6 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.OfferViewHol
             holder.btnReserve.setEnabled(true);
             holder.btnReserve.setText("Reserve");
         }
-
     }
 
     @Override

@@ -279,6 +279,7 @@ public class BasicInformationFragment extends Fragment {
                                     args.putInt("eventId", eventId);
                                     args.putInt("budgetId", budgetId);
                                     args.putInt("eventTypeId", eventType.getId());
+                                    args.putBoolean("isFlowMode", true);
 
                                     if (requireActivity() instanceof EventActivity) {
                                         EventActivity activity = (EventActivity) requireActivity();

@@ -43,6 +43,8 @@ public class BudgetFragment extends Fragment {
     private double totalBudget = 0.0;
     private double remainingBudget = 0.0;
     private int eventTypeId;
+    private boolean isFlowMode = false;
+
 
     private int budgetId;
     private int eventId;
@@ -53,6 +55,7 @@ public class BudgetFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_budget, container, false);
+
     }
 
     @Override
@@ -72,7 +75,7 @@ public class BudgetFragment extends Fragment {
             eventId = getArguments().getInt("eventId", -1);
             budgetId = getArguments().getInt("budgetId", -1);
             eventTypeId = getArguments().getInt("eventTypeId", -1);
-
+            isFlowMode = getArguments().getBoolean("isFlowMode", false);
         }
         Log.d("BudgetFragment", "📊 eventId = " + eventId + ", budgetId = " + budgetId);
         Toast.makeText(requireContext(), "eventId=" + eventId + " budgetId=" + budgetId, Toast.LENGTH_LONG).show();
@@ -104,12 +107,17 @@ public class BudgetFragment extends Fragment {
 
             @Override
             public void onSelect(Item item) {
-                navigateToOffers(item);
+                if (!isFlowMode) {
+                    navigateToOffers(item);
+                } else {
+                    Toast.makeText(requireContext(), "Offer selection is disabled in flow mode.", Toast.LENGTH_SHORT).show();
+                }
             }
-        });
+        }, isFlowMode);
         rvItems.setLayoutManager(new LinearLayoutManager(requireContext()));
         rvItems.setAdapter(itemAdapter);
     }
+
 
     /** Učitaj sve stavke u budžetu */
     private void loadItems() {

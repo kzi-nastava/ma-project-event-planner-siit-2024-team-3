@@ -20,10 +20,12 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
     private final List<Item> items;
     private final ItemListener listener;
+    private final boolean isFlowMode;
 
-    public ItemAdapter(List<Item> items, ItemListener listener) {
+    public ItemAdapter(List<Item> items, ItemListener listener, boolean isFlowMode) {
         this.items = items;
         this.listener = listener;
+        this.isFlowMode = isFlowMode;
     }
 
     @NonNull
@@ -42,7 +44,13 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
         holder.btnEdit.setOnClickListener(v -> listener.onEdit(item));
         holder.btnDelete.setOnClickListener(v -> listener.onDelete(item));
-        holder.btnSelect.setOnClickListener(v -> listener.onSelect(item));
+
+        if (isFlowMode) {
+            holder.btnSelect.setVisibility(View.GONE);
+        } else {
+            holder.btnSelect.setVisibility(View.VISIBLE);
+            holder.btnSelect.setOnClickListener(v -> listener.onSelect(item));
+        }
     }
 
     @Override

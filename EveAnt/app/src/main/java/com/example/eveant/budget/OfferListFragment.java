@@ -11,6 +11,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -65,7 +67,7 @@ public class OfferListFragment extends Fragment {
 
     private void loadOffers() {
         progressBar.setVisibility(View.VISIBLE);
-
+        NavController navController = NavHostFragment.findNavController(this);
         RetrofitClient.offerService.getOffersByCategory(categoryId).enqueue(new Callback<List<OfferDTO>>() {
             @Override
             public void onResponse(Call<List<OfferDTO>> call, Response<List<OfferDTO>> response) {
@@ -84,7 +86,8 @@ public class OfferListFragment extends Fragment {
                                 remainingBudget,
                                 maxPriceForItem,
                                 getArguments().getInt("budgetId"),
-                                (Item) getArguments().getSerializable("selectedItem")
+                                (Item) getArguments().getSerializable("selectedItem"),
+                                navController
                         );
 
                         rvOffers.setAdapter(adapter);
