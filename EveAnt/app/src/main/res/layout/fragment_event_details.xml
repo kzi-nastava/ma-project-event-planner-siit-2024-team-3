@@ -22,6 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <!-- Activities Timeline Card -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,6 +59,7 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+        <!-- Location Card -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -93,6 +95,7 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+        <!-- SINGLE Comments Section Card (Keep only this one) -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -121,15 +124,82 @@
                     android:layout_marginTop="16dp"
                     android:layout_marginBottom="8dp" />
 
+                <!-- Empty State -->
+                <TextView
+                    android:id="@+id/empty_comments"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="No comments yet. Be the first to comment!"
+                    android:textStyle="italic"
+                    android:textColor="#777777"
+                    android:gravity="center"
+                    android:padding="16dp"
+                    android:visibility="gone" />
+
+                <!-- Comments List -->
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvComments"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false"
                     android:overScrollMode="never" />
+
+                <!-- Comment Input Section -->
+                <LinearLayout
+                    android:id="@+id/comment_input_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="16dp"
+                    android:paddingTop="16dp"
+                    android:background="@drawable/comment_input_background">
+
+                    <EditText
+                        android:id="@+id/etComment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="80dp"
+                        android:gravity="top|start"
+                        android:hint="Write a comment..."
+                        android:padding="12dp"
+                        android:background="@drawable/edit_text_background"
+                        android:textColor="@android:color/black"
+                        android:textColorHint="@android:color/darker_gray"
+                        android:fontFamily="@font/poppins_regular" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="end"
+                        android:layout_marginTop="8dp">
+
+                        <TextView
+                            android:id="@+id/comment_confirmation"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textColor="#A6D3A0"
+                            android:textSize="14sp"
+                            android:visibility="gone" />
+
+                        <Button
+                            android:id="@+id/btnPost"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Post"
+                            android:textColor="@android:color/white"
+                            android:fontFamily="@font/poppins_regular"
+                            android:background="@drawable/rounded_corners_8599e0"
+                            android:paddingStart="16dp"
+                            android:paddingEnd="16dp" />
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+        <!-- REMOVE THIS ENTIRE SECTION - it's the old duplicate -->
+        <!--
         <LinearLayout
             android:id="@+id/commentBox"
             android:layout_width="match_parent"
@@ -163,6 +233,7 @@
                 android:background="@drawable/rounded_corners_8599e0"
                 android:layout_marginStart="8dp" />
         </LinearLayout>
+        -->
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
