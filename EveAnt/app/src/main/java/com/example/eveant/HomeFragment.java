@@ -945,6 +945,7 @@ public class HomeFragment extends Fragment {
         Log.d(TAG, "Loading services with search: '" + searchQuery + "', city: '" + city + "'");
 
         // Prepare date parameters for services
+        //
         String startDateParam = null;
         String endDateParam = null;
         if (serviceStartDate != null && serviceEndDate != null) {
