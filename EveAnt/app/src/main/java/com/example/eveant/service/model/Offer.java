@@ -14,7 +14,7 @@ public class Offer {
     private String description;
     private List<EventType> eventTypes;
     private Long price;
-    private Integer discount;
+    private int discount;
     private Boolean visible;
     private OfferStatus status;
     private List<String> photos;

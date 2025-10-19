@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/offerCreateContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f0f3ff"
+    tools:context=".product.OfferFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_marginTop="100dp">
+
+
+    <TextView
+        android:id="@+id/offerTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="What would you like to offer?"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/poppins_bold"
+        android:layout_marginBottom="24dp" />
+
+    <Button
+        android:id="@+id/createServiceButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Create Service"
+        android:background="@drawable/rounded_corners_8599e0"
+        android:textColor="@color/white"
+        android:fontFamily="@font/poppins_medium"
+        android:padding="14dp"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/createProductButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Create Product"
+        android:background="@drawable/rounded_corners_8599e0"
+        android:textColor="@color/white"
+        android:fontFamily="@font/poppins_medium"
+        android:padding="14dp" />
+    </LinearLayout>
+
+</FrameLayout>

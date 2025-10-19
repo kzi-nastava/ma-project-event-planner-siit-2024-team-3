@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/purple"
+    tools:context=".offer.CreateProductFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:id="@+id/fragment_container_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="12dp"
+            android:background="@drawable/rounded_corners_white"
+            android:elevation="6dp"
+            android:orientation="vertical"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="12dp">
+
+            <!-- Title -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Create Product"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/poppins_semibold"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="8dp" />
+
+            <!-- Name -->
+            <EditText
+                android:id="@+id/name"
+                style="@style/loginInputText"
+                android:hint="@string/prompt_name"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:background="@drawable/rounded_corners_f0f3ff"
+                android:paddingHorizontal="10dp"
+                android:textSize="13sp"
+                android:layout_marginTop="4dp"
+                android:inputType="textPersonName" />
+
+            <!-- Description -->
+            <EditText
+                android:id="@+id/description"
+                style="@style/loginInputText"
+                android:hint="@string/prompt_description"
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="@drawable/rounded_corners_f0f3ff"
+                android:padding="10dp"
+                android:textSize="13sp"
+                android:gravity="top|start"
+                android:layout_marginTop="6dp"
+                android:inputType="textMultiLine" />
+
+            <!-- Category -->
+            <Spinner
+                android:id="@+id/category_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rounded_corners_f0f3ff" />
+
+            <CheckBox
+                android:id="@+id/checkbox_new_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hint_new_category"
+                android:textSize="13sp"
+                android:textColor="@color/black"
+                android:buttonTint="#8599e0"
+                android:layout_marginTop="2dp" />
+
+            <EditText
+                android:id="@+id/new_category_input"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:hint="@string/hint_new_category"
+                android:background="@drawable/rounded_corners_f0f3ff"
+                android:textColor="@color/black"
+                android:textSize="13sp"
+                android:visibility="gone"
+                android:layout_marginTop="4dp"
+                android:paddingHorizontal="10dp" />
+
+            <!-- Event Types -->
+            <Button
+                android:id="@+id/buttonShowCheckboxes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/select_type_of_events"
+                android:textSize="13sp"
+                android:background="@drawable/rounded_corners_f0f3ff"
+                android:textColor="@color/black"
+                android:layout_marginTop="6dp" />
+
+            <TextView
+                android:id="@+id/selectedEventsTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:layout_marginTop="2dp"
+                android:visibility="gone" />
+
+            <!-- Toggles -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rounded_corners_f0f3ff">
+
+                <ToggleButton
+                    android:id="@+id/visibleButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"
+                    android:textOn="@string/prompt_visible"
+                    android:textOff="@string/prompt_visible"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@color/black"
+                    android:background="@drawable/slider_organizer_provider" />
+
+                <ToggleButton
+                    android:id="@+id/hiddenButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"
+                    android:textOn="@string/prompt_hidden"
+                    android:textOff="@string/prompt_hidden"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@color/black"
+                    android:background="@drawable/slider_organizer_provider" />
+            </LinearLayout>
+
+            <!-- Available / Unavailable -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/rounded_corners_f0f3ff">
+
+                <ToggleButton
+                    android:id="@+id/availableButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"
+                    android:textOn="@string/prompt_available"
+                    android:textOff="@string/prompt_available"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@color/black"
+                    android:background="@drawable/slider_organizer_provider" />
+
+                <ToggleButton
+                    android:id="@+id/unavailableButton"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="40dp"
+                    android:textOn="@string/prompt_unavailable"
+                    android:textOff="@string/prompt_unavailable"
+                    android:textSize="12sp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@color/black"
+                    android:background="@drawable/slider_organizer_provider" />
+            </LinearLayout>
+
+            <!-- Price -->
+            <EditText
+                android:id="@+id/price"
+                style="@style/loginInputText"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:layout_marginTop="6dp"
+                android:hint="@string/prompt_price"
+                android:inputType="number"
+                android:textSize="13sp"
+                android:background="@drawable/rounded_corners_f0f3ff" />
+
+            <!-- Discount -->
+            <EditText
+                android:id="@+id/discount"
+                style="@style/loginInputText"
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+                android:layout_marginTop="6dp"
+                android:hint="@string/prompt_discount"
+                android:inputType="number"
+                android:textSize="13sp"
+                android:background="@drawable/rounded_corners_f0f3ff" />
+
+            <!-- Create Button -->
+            <Button
+                android:id="@+id/submit_button"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="12dp"
+                android:text="Create"
+                android:background="@drawable/rounded_corners_8599e0"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:fontFamily="@font/poppins_bold" />
+
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

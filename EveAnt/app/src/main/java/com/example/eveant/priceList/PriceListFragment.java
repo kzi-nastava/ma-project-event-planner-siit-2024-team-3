@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eveant.R;
 import com.example.eveant.RetrofitClient;
+import com.example.eveant.user.security.AuthManager;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -33,12 +34,9 @@ public class PriceListFragment extends Fragment {
     private String providerUsername;
     public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState){
 
-        SharedPreferences prefs = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
-        String providerUsername = prefs.getString("username", "");
+        AuthManager auth = AuthManager.getInstance(requireContext());
+        String providerUsername = auth.getEmail();
 
-        if(providerUsername.isEmpty()){
-            providerUsername="provider";
-        }
         View view = inflater.inflate(R.layout.fragment_price_list,container,false);
 
         RecyclerView recyclerView=view.findViewById(R.id.priceListItem);
