@@ -31,6 +31,7 @@ import com.example.eveant.R;
 import com.example.eveant.RetrofitClient;
 import com.example.eveant.service.model.OfferStatus;
 import com.example.eveant.service.model.Service;
+import com.example.eveant.user.security.AuthManager;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
@@ -81,15 +82,18 @@ public class ServicesViewFragment extends Fragment {
     }
 
     private void fetchProviderServices() {
-        SharedPreferences prefs = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
-        String username = prefs.getString("username", "");
+//        SharedPreferences prefs = requireActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+//        String username = prefs.getString("email", "");
+//
+//        if(username==null || username.isEmpty()){
+//            username="provider";
+//        }
+//        Log.d( "fetchProviderServices: ", username);
 
-        if(username==null || username.isEmpty()){
-            username="provider";
-        }
-        Log.d( "fetchProviderServices: ", username);
+        AuthManager auth = AuthManager.getInstance(requireContext());
+        String email = "provider";
 
-        RetrofitClient.serviceService.getAllServicesForProvider(username).enqueue(new Callback<ArrayList<Service>>() {
+        RetrofitClient.serviceService.getAllServicesForProvider(email).enqueue(new Callback<ArrayList<Service>>() {
             @Override
             public void onResponse(Call<ArrayList<Service>> call, Response<ArrayList<Service>> response) {
                 if (response.isSuccessful() && response.body() != null) {

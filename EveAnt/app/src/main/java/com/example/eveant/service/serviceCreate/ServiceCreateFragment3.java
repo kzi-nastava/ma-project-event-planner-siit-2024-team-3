@@ -28,6 +28,7 @@ import com.example.eveant.service.ServiceService;
 import com.example.eveant.service.model.Service;
 import com.example.eveant.service.model.ServiceDTO;
 import com.example.eveant.service.model.ServiceMapper;
+import com.example.eveant.user.security.AuthManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -200,8 +201,12 @@ public class ServiceCreateFragment3 extends Fragment {
 
             service.setMinEngagement(totalMin);
             service.setMaxEngagement(totalMax);
-        }
 
+
+        }
+        AuthManager auth = AuthManager.getInstance(requireContext());
+        String email = auth.getEmail();
+        service.setProvider(email);
         // Deadline i otkazni rok
         service.setReservationDeadLine(parseOrZero(deadlineField.getText().toString()));
         service.setCancellationPeriod(parseOrZero(cancellationField.getText().toString()));
@@ -220,6 +225,7 @@ public class ServiceCreateFragment3 extends Fragment {
 
     private void saveService() {
         Service serviceToSave = viewModel.getService().getValue();
+
         ServiceDTO serviceDTO = ServiceMapper.toDTO(serviceToSave);
         ServiceService serviceService = RetrofitClient.serviceService;
 

@@ -45,7 +45,6 @@ public class RetrofitClient {
    }
 
    public static NotificationService notificationService = retrofit.create(NotificationService.class);
-   public static InvitationService invitationService = retrofit.create(InvitationService.class);
    public static ServiceService serviceService =retrofit.create(ServiceService.class);
    public static CategoryService categoryService =retrofit.create(CategoryService.class);
    public static EventTypeService eventTypeService = retrofit.create(EventTypeService.class);

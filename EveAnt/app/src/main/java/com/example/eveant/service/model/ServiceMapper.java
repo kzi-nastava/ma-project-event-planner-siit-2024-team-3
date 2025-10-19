@@ -28,7 +28,7 @@ public class ServiceMapper {
         dto.setCancellationPeriod(service.getCancellationPeriod());
         dto.setPhotos(service.getPhotos());
 
-        dto.setProvider("provider"); // TODO: zameni sa stvarnim username-om koji je logovan
+        dto.setProvider(service.getProvider()); // TODO: zameni sa stvarnim username-om koji je logovan
 
         if (service.getCategory() != null) {
             Category catDto = new Category();
